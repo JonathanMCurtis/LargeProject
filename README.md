@@ -1,7 +1,7 @@
 # Recipes
 A shared repository for Group 21's "Large Project"
 
-#####Current jobs:
+##### Current jobs:
 
 - Alex: Front-End
 - Dannah: Front-End
@@ -9,7 +9,7 @@ A shared repository for Group 21's "Large Project"
 - Liderma: Back-End
 - Mehrob: Back-End
 
-###Welcome!
+### Welcome!
 
 This repo has been set up with a few resources that might help you get started on the project:
 1. While I am against requiring anything that is not in our grading rubric, I would highly recommend using **Git** and **Github** 
@@ -35,30 +35,30 @@ for this project.
     script to run eslint to check for any code issues (`npm run pretest`)
 ---
 
-##Schedule:
+##  Schedule:
 
-###Week 1 (6/15 - 6/21)
+### Week 1 (6/15 - 6/21)
 - [x] Plan and get your ideas down. 
 - [x] Also maybe learn technologies such as ReactNative and/or Flutter.
 
-###Week 2 (6/22 - 6/28)
+### Week 2 (6/22 - 6/28)
 - [x] Set up the database and start the API.
 - [ ] Also webapp front end should begin to do the UI. 
 - [ ] Mobile app people should start on the UI.
 
-###Week 3 (6/29 - 7/5)
+### Week 3 (6/29 - 7/5)
 - [ ] Complete the API. 
 - [ ] Make sure you get swagger done too so that the front end people will know how to call the API endpoints. 
 - [ ] Make sure that the webapp and mobile UIs are taking shape.
 
-###Week 4 (7/6 - 7/12)
+### Week 4 (7/6 - 7/12)
 - [ ] The webapp and mobile apps should start hitting the API endpoints.
 
-###Week 5 (7/13 - 7/19)
+### Week 5 (7/13 - 7/19)
 - [ ] Finish all functionality. 
 - [ ] Testing--generate unit testing and integration testing reports. 
 - [ ] Fix bugs.
 
-###Weeks 6-7 
+### Weeks 6-7 
 - 6th and 7th weeks are presentations.
 - The project should always continue under the assumption that we are presenting first!
