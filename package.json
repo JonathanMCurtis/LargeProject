@@ -18,14 +18,13 @@
     "concurrently": "^5.2.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "eslint": "^7.3.0",
+    "eslint": "^6.6.0",
     "express": "^4.17.1",
     "mongodb": "^3.5.9"
   },
   "devDependencies": {
     "babel": "^6.23.0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.6.0",
     "eslint-plugin-react": "^7.20.0"
   }
 }
