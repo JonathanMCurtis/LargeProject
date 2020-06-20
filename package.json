@@ -7,9 +7,9 @@
     "pretest": "eslint --config .estlintrc.yml .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
-    "dev": "concurrently \"nodemon server.js\" \"cd frontend && npm run start\"",
+    "dev": "concurrently \"nodemon server.js\" \"cd recipes-web && npm run start\"",
     "lint": "eslint --config .estlintrc.yml .",
-    "heroku-postbuild": "cd frontend && npm install && npm run build"
+    "heroku-postbuild": "cd recipes-web && npm install && npm run build"
   },
   "author": "",
   "license": "ISC",
