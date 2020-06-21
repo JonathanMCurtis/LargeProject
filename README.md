@@ -1,15 +1,70 @@
 # Recipes
+
 A shared repository for Group 21's "Large Project"
+
+---
 
 ##### Current jobs:
 
 - Alex: Front-End
+- Curtis: PM / API
 - Dannah: Front-End
 - Idel: Front-End / API
 - Liderma: Back-End
 - Mehrob: Back-End
 
-### Welcome!
+---
+
+### Welcome to Week 2!  (6/22 - 6/28)
+The "Intro" section has been moved below to make room for our 'Week 2' expectations.
+
+You'll also notice that there have been a collection of files added under a '.job-specific' directory, which are linked
+below. These are an area to provide more in-depth discussion about progress and more detailed information on expectations 
+for the week.
+
+**However**, the [Projects Board](https://github.com/JonathanMCurtis/LargeProject/projects/2) is still the primary method 
+by which our progress will be tracked, and tasks will be assigned.
+
+##### Week #2 Expectations (from Dr. Leinecker): 
+
+> - [x] Set up the database and start the API. (#7, #6)
+> - [ ] Webapp front end should begin to do the UI. (#5)
+> - [ ] Mobile app people should start on the UI. (#4)
+
+##### Week #2 Plan:
+
+Each link below connects to a more in-depth document.
+
+[**All Jobs**](./.job-specific/all-jobs.md)
+- Currently, proceed as if we are writing a basic recipe website.
+    - Database should begin with the object specifications in the link above.
+    - API will start by implementing 'generic' functions (CRUD user/recipe, search recipe, login)
+    - Front-end will have a lot of leeway deciding what pages to create at the beginning, but should also start with the
+     requests (project board and job-specific document.)
+- We'll continue looking for unique takes for functionality, and expect the styling to fit our 'college student'-tailored app.
+
+[**Database**](./.job-specific/database.md)
+- Decide if you want to use [Mongoose](https://www.npmjs.com/package/mongoose)
+    - If so, plan the collections and write schema for the different objects we will use.
+    - If not, plan the collections and write the fields each document *should* expect to contain in a given collection. 
+
+[**API**](./.job-specific/api.md)
+- Move API out to a separate file with exports (to clean up *server.js*)
+- Begin work on a set of flexible API endpoints (to be specialized as functionality becomes clear.)
+
+[**Front-End (Web)**](./.job-specific/front-end.md)
+- Confirm the framework for the web application.
+- Confirm the way work will be distributed (more details in the link.)
+- Start laying out spacing and components for web pages.
+
+[**Front-End (Mobile)**](./.job-specific/front-end.md)
+- Confirm the framework for the mobile application.
+- Confirm the way work will be distributed (more details in the link.)
+- Start laying out screens and components for mobile states.
+
+---
+
+### Intro
 
 This repo has been set up with a few resources that might help you get started on the project:
 1. While I am against requiring anything that is not in our grading rubric, I would highly recommend using **Git** and **Github** 
@@ -37,9 +92,9 @@ for this project.
 
 ##  Schedule:
 
-### Week 1 (6/15 - 6/21)
-- [x] Plan and get your ideas down. 
-- [x] Also maybe learn technologies such as ReactNative and/or Flutter.
+### ~~Week 1 (6/15 - 6/21)~~
+- [x] ~~Plan and get your ideas down.~~
+- [x] ~~Also maybe learn technologies such as ReactNative and/or Flutter.~~
 
 ### Week 2 (6/22 - 6/28)
 - [x] Set up the database and start the API.
