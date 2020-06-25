@@ -4,6 +4,7 @@ import './App.css';
 
 import LoginPage from './pages/LoginPage';
 import CardPage from './pages/CardPage';
+import ApiRecipeTest from './pages/ApiRecipeTest';
 
 function App() {
 	return (
@@ -14,6 +15,9 @@ function App() {
 				</Route>
 				<Route path = "/cards" exact>
 					<CardPage />
+				</Route>
+				<Route path = "/recipeTest" exact>
+					<ApiRecipeTest />
 				</Route>
 				<Redirect to = "/" />
 			</Switch>
