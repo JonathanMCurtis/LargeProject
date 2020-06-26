@@ -26,9 +26,11 @@ once you connect them to the API endpoints.
 
 ##### Week #3 Expectations (from Dr. Leinecker): 
 
-> - [ ] Complete the API. ( #13 )
-> - [ ] Make sure you get swagger done too so that the front end people will know how to call the API endpoints. ( #14 ) 
-> - [ ] Make sure that the webapp and mobile UIs are taking shape. ( #15 #16 #17 #18 )
+> - [ ] Complete the API. ([#13](https://github.com/JonathanMCurtis/LargeProject/issues/13))
+> - [ ] Make sure you get swagger done too so that the front end people will know how to call the API endpoints. ([#14](https://github.com/JonathanMCurtis/LargeProject/issues/14)) 
+> - [ ] Make sure that the webapp and mobile UIs are taking shape. 
+> ([#15](https://github.com/JonathanMCurtis/LargeProject/issues/15), [#16](https://github.com/JonathanMCurtis/LargeProject/issues/16),
+>  [#17](https://github.com/JonathanMCurtis/LargeProject/issues/17), [#18](https://github.com/JonathanMCurtis/LargeProject/issues/18))
 
 ##### Week #3 Plan:
 
