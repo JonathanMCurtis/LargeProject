@@ -2,38 +2,20 @@
 
 ***
 
-### Week 2
+### Week 3
 
-The week 2 expectation (from Dr. Leinecker) is to **'Start the API'**
+The week 3 expectations (from Dr. Leinecker) are to **'Complete the API'** and **'Make sure you get swagger done too.'**
 
-Working from that expectation, here are my recommendations for Week 2
+Working from that expectation, here are my recommendations for Week 3
 
-(Both are relayed in [Issue #6](https://github.com/JonathanMCurtis/LargeProject/issues/6))
+#### Task 1: Complete all expected API endpoints
 
-#### Task 1: Move API out to a separate file with exports
+Based upon the basic tasks expected for our recipe website, as well as the document structure laid out by the Database 
+team, implement all expected API endpoints for this project.
 
-Currently, the API is implemented as a series of explicit calls in server.js
+#### Task 2: Complete documentation for all API endpoints
 
-As our API grows, this will lead to a serious problem with readability as the file well exceeds its purpose.
+While SwaggerHub would be the ideal here, there is quite a bit of additional work placed on both members of the API team.
 
-**Please make a commit that moves API functions out to a seperate API file (or files) to be imported.**
-
-#### Task 2: Begin work on a set of flexible API endpoints (to be specialized as functionality becomes clear)
-
-While we might not have finalized the API needs, that does not stop us from getting ready for the needs our API might 
-come into. 
-
-This would include functions that:
-
-- Create a document in a specific collection
-- Read out a collection of documents based on a filter
-- Read out a specific document 
-- Read out the value of a field in a specific document
-- Update all documents based on a filter
-- Update a specific document
-- Update a single field in a specific document
-- Delete a specific document
-
-Having this collection of API functions would easily allow us to alter small pieces of the functions to suit our needs.
-
-**Please make commits that implement these generic-form API functions.**
+As such, providing a clear and detailed documentation to the front-end team for all endpoints will meet the expectations 
+for week 2. This would ideally be completed on SwaggerHub, but at the minimum an API document should be shared on Github. 
