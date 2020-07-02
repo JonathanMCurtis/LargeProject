@@ -81,8 +81,7 @@ RecipeAPI.prototype.GetRecipe = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-function BuildRecipeList(results)
-{
+function BuildRecipeList(results) {
 	let _ret = [];
 
 	for (let recipe in results) {
