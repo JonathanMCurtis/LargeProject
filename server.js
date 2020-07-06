@@ -28,8 +28,14 @@ require('dotenv').config();
 // Get the URI string for our MongoDB instance, create a new instance and connect to it
 const url = process.env.MONGODB_URI;
 const client = MongoClient(url);
+let mongoInstance;
 
-client.connect();
+client.connect(function(err, db) {
+	if (err)
+		throw err;
+	else
+		mongoInstance = db;
+});
 
 // Our app will be routed using Express
 const app = express();
@@ -68,9 +74,7 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	const start = size * PageNumber;
 
 	try {
-		const adb = client.db();
-
-		results = await adb.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		results = await mongoInstance.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
 		Error = 'Dev error: ' + e.toString();
