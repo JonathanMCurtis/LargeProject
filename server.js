@@ -76,7 +76,7 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	}
 
 	console.log(results);
-	
+
 	let js = {
 		Recipes: results,
 		Result: Error
