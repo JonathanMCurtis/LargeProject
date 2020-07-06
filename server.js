@@ -68,20 +68,22 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	try {
 		const db = client.db();
 
-		results = await db.collection('Recipes').find({}, GetRecipeListProjection());
+		results = await db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size);
 	}
 	catch (e) {
 		console.log('Error in API call');
 		Error = 'Dev error: ' + e.toString();
 	}
 
+	console.log(results);
+	
 	let js = {
 		Recipes: results,
 		Result: Error
 	};
 
 	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, 'noResults', 3));
+	res.end(JSON.stringify(js, null, 3));
 });
 app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
 app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
