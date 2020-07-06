@@ -134,10 +134,10 @@ RecipeAPI.prototype.GetRecipes = async function(req, res, db) {
 
 	try {
 		const url = process.env.MONGODB_URI;
-		const client = MongoClient(url);
+		let client = MongoClient(url);
 
 		client.connect();
-		const db = client.db();
+		let db = client.db();
 
 		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
