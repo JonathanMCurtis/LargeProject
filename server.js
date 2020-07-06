@@ -32,8 +32,8 @@ client.connect();
 // Our app will be routed using Express
 const app = express();
 
-const recipeAPI = new recipes(client.db());
-const userAPI = new users(client.db());
+const recipeAPI = new recipes();
+const userAPI = new users();
 
 // Set the 'port' application setting in Express
 app.set('port', PORT);
@@ -53,7 +53,7 @@ app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, 
 app.post('/api/user/ValidateUser', async (req, res) => userAPI.ValidateUser(req.body, res));
 app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
 app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
-app.post('/api/recipe/GetRecipes', async (req, res) => recipeAPI.GetRecipes(req.body, res));
+app.post('/api/recipe/GetRecipes', async (req, res) => recipeAPI.GetRecipes(req.body, res, client.db()));
 app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
 app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
 app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(req.body, res));
