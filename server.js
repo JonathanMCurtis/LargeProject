@@ -3,7 +3,7 @@ const express = require('express');
 
 // Import our recipe and user API modules
 const recipes = require('./api/RecipeAPI');
-// const users = require('./api/userAPI');
+const users = require('./api/userAPI');
 
 // BodyParser functions as middleware to let us extract JSON from a request
 const bodyParser = require('body-parser');
@@ -33,6 +33,7 @@ client.connect();
 const app = express();
 
 const recipeAPI = new recipes(client);
+const userAPI = new users(client);
 
 // Set the 'port' application setting in Express
 app.set('port', PORT);
@@ -47,10 +48,14 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'recipes-web', 'build')));
 
 // app.post() receives a POST request
-app.post('/api/recipes/addRecipe', async (req, res) => recipeAPI.addRecipe(req.body, res));
-app.post('/api/recipes/getRecipe', async (req, res) => recipeAPI.getRecipe(req.body, res));
-app.post('/api/recipes/searchByName', async (req, res) => recipeAPI.searchByName(req.body, res));
-app.post('/api/recipes/searchByName', async (req, res) => recipeAPI.deleteRecipe(req.body, res));
+app.post('/api/user/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res));
+app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
+app.post('/api/user/ValidateUser', async (req, res) => userAPI.ValidateUser(req.body, res));
+app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
+app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
+app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
+app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
+app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(req.body, res));
 
 // If the function was not an API call, attempt to serve the static page located related to our 'build' folder
 app.get('*', (req, res) => {

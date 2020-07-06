@@ -10,57 +10,49 @@ A shared repository for Group 21's "Large Project"
 - Curtis: PM / API
 - Dannah: Front-End
 - Idel: Front-End / API
-- Liderma: Back-End
-- Mehrob: Back-End
+- Liderma: ~~Back-End~~ -> Front-End
+- Mehrob: ~~Back-End~~ -> Front-End
 
 ---
 
-### Welcome to Week 2!  (6/22 - 6/28)
-The "Intro" section has been moved below to make room for our 'Week 2' expectations.
+### Welcome to Week 3 (6/29 - 7/5)
 
-You'll also notice that there have been a collection of files added under a '.job-specific' directory, which are linked
-below. These are an area to provide more in-depth discussion about progress and more detailed information on expectations 
-for the week.
+Our [Projects Board](https://github.com/JonathanMCurtis/LargeProject/projects/2) will not be terribly useful, as the 
+front-end expectations are a little more vague. The current plan is to create issues for week 3 that focus on creating 
+the pages of our applications, while week 4 will be focused on connecting those pages to the API endpoints.
 
-**However**, the [Projects Board](https://github.com/JonathanMCurtis/LargeProject/projects/2) is still the primary method 
-by which our progress will be tracked, and tasks will be assigned.
+I would not be surprised to see some week 3 issues run over into week 4, or to see pages require structural revision 
+once you connect them to the API endpoints.
 
-##### Week #2 Expectations (from Dr. Leinecker): 
+##### Week #3 Expectations (from Dr. Leinecker): 
 
-> - [x] Set up the database and start the API. (#7, #6)
-> - [ ] Webapp front end should begin to do the UI. (#5)
-> - [ ] Mobile app people should start on the UI. (#4)
+> - [ ] Complete the API. ([#13](https://github.com/JonathanMCurtis/LargeProject/issues/13))
+> - [ ] Make sure you get swagger done too so that the front end people will know how to call the API endpoints. ([#14](https://github.com/JonathanMCurtis/LargeProject/issues/14)) 
+> - [ ] Make sure that the webapp and mobile UIs are taking shape. 
+> ([#15](https://github.com/JonathanMCurtis/LargeProject/issues/15), [#16](https://github.com/JonathanMCurtis/LargeProject/issues/16),
+>  [#17](https://github.com/JonathanMCurtis/LargeProject/issues/17), [#18](https://github.com/JonathanMCurtis/LargeProject/issues/18))
 
-##### Week #2 Plan:
+##### Week #3 Plan:
 
 Each link below connects to a more in-depth document.
 
 [**All Jobs**](./.job-specific/all-jobs.md)
 - Currently, proceed as if we are writing a basic recipe website.
-    - Database should begin with the object specifications in the link above.
-    - API will start by implementing 'generic' functions (CRUD user/recipe, search recipe, login)
-    - Front-end will have a lot of leeway deciding what pages to create at the beginning, but should also start with the
-     requests (project board and job-specific document.)
+    - API will be implementing specific functions to recreate the functionality of a basic website
+    - Front-End will be focused on implementing the structure of pages while the API is completed.    
 - We'll continue looking for unique takes for functionality, and expect the styling to fit our 'college student'-tailored app.
 
-[**Database**](./.job-specific/database.md)
-- Decide if you want to use [Mongoose](https://www.npmjs.com/package/mongoose)
-    - If so, plan the collections and write schema for the different objects we will use.
-    - If not, plan the collections and write the fields each document *should* expect to contain in a given collection. 
-
 [**API**](./.job-specific/api.md)
-- Move API out to a separate file with exports (to clean up *server.js*)
-- Begin work on a set of flexible API endpoints (to be specialized as functionality becomes clear.)
+- Implement API functions to specifically meet the fields added by the Database team in week 2
+- Create API documentation on SwaggerHub for the front-end team to utilize.
 
 [**Front-End (Web)**](./.job-specific/front-end.md)
-- Confirm the framework for the web application.
-- Confirm the way work will be distributed (more details in the link.)
-- Start laying out spacing and components for web pages.
+- Create specific and functional pages to meet the needs of our application.
+    - Integration with API endpoints is not yet required.
 
 [**Front-End (Mobile)**](./.job-specific/front-end.md)
-- Confirm the framework for the mobile application.
-- Confirm the way work will be distributed (more details in the link.)
-- Start laying out screens and components for mobile states.
+- Create specific and functional pages to meet the needs of our application.
+    - Integration with API endpoints is not yet required.
 
 ---
 
@@ -75,8 +67,8 @@ for this project.
 3. The current folder structure should allow us to easily collaborate on the project, while also being able to deploy this repo directly to heroku!
     - **/** (The root of the project) Will contain the API and code for Express routing.
     - **/.tutorials/** includes the tutorial files, intended for viewing on Github
-    - **/recipes-mobile/** will contain the source code for the mobile application.
-    - **/recipes-web/** will contain the source code for the web application.
+    - **/recipes_mobile/** will contain the source code for the mobile application.
+    - **/recipes_web/** will contain the source code for the web application.
 4. The web project is a copy of the one that our professor used, with a few modifications:
     - All files have been updated to meet the standards of our code linter
     - The **server.js** file has been reconfigured, and *heavily* commented (if you want to learn more about Express routing)
@@ -97,9 +89,9 @@ for this project.
 - [x] ~~Also maybe learn technologies such as ReactNative and/or Flutter.~~
 
 ### Week 2 (6/22 - 6/28)
-- [x] Set up the database and start the API.
-- [ ] Also webapp front end should begin to do the UI. 
-- [ ] Mobile app people should start on the UI.
+- [x] ~~Set up the database and start the API.~~
+- [x] ~~Also webapp front end should begin to do the UI.~~
+- [x] ~~Mobile app people should start on the UI.~~
 
 ### Week 3 (6/29 - 7/5)
 - [ ] Complete the API. 

@@ -16,47 +16,25 @@ completed features allows you to immediately test your feature on Heroku (as it 
 
 ***
 
-Week 2 expectations (from Dr. Leinecker) are that the **'front-end should begin to do the UI'** (for both web and mobile.)
+Week 3 expectations (from Dr. Leinecker) are that the **'the webapp and mobile UIs are taking shape.'**
 
 As such, here are the tasks that are common between *all* of front-end this week: 
 
-#### Task #1: Work Distribution
+#### Task #1: Document the required pages for this application
 
-Front-end work is going to be a **huge** portion of this project, regardless of the task we approach. Unless we decide 
-to implement Mongoose, the database is technically "done." The API will spend some time on SwaggerHub documentation and 
-functions, but that is short in comparison to the amount of work that will be done for front-end.
+How you complete this task is up to you, but some form of planning will need to be completed to show what pages we 
+intend to include in our application.
 
-As such, it would be imperative to decide a few things about the front-end workflow:
+This could be a document containing a list of these pages, or it could simply be creating an empty file for each page,
+even if the file does not yet serve any functionality.
 
-1. How will we distribute the front-end tasks?
-    - Will we go for a style similar to our 'full stack' choice from the survey, where all tasks are available for any 
-  front-end to take on?
-    - Will we dedicate specific people to web/mobile, or will the assignments be more fluid?
-    - How will this fit with the addition of new front-end help in about a week?
-2. If web/mobile will be assigned to specific people, who has been chosen for each role currently?
+This task is intended to help provide a sense of direction for the project, and to provide some insight on future API 
+endpoints that might be required. 
 
-**Please discuss these amongst the current front-end team, and confirm your decisions either via Discord or the related 
-Issue Page.**
+#### Task #2: Begin creating these required pages
 
-#### Task #2: Framework Selection
-
-A big part of my planning (in terms of tasks, pages, and providing learning resources) depends on the library, frameworks, 
-or applications we will be using to develop web and mobile.
-
-**Please discuss this amongst the appropriate front-end team (either combined, or separate web/mobile) and confirm your 
-decisions via Discord, or the related Issue Page.**
-
-#### Task #3: Begin to implement UI
-
-While we do not have a finalized version of our functionality, both web and mobile will be able to begin with some basic 
-assumptions. 
-
-Your job-specific pages will provide more detailed information, but remember: You are always welcome to add/remove 
-content as you see fit. These are simply *suggestions* to keep us on-track for completion!
-
-**Please make commits containing a selection of pages that you believe this application will find useful.** Styling is 
-not currently a requirement, they do not have to serve any function, and they do not have to be finalized or laid out 
-perfectly at this time. The main expectation is the presence of pages, and the components you think those pages require.
+From the list above, work on these pages in the order and capacity that you see fit. Just keep in mind that the 
+expectations from Dr. Leinecker are that these pages will be fully functional in **two weeks**
 
 - [Web Application Specifics](front-end-web.md)
 - [Mobile Application Specifics](front-end-mobile.md)
