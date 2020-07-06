@@ -73,7 +73,7 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 		results = await adb.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
-		Error = e.toString();
+		Error = 'Dev error: ' + e.toString();
 	}
 
 	let js = {
@@ -82,7 +82,7 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	};
 
 	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	res.end(JSON.stringify(js, 'noResults', 3));
 });
 app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
 app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
