@@ -45,7 +45,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // This tells Express to build the request path based on the path to the static version of the website.
-app.use(express.static(path.join(__dirname, 'recipes-web', 'build')));
+app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 
 // app.post() receives a POST request
 app.post('/api/user/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res));
@@ -60,7 +60,7 @@ app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(
 
 // If the function was not an API call, attempt to serve the static page located related to our 'build' folder
 app.get('*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'recipes-web', 'build', 'index.html'));
+	res.sendFile(path.join(__dirname, 'recipes_web', 'build', 'index.html'));
 });
 
 // Listen on the designated port, defined earlier
