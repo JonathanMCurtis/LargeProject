@@ -57,20 +57,20 @@ app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(
 app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
 app.post('/api/recipe/GetRecipes', async (req, res) => {
 	/*
-	 * incoming: RecipeID, PageNumber
+	 * incoming: PageNumber
 	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
 	 */
 
-	const { RecipeID, PageNumber } = req;
+	const { PageNumber } = req;
 	let results;
 	let Error = '';
 	const size = 15;
 	const start = size * PageNumber;
 
 	try {
-		const db = client.db();
+		const adb = client.db();
 
-		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		results = await adb.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
 		Error = e.toString();
