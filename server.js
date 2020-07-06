@@ -32,8 +32,8 @@ client.connect();
 // Our app will be routed using Express
 const app = express();
 
-const recipeAPI = new recipes();
-const userAPI = new users();
+const recipeAPI = new recipes(client);
+const userAPI = new users(client);
 
 // Set the 'port' application setting in Express
 app.set('port', PORT);
