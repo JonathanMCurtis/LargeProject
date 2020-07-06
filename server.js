@@ -1,3 +1,5 @@
+const ObjectId = require('mongodb').ObjectId;
+
 // Use express for our routing
 const express = require('express');
 
@@ -53,7 +55,35 @@ app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, 
 app.post('/api/user/ValidateUser', async (req, res) => userAPI.ValidateUser(req.body, res));
 app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
 app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
-app.post('/api/recipe/GetRecipes', async (req, res) => recipeAPI.GetRecipes(req.body, res, client.db()));
+app.post('/api/recipe/GetRecipes', async (req, res) => {
+	/*
+	 * incoming: RecipeID, PageNumber
+	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
+	 */
+
+	const { RecipeID, PageNumber } = req;
+	let results;
+	let Error = '';
+	const size = 15;
+	const start = size * PageNumber;
+
+	try {
+		const db = client.db();
+
+		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+	}
+	catch (e) {
+		Error = e.toString();
+	}
+
+	let js = {
+		Recipes: results,
+		Result: Error
+	};
+
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
+});
 app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
 app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
 app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(req.body, res));
@@ -67,3 +97,18 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
 	console.log(`Server listening on port ${PORT}.`);
 });
+
+function GetRecipeListProjection() {
+	return {
+		_id: 1,
+		RecipeName: 1,
+		Ingredients: 0,
+		Instructions: 0,
+		Description: 0,
+		Type: 0,
+		Cost: 1,
+		SubmissionDate: 1,
+		FavoriteCount: 1,
+		AverageRating: 1
+	};
+}

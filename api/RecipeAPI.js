@@ -120,7 +120,7 @@ function GetRecipeListProjection() {
 	};
 }
 
-RecipeAPI.prototype.GetRecipes = async function(req, res, db) {
+RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	/*
 	 * incoming: RecipeID, PageNumber
 	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
