@@ -1,7 +1,7 @@
 const ObjectId = require('mongodb').ObjectId;
 
-function RecipeAPI(clientRef) {
-	this.client = clientRef;
+function RecipeAPI(dbRef) {
+	this.db = dbRef;
 }
 
 RecipeAPI.prototype.CreateRecipe = async function(req, res) {
@@ -132,9 +132,7 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	const start = size * PageNumber;
 
 	try {
-		const db = this.client.connect().db();
-
-		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		results = await this.db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
 		Error = e.toString();
