@@ -7,11 +7,11 @@ function RecipeAPI(clientRef) {
 RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 	/*
 	 * incoming: RecipeName, Ingredients[], Instructions[], Description, Type, Cost, UserID
-	 * outgoing: RecipeID, Error
+	 * outgoing: RecipeID, Result
 	 */
 
 	const { RecipeName, Ingredients, Instructions, Description, Type, Cost, UserID } = req;
-	const SubmissionDate = Date.now();
+	const submissionDate = Date.now();
 	let Error = '';
 
 	const newRecipe = {
@@ -21,8 +21,10 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 		Description: Description,
 		Type: Type,
 		Cost: Cost,
-		SubmissionDate: SubmissionDate,
+		SubmissionDate: submissionDate,
 		FavoriteCount: 0,
+		RatingCount: 0,
+		AverageRating: 0,
 		UserID: UserID
 	};
 
@@ -35,13 +37,14 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 			{ $set: { 'RecipeID': newRecipe['_id'] } }
 		);
 	}
+
 	catch (e) {
 		Error = e.toString();
 	}
 
 	let js = {
 		RecipeID: newRecipe['_id'],
-		Error: Error
+		Result: Error
 	};
 
 	res.setHeader('Content-Type', 'application/json');
@@ -51,7 +54,7 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 RecipeAPI.prototype.GetRecipe = async function(req, res) {
 	/*
 	 * incoming: RecipeID
-	 * outgoing: RecipeName, Ingredients, Instructions, Description, Type, Cost, Error
+	 * outgoing: RecipeName, Ingredients, Instructions, Description, Type, Cost, SubmissionDate, FavoriteCount, AverageRating, Error
 	 */
 
 	const { RecipeID } = req;
@@ -74,7 +77,10 @@ RecipeAPI.prototype.GetRecipe = async function(req, res) {
 		Description: result['Description'],
 		Type: result['Type'],
 		Cost: result['Cost'],
-		Error: Error
+		SubmissionDate: result['SubmissionDate'],
+		FavoriteCount: result['FavoriteCount'],
+		AverageRating: result['AverageRating'],
+		Result: Error
 	};
 
 	res.setHeader('Content-Type', 'application/json');
@@ -87,11 +93,9 @@ function BuildRecipeList(results) {
 	for (let recipe in results) {
 		let out = {
 			RecipeName: recipe['RecipeName'],
-			Ingredients: recipe['Ingredients'],
-			Instructions: recipe['Instructions'],
-			Description: recipe['Description'],
-			Type: recipe['Type'],
-			Cost: recipe['Cost']
+			AverageRating: recipe['AverageRating'],
+			Cost: recipe['Cost'],
+			SubmissionDate: recipe['SubmissionDate']
 		};
 
 		_ret.push(out);
@@ -107,7 +111,7 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	 */
 
 	const { RecipeID, PageNumber } = req;
-	let result;
+	let results;
 	let Error = '';
 	const size = 15;
 	const start = size * PageNumber;
@@ -115,19 +119,16 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		result = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, { array: { $slice: [start, size] } });
+		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, { array: { $slice: [start, size] } });
 	}
 	catch (e) {
 		Error = e.toString();
 	}
 
+	const _ret = BuildRecipeList(results);
+
 	let js = {
-		RecipeName: result['RecipeName'],
-		Ingredients: result['Ingredients'],
-		Instructions: result['Instructions'],
-		Description: result['Description'],
-		Type: result['Type'],
-		Cost: result['Cost'],
+		Results: _ret,
 		Error: Error
 	};
 
@@ -138,7 +139,7 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 RecipeAPI.prototype.GetSubmittedRecipes = async function(req, res) {
 	/*
 	 * incoming: UserID
-	 * outgoing: Results [RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
+	 * outgoing: Recipes [RecipeName, Ingredients, Instructions, Description, Type, Cost], Result
 	 */
 
 	const { UserID } = req;
@@ -157,8 +158,8 @@ RecipeAPI.prototype.GetSubmittedRecipes = async function(req, res) {
 	const _ret = BuildRecipeList(results);
 
 	let js = {
-		Results: _ret,
-		Error: Error
+		Recipes: _ret,
+		Result: Error
 	};
 
 	res.setHeader('Content-Type', 'application/json');
