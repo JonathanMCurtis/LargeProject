@@ -1,5 +1,3 @@
-const ObjectId = require('mongodb').ObjectId;
-
 // Use express for our routing
 const express = require('express');
 
@@ -77,7 +75,9 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	const start = size * PageNumber;
 
 	try {
-		results = await mongoInstance.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		const db = client.db();
+
+		results = await db.collection('Recipes').find({}, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
 		Error = 'Dev error: ' + e.toString();
