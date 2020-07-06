@@ -233,6 +233,48 @@ RecipeAPI.prototype.SearchByField = async function(req, res, _field) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
+RecipeAPI.prototype.RateRecipe = async function(req, res) {
+	/*
+	 * incoming: RecipeID, Rating
+	 * outgoing: AverageRating, Result
+	 */
+
+	const { RecipeID, Rating } = req;
+	let result;
+	let newRating;
+	let Error = '';
+
+	try {
+		const db = this.client.db();
+
+		const recipe = await db.collection('Recipes').findOne({ '_id': ObjectId(RecipeID) });
+		const currentAverage = recipe['AverageRating'];
+		const ratingCount = recipe['RatingCount'];
+
+		newRating = (currentAverage + Rating) / (ratingCount + 1);
+
+		result = await db.collection('Recipes').updateOne(
+			{ '_id': ObjectId(RecipeID) },
+			{ $set: { 'AverageRating': newRating, 'RatingCount': ratingCount + 1 } }
+		);
+	}
+	catch (e) {
+		Error = e.toString();
+	}
+
+	if (result['modifiedCount'] === 0) {
+		// TODO: Result in error for lack of modifications.
+	}
+
+	let js = {
+		AverageRating: newRating,
+		Result: Error
+	};
+
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
+};
+
 RecipeAPI.prototype.DeleteRecipe = async function(req, res) {
 	/*
 	 * incoming: RecipeID
