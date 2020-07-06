@@ -109,10 +109,6 @@ function GetRecipeListProjection() {
 	return {
 		_id: 1,
 		RecipeName: 1,
-		Ingredients: 0,
-		Instructions: 0,
-		Description: 0,
-		Type: 0,
 		Cost: 1,
 		SubmissionDate: 1,
 		FavoriteCount: 1,
@@ -138,11 +134,8 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 		results = await db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size).toArray();
 	}
 	catch (e) {
-		console.log('Error in API call');
 		Error = 'Dev error: ' + e.toString();
 	}
-
-	console.log(results);
 
 	let js = {
 		Recipes: results,
