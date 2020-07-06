@@ -35,7 +35,7 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 	}
 
 	catch (e) {
-		Error = e.toString();
+		Error = 'Dev error: ' + e.toString();
 	}
 
 	let js = {
@@ -129,7 +129,7 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 		results = await db.collection('Recipes').find({}).skip(start).limit(size).project(GetRecipeListProjection()).toArray();
 	}
 	catch (e) {
-		Error = 'Dev error: ' + e.toString();
+		Error = e.toString();
 	}
 
 	let js = {
