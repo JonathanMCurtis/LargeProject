@@ -3,7 +3,7 @@ const express = require('express');
 
 // Import our recipe and user API modules
 const recipes = require('./api/RecipeAPI');
-const users = require('./api/userAPI');
+const users = require('./api/UserAPI');
 
 // BodyParser functions as middleware to let us extract JSON from a request
 const bodyParser = require('body-parser');
