@@ -68,7 +68,7 @@ app.post('/api/recipe/GetRecipes', async (req, res) => {
 	try {
 		const db = client.db();
 
-		results = await db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size);
+		results = db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size);
 	}
 	catch (e) {
 		console.log('Error in API call');
