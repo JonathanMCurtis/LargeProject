@@ -122,11 +122,11 @@ function GetRecipeListProjection() {
 
 RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	/*
-	 * incoming: RecipeID, PageNumber
+	 * incoming: PageNumber
 	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
 	 */
 
-	const { RecipeID, PageNumber } = req;
+	const { PageNumber } = req;
 	let results;
 	let Error = '';
 	const size = 15;
@@ -135,11 +135,14 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		results = db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		results = await db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size).toArray();
 	}
 	catch (e) {
-		Error = e.toString();
+		console.log('Error in API call');
+		Error = 'Dev error: ' + e.toString();
 	}
+
+	console.log(results);
 
 	let js = {
 		Recipes: results,
