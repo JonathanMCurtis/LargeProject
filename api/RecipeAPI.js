@@ -131,7 +131,14 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		results = await db.collection('Recipes').find({}, GetRecipeListProjection()).skip(start).limit(size).toArray();
+		results = await db.collection('Recipes').find({}, {
+			_id: 1,
+			RecipeName: 1,
+			Cost: 1,
+			SubmissionDate: 1,
+			FavoriteCount: 1,
+			AverageRating: 1
+		}).skip(start).limit(size).toArray();
 	}
 	catch (e) {
 		Error = 'Dev error: ' + e.toString();
