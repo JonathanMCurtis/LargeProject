@@ -1,8 +1,7 @@
 const ObjectId = require('mongodb').ObjectId;
-const MongoClient = require('mongodb').MongoClient;
 
 function RecipeAPI(clientRef) {
-	this.client = clientRef
+	this.client = clientRef;
 }
 
 RecipeAPI.prototype.CreateRecipe = async function(req, res) {
@@ -33,10 +32,6 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 		const db = this.client.db();
 
 		await db.collection('Recipes').insertOne(newRecipe);
-		await db.collection('Recipes').updateOne(
-			{ '_id': ObjectId(newRecipe['_id']) },
-			{ $set: { 'RecipeID': newRecipe['_id'] } }
-		);
 	}
 
 	catch (e) {
