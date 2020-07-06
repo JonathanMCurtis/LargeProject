@@ -133,7 +133,7 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	const start = size * PageNumber;
 
 	try {
-		let db = this.client.db();
+		const db = this.client.db();
 
 		results = db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
