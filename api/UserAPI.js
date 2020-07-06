@@ -2,7 +2,7 @@ const ObjectId = require('mongodb').ObjectId;
 
 function UserAPI(clientRef) {
 	this.client = clientRef;
-};
+}
 
 UserAPI.prototype.CreateUser = async function(req, res) {
 	/*
