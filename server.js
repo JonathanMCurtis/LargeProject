@@ -31,10 +31,13 @@ const client = MongoClient(url);
 let mongoInstance;
 
 client.connect(function(err, db) {
-	if (err)
+	if (err) {
 		throw err;
-	else
+	}
+	else {
+		console.log('MongoDB instance connected');
 		mongoInstance = db;
+	}
 });
 
 // Our app will be routed using Express
