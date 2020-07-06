@@ -100,6 +100,41 @@ function BuildRecipeList(results) {
 	return _ret;
 }
 
+RecipeAPI.prototype.GetRecipes = async function(req, res) {
+	/*
+	 * incoming: RecipeID, PageNumber
+	 * outgoing: RecipeName, Ingredients, Instructions, Description, Type, Cost, Error
+	 */
+
+	const { RecipeID, PageNumber } = req;
+	let result;
+	let Error = '';
+	const size = 15;
+	const start = size * PageNumber;
+
+	try {
+		const db = this.client.db();
+
+		result = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, { array: { $slice: [start, size] } });
+	}
+	catch (e) {
+		Error = e.toString();
+	}
+
+	let js = {
+		RecipeName: result['RecipeName'],
+		Ingredients: result['Ingredients'],
+		Instructions: result['Instructions'],
+		Description: result['Description'],
+		Type: result['Type'],
+		Cost: result['Cost'],
+		Error: Error
+	};
+
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
+};
+
 RecipeAPI.prototype.GetSubmittedRecipes = async function(req, res) {
 	/*
 	 * incoming: UserID
