@@ -1,4 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
+const MongoClient = require('mongodb').MongoClient;
 
 function RecipeAPI(dbRef) {
 	this.db = dbRef;
@@ -132,6 +133,12 @@ RecipeAPI.prototype.GetRecipes = async function(req, res, db) {
 	const start = size * PageNumber;
 
 	try {
+		const url = process.env.MONGODB_URI;
+		const client = MongoClient(url);
+
+		client.connect();
+		const db = client.db();
+
 		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
 	}
 	catch (e) {
