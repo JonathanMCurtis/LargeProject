@@ -27,7 +27,7 @@ require('dotenv').config();
 const url = process.env.MONGODB_URI;
 const client = MongoClient(url);
 
-client.connect();
+client.connect(url);
 
 // Our app will be routed using Express
 const app = express();
