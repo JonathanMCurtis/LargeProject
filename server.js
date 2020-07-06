@@ -53,9 +53,11 @@ app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, 
 app.post('/api/user/ValidateUser', async (req, res) => userAPI.ValidateUser(req.body, res));
 app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
 app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
+app.post('/api/recipe/GetSubmittedRecipes', async (req, res) => recipeAPI.GetSubmittedRecipes(req.body, res));
 app.post('/api/recipe/GetRecipes', async (req, res) => recipeAPI.GetRecipes(req.body, res));
 app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
 app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
+app.post('/api/recipe/UpdateRecipe', async (req, res) => recipeAPI.UpdateRecipe(req.body, res));
 app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(req.body, res));
 
 // If the function was not an API call, attempt to serve the static page located related to our 'build' folder
