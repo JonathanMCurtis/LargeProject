@@ -1,6 +1,24 @@
 // Use express for our routing
 const express = require('express');
 
+// 'dotenv' is a package that can simulate environmental variables during local development
+require('dotenv').config();
+
+const nodemailer = require('nodemailer');
+const smtpTransport = nodemailer.createTransport({
+	host: 'smtp.gmail.com',
+	port: 465,
+	secure: true,
+	auth: {
+		type: 'OAuth2',
+		user: process.env.MAIL_USER,
+		clientId: process.env.MAIL_ID,
+		clientSecret: process.env.MAIL_SECRET,
+		refreshToken: process.env.MAIL_REFRESH,
+		accessToken: process.env.MAIL_ACCESS
+	}
+});
+
 // Import our recipe and user API modules
 const recipes = require('./api/RecipeAPI');
 const users = require('./api/UserAPI');
@@ -19,9 +37,6 @@ const path = require('path');
 
 // As Heroku deploys to different ports when starting up, this will ensure we listen to the correct port.
 const PORT = process.env.PORT || 3001;
-
-// 'dotenv' is a package that can simulate environmental variables during local development
-require('dotenv').config();
 
 // Get the URI string for our MongoDB instance, create a new instance and connect to it
 const url = process.env.MONGODB_URI;
@@ -48,9 +63,9 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 
 // app.post() receives a POST request
-app.post('/api/user/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res));
+app.post('/api/user/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
 app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
-app.post('/api/user/ValidateUser', async (req, res) => userAPI.ValidateUser(req.body, res));
+app.get('/api/user/verify', async (req, res) => userAPI.ValidateUser(req, res));
 app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
 app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
 app.post('/api/recipe/GetSubmittedRecipes', async (req, res) => recipeAPI.GetSubmittedRecipes(req.body, res));
