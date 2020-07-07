@@ -70,8 +70,8 @@ app.post('/api/CreateNote', async (req, res) => notesAPI.CreateNote(req.body, re
 app.post('/api/GetNote', async (req, res) => notesAPI.GetNote(req.body, res));
 app.post('/api/GetSubmittedNotes', async (req, res) => notesAPI.GetSubmittedNotes(req.body, res));
 app.post('/api/GetNotes', async (req, res) => notesAPI.GetNotes(req.body, res));
-app.post('/api/SearchByText', async (req, res) => notesAPI.SearchByField(req.body, res, 'Content'));
-app.post('/api/SearchBySubject', async (req, res) => notesAPI.SearchByField(req.body, res, 'Subject'));
+app.post('/api/SearchByText', async (req, res) => notesAPI.SearchByField(req.body, res, 'content'));
+app.post('/api/SearchBySubject', async (req, res) => notesAPI.SearchByField(req.body, res, 'subject'));
 app.post('/api/UpdateNote', async (req, res) => notesAPI.UpdateNote(req.body, res));
 app.post('/api/DeleteNote', async (req, res) => notesAPI.DeleteNote(req.body, res));
 
