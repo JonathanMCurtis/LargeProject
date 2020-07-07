@@ -36,13 +36,6 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 
 	try {
 		const db = this.client.db();
-		const uniqueEmail = db.collection('Users').findOne({ Email: newUser['Email'] });
-		const uniqueLogin = db.collection('Users').findOne({ Login: newUser['Login'] });
-
-		if (uniqueEmail !== null)
-			throw 'Email already exists';
-		else if (uniqueLogin !== null)
-			throw 'Login already in-use';
 
 		await db.collection('Users').insertOne(newUser);
 	}
