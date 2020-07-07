@@ -1,7 +1,10 @@
 const ObjectId = require('mongodb').ObjectId;
+const size = 15;
+const RecipeFields = ['RecipeName', 'Ingredients', 'Instructions', 'Description', 'Type', 'Cost'];
 
 function RecipeAPI(clientRef) {
 	this.client = clientRef;
+	this.start = (pageNumber) => { return (size * pageNumber) };
 }
 
 RecipeAPI.prototype.CreateRecipe = async function(req, res) {
@@ -32,14 +35,10 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 		const db = this.client.db();
 
 		await db.collection('Recipes').insertOne(newRecipe);
-		await db.collection('Recipes').updateOne(
-			{ '_id': ObjectId(newRecipe['_id']) },
-			{ $set: { 'RecipeID': newRecipe['_id'] } }
-		);
 	}
 
 	catch (e) {
-		Error = e.toString();
+		Error = 'Dev error: ' + e.toString();
 	}
 
 	let js = {
@@ -51,7 +50,8 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-RecipeAPI.prototype.GetRecipe = async function(req, res) {
+RecipeAPI.prototype.GetRecipe = async function(req, res)
+{
 	/*
 	 * incoming: RecipeID
 	 * outgoing: RecipeName, Ingredients, Instructions, Description, Type, Cost, SubmissionDate, FavoriteCount, AverageRating, Error
@@ -61,27 +61,36 @@ RecipeAPI.prototype.GetRecipe = async function(req, res) {
 	let result;
 	let Error = '';
 
-	try {
+	try	{
 		const db = this.client.db();
 
 		result = await db.collection('Recipes').findOne({ '_id': ObjectId(RecipeID) });
 	}
-	catch (e) {
+	catch (e)	{
 		Error = e.toString();
 	}
+	let js;
 
-	let js = {
-		RecipeName: result['RecipeName'],
-		Ingredients: result['Ingredients'],
-		Instructions: result['Instructions'],
-		Description: result['Description'],
-		Type: result['Type'],
-		Cost: result['Cost'],
-		SubmissionDate: result['SubmissionDate'],
-		FavoriteCount: result['FavoriteCount'],
-		AverageRating: result['AverageRating'],
-		Result: Error
-	};
+	if (result == null)	{
+		js = {
+			Recipe: {},
+			Result: 'No Recipe Found'
+		};
+	}
+	else {
+		js = {
+			RecipeName: result['RecipeName'],
+			Ingredients: result['Ingredients'],
+			Instructions: result['Instructions'],
+			Description: result['Description'],
+			Type: result['Type'],
+			Cost: result['Cost'],
+			SubmissionDate: result['SubmissionDate'],
+			FavoriteCount: result['FavoriteCount'],
+			AverageRating: result['AverageRating'],
+			Result: Error
+		};
+	}
 
 	res.setHeader('Content-Type', 'application/json');
 	res.end(JSON.stringify(js, null, 3));
@@ -108,10 +117,6 @@ function GetRecipeListProjection() {
 	return {
 		_id: 1,
 		RecipeName: 1,
-		Ingredients: 0,
-		Instructions: 0,
-		Description: 0,
-		Type: 0,
 		Cost: 1,
 		SubmissionDate: 1,
 		FavoriteCount: 1,
@@ -121,20 +126,18 @@ function GetRecipeListProjection() {
 
 RecipeAPI.prototype.GetRecipes = async function(req, res) {
 	/*
-	 * incoming: RecipeID, PageNumber
-	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Error
+	 * incoming: PageNumber
+	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Result
 	 */
 
-	const { RecipeID, PageNumber } = req;
+	const { PageNumber } = req;
 	let results;
 	let Error = '';
-	const size = 15;
-	const start = size * PageNumber;
 
 	try {
 		const db = this.client.db();
 
-		results = await db.collection('Recipes').find({ '_id': ObjectId(RecipeID) }, GetRecipeListProjection(), { array: { $slice: [start, size] } });
+		results = await db.collection('Recipes').find({}).skip(this.start(PageNumber)).limit(size).project(GetRecipeListProjection()).toArray();
 	}
 	catch (e) {
 		Error = e.toString();
@@ -151,27 +154,25 @@ RecipeAPI.prototype.GetRecipes = async function(req, res) {
 
 RecipeAPI.prototype.GetSubmittedRecipes = async function(req, res) {
 	/*
-	 * incoming: UserID
-	 * outgoing: Recipes [RecipeName, Ingredients, Instructions, Description, Type, Cost], Result
+	 * incoming: UserID, PageNumber
+	 * outgoing: Recipes [_id, RecipeName, Ingredients, Instructions, Description, Type, Cost], Result
 	 */
 
-	const { UserID } = req;
+	const { UserID, PageNumber } = req;
 	let results;
 	let Error = '';
 
 	try {
 		const db = this.client.db();
 
-		results = await db.collection('Recipes').find({ 'UserID': ObjectId(UserID) });
+		results = await db.collection('Recipes').find({ UserID: UserID }).skip(this.start(PageNumber)).limit(size).project(GetRecipeListProjection()).toArray();
 	}
 	catch (e) {
 		Error = e.toString();
 	}
 
-	const _ret = BuildRecipeList(results);
-
 	let js = {
-		Recipes: _ret,
+		Recipes: results,
 		Result: Error
 	};
 
@@ -246,41 +247,37 @@ RecipeAPI.prototype.SearchByField = async function(req, res, _field) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-RecipeAPI.prototype.RateRecipe = async function(req, res) {
+RecipeAPI.prototype.UpdateRecipe = async function(req, res) {
 	/*
-	 * incoming: RecipeID, Rating
-	 * outgoing: AverageRating, Result
+	 * incoming: RecipeID, RecipeName, Ingredients[], Instructions[], Description, Type, Cost, UserID
+	 * outgoing: RecipeID, Result
 	 */
 
-	const { RecipeID, Rating } = req;
-	let result;
-	let newRating;
+	const RecipeID = req.RecipeID;
+	let updateObject = {};
+
+	for (let key in req) {
+		if (RecipeFields.includes(key))
+			updateObject[key] = req[key];
+	}
+
+	updateObject['SubmissionDate'] = Date.now();
+
+	const query = { $set: updateObject };
 	let Error = '';
 
 	try {
 		const db = this.client.db();
 
-		const recipe = await db.collection('Recipes').findOne({ '_id': ObjectId(RecipeID) });
-		const currentAverage = recipe['AverageRating'];
-		const ratingCount = recipe['RatingCount'];
-
-		newRating = (currentAverage + Rating) / (ratingCount + 1);
-
-		result = await db.collection('Recipes').updateOne(
-			{ '_id': ObjectId(RecipeID) },
-			{ $set: { 'AverageRating': newRating, 'RatingCount': ratingCount + 1 } }
-		);
+		await db.collection('Recipes').updateOne({ _id: ObjectId(RecipeID) }, query);
 	}
+
 	catch (e) {
-		Error = e.toString();
-	}
-
-	if (result['modifiedCount'] === 0) {
-		// TODO: Result in error for lack of modifications.
+		Error = 'Dev error: ' + e.toString();
 	}
 
 	let js = {
-		AverageRating: newRating,
+		RecipeID: RecipeID,
 		Result: Error
 	};
 
