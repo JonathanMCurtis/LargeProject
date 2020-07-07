@@ -70,19 +70,28 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	const { Login, Password } = req;
 
 	let Error = '';
-	let _results;
+	let _result;
 
 	try {
 		const db = this.client.db();
 
-		_results = await db.collection('Users').findOne({ 'Login': Login, 'Password': Password, 'Verified': true}).toArray();
+		_result = await db.collection('Users').findOne({ 'Login': Login, 'Password': Password, 'Verified': true });
+		if (_result === null)
+			throw 'No user found';
 	}
 	catch (e) {
 		Error = e.toString();
+
+		let js = {
+			Result: Error
+		};
+
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
 	}
 
 	let js = {
-		UserID: _results['UserID'],
+		UserID: _result['UserID'],
 		Result: Error
 	};
 

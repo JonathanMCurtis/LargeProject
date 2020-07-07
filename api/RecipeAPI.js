@@ -26,8 +26,6 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 		Cost: Cost,
 		SubmissionDate: submissionDate,
 		FavoriteCount: 0,
-		RatingCount: 0,
-		AverageRating: 0,
 		UserID: UserID
 	};
 
@@ -50,11 +48,10 @@ RecipeAPI.prototype.CreateRecipe = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-RecipeAPI.prototype.GetRecipe = async function(req, res)
-{
+RecipeAPI.prototype.GetRecipe = async function(req, res) {
 	/*
 	 * incoming: RecipeID
-	 * outgoing: Recipe: {RecipeName, Ingredients, Instructions, Description, Type, Cost, SubmissionDate, FavoriteCount, AverageRating}, Error
+	 * outgoing: Recipe: {RecipeName, Ingredients, Instructions, Description, Type, Cost, SubmissionDate, FavoriteCount}, Error
 	 */
 
 	const { RecipeID } = req;
@@ -87,8 +84,7 @@ RecipeAPI.prototype.GetRecipe = async function(req, res)
 				Type: result['Type'],
 				Cost: result['Cost'],
 				SubmissionDate: result['SubmissionDate'],
-				FavoriteCount: result['FavoriteCount'],
-				AverageRating: result['AverageRating']
+				FavoriteCount: result['FavoriteCount']
 			},
 			Result: Error
 		};
@@ -249,7 +245,7 @@ RecipeAPI.prototype.SearchByField = async function(req, res, _field) {
 
 RecipeAPI.prototype.UpdateRecipe = async function(req, res) {
 	/*
-	 * incoming: RecipeID, RecipeName, Ingredients[], Instructions[], Description, Type, Cost, UserID
+	 * incoming: RecipeID, RecipeName, Ingredients[], Instructions[], Description, Type, Cost
 	 * outgoing: RecipeID, Result
 	 */
 
