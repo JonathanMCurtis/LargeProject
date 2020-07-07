@@ -6,8 +6,8 @@ function UserAPI(clientRef) {
 
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
-	 * incoming: FirstName, LastName, Login, Password, Email
-	 * outgoing: UserID, Result
+	 * incoming: firstName, lastName, login, password, email
+	 * outgoing: userID, result
 	 */
 
 	/*
@@ -18,21 +18,21 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	 *  Forgot my password
 	 */
 
-	const { FirstName, LastName, Login, Password, Email } = req;
+	const { firstName, lastName, login, password, email } = req;
 	const rand = Math.floor((Math.random() * 100) + 54);
 
 	const newUser = {
-		FirstName: FirstName,
-		LastName: LastName,
-		Login: Login,
-		Password: Password,
-		Email: Email,
-		UserFavorites: [],
-		Verified: false,
-		Verification: rand
+		firstName: firstName,
+		lastName: lastName,
+		login: login,
+		password: password,
+		email: email,
+		favoritedNotes: [],
+		verified: false,
+		verification: rand
 	};
 
-	let Error = '';
+	let result = '';
 
 	try {
 		const db = this.client.db();
@@ -40,15 +40,15 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 		await db.collection('Users').insertOne(newUser);
 	}
 	catch (e) {
-		Error = e.toString();
+		result = e.toString();
 	}
 
 	let js = {
-		UserID: newUser['_id'],
-		Result: Error
+		userID: newUser['_id'],
+		result: result
 	};
 
-	SendVerification(req, res, smtp, newUser['_id'], newUser['Email'], rand);
+	SendVerification(req, res, smtp, newUser['_id'], newUser['email'], rand);
 
 	res.setHeader('Content-Type', 'application/json');
 	res.end(JSON.stringify(js, null, 3));
@@ -56,27 +56,27 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
-	 * incoming: Login, Password
-	 * outgoing: UserID, Result
+	 * incoming: login, password
+	 * outgoing: userID, result
 	 */
 
-	const { Login, Password } = req;
+	const { login, password } = req;
 
-	let Error = '';
-	let _result;
+	let result = '';
+	let _user;
 
 	try {
 		const db = this.client.db();
 
-		_result = await db.collection('Users').findOne({ 'Login': Login, 'Password': Password, 'Verified': true });
-		if (_result === null)
+		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
+		if (_user === null)
 			throw 'No user found';
 	}
 	catch (e) {
-		Error = e.toString();
+		result = e.toString();
 
 		let js = {
-			Result: Error
+			result: result
 		};
 
 		res.setHeader('Content-Type', 'application/json');
@@ -84,8 +84,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	}
 
 	let js = {
-		UserID: _result['UserID'],
-		Result: Error
+		userID: _user['_id'],
+		result: result
 	};
 
 	res.setHeader('Content-Type', 'application/json');
@@ -93,7 +93,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 };
 
 function SendVerification(req, res, smtp, id, email, rand) {
-	const link = 'http://localhost:3001/api/user/verify?id=' + id + '&val=' + rand;
+	// TODO: Move over to main link
+	const link = 'https://group21-dev-api.herokuapp.com/api/verify?id=' + id + '&val=' + rand;
 	const mailOptions = {
 		to: email,
 		subject: 'Please confirm your Email account',
@@ -115,14 +116,10 @@ function SendVerification(req, res, smtp, id, email, rand) {
 }
 
 UserAPI.prototype.ValidateUser = async function(req, res) {
-	/*
-	 * incoming: UserID, ValidationString
-	 * outgoing: UserID, Result
-	 */
 
 	// TODO: Redirect after verifying user
 
-	let Error = '';
+	let result = '';
 	let _results = [];
 	const id = '' + req.query.id;
 	const val = Number(req.query.val);
@@ -139,11 +136,11 @@ UserAPI.prototype.ValidateUser = async function(req, res) {
 		console.log(JSON.stringify(_results));
 	}
 	catch (e) {
-		Error = e.toString();
+		result = e.toString();
 	}
 
 	let js = {
-		Result: Error
+		result: result
 	};
 
 	if (_results.length > 0)

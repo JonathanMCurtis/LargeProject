@@ -20,7 +20,7 @@ const smtpTransport = nodemailer.createTransport({
 });
 
 // Import our recipe and user API modules
-const recipes = require('./api/RecipeAPI');
+const notes = require('./api/NotesAPI');
 const users = require('./api/UserAPI');
 
 // BodyParser functions as middleware to let us extract JSON from a request
@@ -47,7 +47,7 @@ client.connect();
 // Our app will be routed using Express
 const app = express();
 
-const recipeAPI = new recipes(client);
+const notesAPI = new notes(client);
 const userAPI = new users(client);
 
 // Set the 'port' application setting in Express
@@ -63,17 +63,17 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 
 // app.post() receives a POST request
-app.post('/api/user/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
-app.post('/api/user/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
-app.get('/api/user/verify', async (req, res) => userAPI.ValidateUser(req, res));
-app.post('/api/recipe/CreateRecipe', async (req, res) => recipeAPI.CreateRecipe(req.body, res));
-app.post('/api/recipe/GetRecipe', async (req, res) => recipeAPI.GetRecipe(req.body, res));
-app.post('/api/recipe/GetSubmittedRecipes', async (req, res) => recipeAPI.GetSubmittedRecipes(req.body, res));
-app.post('/api/recipe/GetRecipes', async (req, res) => recipeAPI.GetRecipes(req.body, res));
-app.post('/api/recipe/SearchByName', async (req, res) => recipeAPI.SearchByField(req.body, res, 'RecipeName'));
-app.post('/api/recipe/SearchByType', async (req, res) => recipeAPI.SearchByField(req.body, res, 'Type'));
-app.post('/api/recipe/UpdateRecipe', async (req, res) => recipeAPI.UpdateRecipe(req.body, res));
-app.post('/api/recipe/DeleteRecipe', async (req, res) => recipeAPI.DeleteRecipe(req.body, res));
+app.post('/api/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
+app.post('/api/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
+app.get('/api/verify', async (req, res) => userAPI.ValidateUser(req, res));
+app.post('/api/CreateNote', async (req, res) => notesAPI.CreateNote(req.body, res));
+app.post('/api/GetNote', async (req, res) => notesAPI.GetNote(req.body, res));
+app.post('/api/GetSubmittedNotes', async (req, res) => notesAPI.GetSubmittedNotes(req.body, res));
+app.post('/api/GetNotes', async (req, res) => notesAPI.GetNotes(req.body, res));
+app.post('/api/SearchByText', async (req, res) => notesAPI.SearchByField(req.body, res, 'Content'));
+app.post('/api/SearchBySubject', async (req, res) => notesAPI.SearchByField(req.body, res, 'Subject'));
+app.post('/api/UpdateNote', async (req, res) => notesAPI.UpdateNote(req.body, res));
+app.post('/api/DeleteNote', async (req, res) => notesAPI.DeleteNote(req.body, res));
 
 // If the function was not an API call, attempt to serve the static page located related to our 'build' folder
 app.get('*', (req, res) => {
