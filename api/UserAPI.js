@@ -116,7 +116,6 @@ function SendVerification(req, res, smtp, id, email, rand) {
 }
 
 UserAPI.prototype.ValidateUser = async function(req, res) {
-
 	// TODO: Redirect after verifying user
 
 	let result = '';

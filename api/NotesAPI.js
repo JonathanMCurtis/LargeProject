@@ -102,6 +102,7 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
+// TODO: Add isFavorited after retrieving notes.
 function GetNotesProjection() {
 	return {
 		_id: 1,
@@ -168,9 +169,10 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
+// TODO: Add pagination for favorited notes.
 NotesAPI.prototype.GetFavoritedNotes = async function(req, res) {
 	/*
-	 * incoming: userID
+	 * incoming: userID, pageNumber
 	 * outgoing: notes [{_id, title, subject, submissionDate, favoriteCount}], result
 	 */
 
@@ -185,7 +187,7 @@ NotesAPI.prototype.GetFavoritedNotes = async function(req, res) {
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
 		favorites = userData['favoritedNotes'];
-		notes = await db.collection('Notes').find({ '_id': { $in: favorites } });
+		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).limit(size).project(GetNotesProjection()).toArray();
 	}
 	catch (e) {
 		result = e.toString();
