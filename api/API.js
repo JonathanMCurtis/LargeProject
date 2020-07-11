@@ -1,8 +1,8 @@
 /*
- * 	All API endpoints will return a 'result' field, containing one of these error objects
- * The error object will always be in the following format:
- * {
- * 		error: 		( true if an error is present, false otherwise )
+ * 	All API endpoints will return an 'error' field, and a 'result' field, containing one of these error objects
+ * So error information is provided as follows:
+ * error: (true if an error exists, false otherwise)
+ * result: {
  * 		errorCode: 	( More specific error code, always an integer )
  * 		errorMsg:	( Human-readable message describing the error, or lack thereof )
  * }
@@ -26,8 +26,10 @@ module.exports.GetErrorObject = function(errorType, msg = 'N/A') {
 
 	return {
 		error: error,
-		errorCode: errorCode,
-		errorMsg: errorMsg
+		errorObject: {
+			errorCode: errorCode,
+			errorMsg: errorMsg
+		}
 	};
 };
 
@@ -37,6 +39,7 @@ module.exports.GetNotesProjection = function() {
 		_id: 1,
 		title: 1,
 		subject: 1,
+		topic: 1,
 		submissionDate: 1,
 		favoriteCount: 1
 	};

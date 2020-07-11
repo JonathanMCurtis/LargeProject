@@ -8,7 +8,7 @@ function UserAPI(clientRef) {
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
 	 * incoming: firstName, lastName, login, password, email
-	 * outgoing: userInfo: {userID, firstName, lastName, email}, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
 	 */
 
 	/*
@@ -47,7 +47,8 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 
 	let js = {
 		userID: newUser['_id'],
-		result: result
+		error: result['error'],
+		result: result['errorObject']
 	};
 
 	SendVerification(req, res, smtp, newUser['_id'], newUser['email'], rand);
@@ -59,7 +60,7 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userInfo: {userID, firstName, lastName, email} or {}, result: errorObject
+	 * outgoing: userInfo: {userID, firstName, lastName, email} or {}, error: boolean, result: errorObj
 	 */
 
 	const { login, password } = req;
@@ -86,7 +87,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 				lastName: 'No user found',
 				email: 'No user found'
 			},
-			result: result
+			error: result.error,
+			result: result.errorObject
 		};
 
 		res.setHeader('Content-Type', 'application/json');
@@ -100,7 +102,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 			lastName: result['lastName'],
 			email: result['email']
 		},
-		result: result
+		error: result['error'],
+		result: result['errorObject']
 	};
 
 	res.setHeader('Content-Type', 'application/json');
@@ -147,7 +150,8 @@ UserAPI.prototype.ValidateUser = async function(req, res) {
 	}
 
 	let js = {
-		result: result
+		error: result['error'],
+		result: result['errorObject']
 	};
 
 	if (_results.length > 0)
@@ -160,5 +164,7 @@ UserAPI.prototype.ValidateUser = async function(req, res) {
  * res.end(JSON.stringify(js, null, 3));
  */
 };
+
+// TODO: SetFavorite(userID, noteID, boolean) for add/remove favorite
 
 module.exports = UserAPI;
