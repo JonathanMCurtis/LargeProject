@@ -1,4 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
+const GetErrorObject = require('API').GetErrorObject;
 
 function UserAPI(clientRef) {
 	this.client = clientRef;
@@ -7,7 +8,7 @@ function UserAPI(clientRef) {
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
 	 * incoming: firstName, lastName, login, password, email
-	 * outgoing: userID, result
+	 * outgoing: userInfo: {userID, firstName, lastName, email}, result: errorObj
 	 */
 
 	/*
@@ -27,20 +28,21 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 		login: login,
 		password: password,
 		email: email,
-		favoritedNotes: [],
+		favoriteNotes: [],
 		verified: false,
 		verification: rand
 	};
 
-	let result = '';
+	let result;
 
 	try {
 		const db = this.client.db();
 
 		await db.collection('Users').insertOne(newUser);
+		result = GetErrorObject('OK');
 	}
 	catch (e) {
-		result = e.toString();
+		result = GetErrorObject('unknown', e.toString());
 	}
 
 	let js = {
@@ -57,12 +59,12 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userID, result
+	 * outgoing: userInfo: {userID, firstName, lastName, email} or {}, result: errorObject
 	 */
 
 	const { login, password } = req;
 
-	let result = '';
+	let result;
 	let _user;
 
 	try {
@@ -71,11 +73,19 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
 		if (_user === null)
 			throw 'No user found';
+		else
+			result = GetErrorObject('OK');
 	}
 	catch (e) {
-		result = e.toString();
+		result = GetErrorObject('default', e.toString());
 
 		let js = {
+			userInfo: {
+				userID: 'No user found',
+				firstName: 'No user found',
+				lastName: 'No user found',
+				email: 'No user found'
+			},
 			result: result
 		};
 
@@ -84,7 +94,12 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	}
 
 	let js = {
-		userID: _user['_id'],
+		userInfo: {
+			userID: result['_id'],
+			firstName: result['firstName'],
+			lastName: result['lastName'],
+			email: result['email']
+		},
 		result: result
 	};
 
@@ -93,7 +108,6 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 };
 
 function SendVerification(req, res, smtp, id, email, rand) {
-	// TODO: Move over to main link
 	const link = 'https://group21-dev-api.herokuapp.com/api/verify?id=' + id + '&val=' + rand;
 	const mailOptions = {
 		to: email,
@@ -103,21 +117,15 @@ function SendVerification(req, res, smtp, id, email, rand) {
 
 	console.log(mailOptions);
 	smtp.sendMail(mailOptions, function (error, response) {
-		if (error) {
+		if (error)
 			console.log(error);
-			res.end('error');
-		}
-		else {
+		else
 			console.log('Message sent: ' + JSON.stringify(response));
-			res.end('sent');
-		}
 	});
 	smtp.close();
 }
 
 UserAPI.prototype.ValidateUser = async function(req, res) {
-	// TODO: Redirect after verifying user
-
 	let result = '';
 	let _results = [];
 	const id = '' + req.query.id;
@@ -144,9 +152,13 @@ UserAPI.prototype.ValidateUser = async function(req, res) {
 
 	if (_results.length > 0)
 		js.UserID = _results[0]['_id'];
+	// TODO: Replace with final URL, or environmental variable
+	res.redirect('https://recipes21.herokuapp.com');
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+/*
+ * res.setHeader('Content-Type', 'application/json');
+ * res.end(JSON.stringify(js, null, 3));
+ */
 };
 
 module.exports = UserAPI;
