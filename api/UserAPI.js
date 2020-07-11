@@ -39,7 +39,7 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 		const db = this.client.db();
 
 		await db.collection('Users').insertOne(newUser);
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('unknown', e.toString());
@@ -73,12 +73,12 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 
 		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
 		if (_user === null)
-			throw 'No user found';
+			throw 400;
 		else
-			result = GetErrorObject('OK');
+			result = GetErrorObject(400);
 	}
 	catch (e) {
-		result = GetErrorObject('default', e.toString());
+		result = GetErrorObject('default', 'Invalid login.');
 
 		let js = {
 			userInfo: {
@@ -128,7 +128,7 @@ function SendVerification(req, res, smtp, id, email, rand) {
 	smtp.close();
 }
 
-UserAPI.prototype.ValidateUser = async function(req, res) {
+UserAPI.prototype.VerifyUser = async function(req, res) {
 	let result = '';
 	let _results = [];
 	const id = '' + req.query.id;
@@ -163,6 +163,42 @@ UserAPI.prototype.ValidateUser = async function(req, res) {
  * res.setHeader('Content-Type', 'application/json');
  * res.end(JSON.stringify(js, null, 3));
  */
+};
+
+// TODO: Request password reset email
+UserAPI.prototype.UpdatePassword = async function(req, res) {
+	/*
+	 * incoming: userID, password
+	 * outgoing: userID: string, error: boolean, result: errorObj
+	 */
+
+	const { userID, password } = req;
+
+	const query = { $set: { 'password': password } };
+	let result = '';
+
+	try {
+		const db = this.client.db();
+
+		await db.collection('Users').findOne({ _id: ObjectId(userID) });
+
+		// TODO: Confirm user exists, and is currently allowed to update their password
+
+		await db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		GetErrorObject(200);
+	}
+	catch (e) {
+		result = GetErrorObject('default', e.toString());
+	}
+
+	let js = {
+		userID: userID,
+		error: result['error'],
+		result: result['errorObject']
+	};
+
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
 };
 
 // TODO: SetFavorite(userID, noteID, boolean) for add/remove favorite

@@ -13,14 +13,15 @@ module.exports.GetErrorObject = function(errorType, msg = 'N/A') {
 	let errorMsg = "I'm a teapot";
 
 	switch (errorType) {
-		case 'OK':
+		case 200:
+		case 201:
 			error = false;
-			errorCode = 200;
+			errorCode = errorType;
 			errorMsg = 'OK';
 			break;
 		default:
 			error = true;
-			errorCode = -1;
+			errorCode = errorType;
 			errorMsg = msg;
 	}
 

@@ -9,7 +9,7 @@ function NotesAPI(clientRef) {
 
 NotesAPI.prototype.CreateNote = async function(req, res) {
 	/*
-	 * incoming: title, subject, content, url, userID
+	 * incoming: title, subject, topic, content, url, userID
 	 * outgoing: noteID: string, error: boolean, result: errorObj
 	 */
 
@@ -25,6 +25,7 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		url: url,
 		favoriteCount: 0,
 		submissionDate: submissionDate,
+		lastUpdate: submissionDate,
 		userID: userID
 	};
 
@@ -32,7 +33,7 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		const db = this.client.db();
 
 		await db.collection('Notes').insertOne(newNote);
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 
 	catch (e) {
@@ -51,23 +52,20 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 
 NotesAPI.prototype.GetNote = async function(req, res) {
 	/*
-	 * incoming: noteID, userID
-	 * outgoing: note: {title, subject, topic, content, url, favoriteCount, submissionDate, userID, hasUserFavorited},
+	 * incoming: noteID
+	 * outgoing: note: {title, subject, topic, content, url, favoriteCount, submissionDate, userID},
 	 * 			  error: boolean, result: errorObj
 	 */
 
-	const { noteID, userID } = req;
+	const { noteID } = req;
 	let note;
 	let userData;
-	let userFavorited;
 	let result;
 
 	try	{
 		const db = this.client.db();
 
 		note = await db.collection('Notes').findOne({ '_id': ObjectId(noteID) });
-		userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
-		userFavorited = userData['favoriteNotes'].includes(note['_id']);
 	}
 	catch (e)	{
 		result = GetErrorObject('default', e.toString());
@@ -96,11 +94,11 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 				title: note['title'],
 				subject: note['subject'],
 				content: note['content'],
-				url: note['Description'],
-				favoriteCount: note['Type'],
-				submissionDate: note['Cost'],
-				userID: note['SubmissionDate'],
-				hasUserFavorited: userFavorited
+				url: note['url'],
+				favoriteCount: note['favoriteCount'],
+				submissionDate: note['submissionDate'],
+				lastUpdate: note['lastUpdated'],
+				userID: note['submissionDate']
 			},
 			error: result['error'],
 			result: result['errorObject']
@@ -111,7 +109,6 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-// TODO: Add isFavorited after retrieving notes.
 NotesAPI.prototype.GetNotes = async function(req, res) {
 	/*
 	 * incoming: subject, topic, pageNumber
@@ -131,7 +128,7 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 			query.topic = topic;
 
 		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
@@ -161,7 +158,7 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 		const db = this.client.db();
 
 		notes = await db.collection('Notes').find({ userID: noteID }).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
@@ -195,7 +192,7 @@ NotesAPI.prototype.GetFavoritedNotes = async function(req, res) {
 
 		favorites = userData['favoritedNotes'];
 		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).limit(size).project(GetNotesProjection()).toArray();
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
@@ -230,7 +227,7 @@ NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 
 		query[_field] = { $regex: _search, $options: 'r' };
 		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
@@ -260,7 +257,7 @@ NotesAPI.prototype.UpdateNote = async function(req, res) {
 			updateObject[key] = req[key];
 	}
 
-	updateObject['SubmissionDate'] = Date.now();
+	updateObject['lastUpdate'] = Date.now();
 
 	const query = { $set: updateObject };
 	let result = '';
@@ -269,7 +266,7 @@ NotesAPI.prototype.UpdateNote = async function(req, res) {
 		const db = this.client.db();
 
 		await db.collection('Notes').updateOne({ _id: ObjectId(noteID) }, query);
-		GetErrorObject('OK');
+		GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
@@ -288,7 +285,7 @@ NotesAPI.prototype.UpdateNote = async function(req, res) {
 NotesAPI.prototype.DeleteNote = async function(req, res) {
 	/*
 	 * incoming: noteID
-	 * outgoing: result: errorObject
+	 * outgoing: error: boolean, result: errorObject
 	 */
 
 	const { noteID } = req;
@@ -299,7 +296,7 @@ NotesAPI.prototype.DeleteNote = async function(req, res) {
 		const db = this.client.db();
 
 		await db.collection('Notes').deleteOne({ '_id': ObjectId(noteID) });
-		result = GetErrorObject('OK');
+		result = GetErrorObject(200);
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
