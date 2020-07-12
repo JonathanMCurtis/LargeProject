@@ -65,13 +65,14 @@ app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 // app.post() receives a POST request
 app.post('/api/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
 app.post('/api/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
-app.get('/api/verify', async (req, res) => userAPI.ValidateUser(req, res));
+app.get('/api/verify', async (req, res) => userAPI.VerifyUser(req, res));
 app.post('/api/CreateNote', async (req, res) => notesAPI.CreateNote(req.body, res));
 app.post('/api/GetNote', async (req, res) => notesAPI.GetNote(req.body, res));
 app.post('/api/GetSubmittedNotes', async (req, res) => notesAPI.GetSubmittedNotes(req.body, res));
 app.post('/api/GetNotes', async (req, res) => notesAPI.GetNotes(req.body, res));
-app.post('/api/SearchByText', async (req, res) => notesAPI.SearchByField(req.body, res, 'content'));
+app.post('/api/SearchByContent', async (req, res) => notesAPI.SearchByField(req.body, res, 'content'));
 app.post('/api/SearchBySubject', async (req, res) => notesAPI.SearchByField(req.body, res, 'subject'));
+app.post('/api/SearchByTopic', async (req, res) => notesAPI.SearchByField(req.body, res, 'topic'));
 app.post('/api/UpdateNote', async (req, res) => notesAPI.UpdateNote(req.body, res));
 app.post('/api/DeleteNote', async (req, res) => notesAPI.DeleteNote(req.body, res));
 
