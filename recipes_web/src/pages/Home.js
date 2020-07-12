@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import './index.css';
-import NavigationBar from './components/NavigationBar';
-import { Login } from './components/Forms';
-import { Signup } from './components/Forms';
+import { Login } from '../components/Forms';
+import { Signup } from '../components/Forms';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
+import './styles.css';
 
 class Home extends Component {
 	constructor (props) {
@@ -20,11 +19,9 @@ class Home extends Component {
 				<Modal.Header closeButton>
 					<Modal.Title>Please log into your account:</Modal.Title>
 				</Modal.Header>
-
 				<Modal.Body>
 					<Login />
 				</Modal.Body>
-
 				<Modal.Footer>
 					<Button variant = "success">Login</Button>
 				</Modal.Footer>
@@ -77,17 +74,14 @@ class Home extends Component {
 
 	render () {
 		return (
-			<div>
-				<NavigationBar />
-
+			<>
 				{ this.renderLoginModal() }
 				{ this.renderSignupModal() }
-
 				<div className = 'mh-100'>
 					{ this.renderWelcomeText() }
 					{ this.renderButtons() }
 				</div>
-			</div>
+			</>
 		);
 	}
 }
