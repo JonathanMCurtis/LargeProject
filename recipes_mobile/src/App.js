@@ -42,7 +42,7 @@ export default class Example extends Component {
 		return (
 			<ImageBackground source = { bgImage } style = { styles.backgroundContainer }>
 				<View style = { styles.logoContainer }>
-					<Text style = { styles.logoText }>Welcome to Study Share</Text>
+					<Text style = { styles.logoText }>Welcome to Study Share!</Text>
 				</View>
 				<View style = { styles.inputContainer }>
 					<TextInput
@@ -66,7 +66,11 @@ export default class Example extends Component {
 				</View>
 				{ this.renderLinks('Login') }
 				{ this.renderLinks('Sign Up') }
-				{ this.renderLinks('Forgot Password') }
+
+				<TouchableOpacity style = { styles.btnforgotPass }>
+					<Text style = { styles.text }> Forgot Password </Text>
+				</TouchableOpacity>
+
 			</ImageBackground>
 		);
 	}
@@ -82,26 +86,26 @@ const styles = StyleSheet.create({
 	},
 	logoContainer: {
 		alignItems: 'center',
-		marginBottom: 50
+		marginBottom: '20%'
 	},
 	logoText: {
 		color: 'white',
 		fontSize: 30,
 		fontWeight: '500',
-		marginTop: 10
+		marginTop: '5%'
 	},
 	inputContainer: {
-		marginTop: 10
+		marginTop: '4%'
 	},
 	input: {
 		width: WIDTH - 55,
-		height: 45,
+		height: '-20%',
 		borderRadius: 25,
 		fontSize: 16,
-		paddingLeft: 45,
+		paddingLeft: '10%',
 		backgroundColor: 'rgba(0, 0, 0, 0.35)',
 		color: 'rgba(255, 255, 255, 0.7)',
-		marginHorizontal: 25
+		marginHorizontal: '5%'
 	},
 	btnEye: {
 		position: 'absolute',
@@ -109,25 +113,25 @@ const styles = StyleSheet.create({
 		right: 37
 	},
 	btnLogin: {
-		width: WIDTH - 100,
-		height: 40,
+		width: WIDTH - 200,
+		height: '6%',
 		borderRadius: 25,
-		backgroundColor: '#cd853f',
+		backgroundColor: '#0275d8',
 		justifyContent: 'center',
-		marginTop: 20
+		marginTop: '5%'
 	},
 	btnSignup: {
-		width: WIDTH - 100,
-		height: 40,
+		width: WIDTH - 200,
+		height: '10%',
 		borderRadius: 25,
-		backgroundColor: '#cd853f',
+		backgroundColor: '#0275d8',
 		justifyContent: 'center',
-		marginTop: 20
+		marginTop: '5%'
 	},
 	btnforgotPass: {
-		height: 40,
+		height: '5%',
 		justifyContent: 'center',
-		marginTop: 20
+		marginTop: '5%'
 	},
 	text: {
 		color: 'rgba(255, 255, 255, 0.7)',
