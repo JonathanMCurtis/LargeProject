@@ -24,6 +24,7 @@ class Home extends Component {
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant = "success">Login</Button>
+					<Button variant = "outline-secondary">Forgot Password?</Button>
 				</Modal.Footer>
 			</Modal>
 		);
@@ -49,7 +50,7 @@ class Home extends Component {
 
 	renderWelcomeText () {
 		return (
-			<div className = "text-white text-center mt-5">
+			<div className = "text-white text-center">
 				<h1 className = "display-1">Welcome to Study Share!</h1>
 				<p className = "lead">A place to find share your notes and study with others!</p>
 			</div>
@@ -74,14 +75,19 @@ class Home extends Component {
 
 	render () {
 		return (
-			<>
+			<div id = "home-content">
 				{ this.renderLoginModal() }
 				{ this.renderSignupModal() }
-				<div className = 'mh-100'>
-					{ this.renderWelcomeText() }
-					{ this.renderButtons() }
+
+				<div className = "container h-100">
+					<div className = "row h-100">
+						<div className = "col-12 my-auto">
+							{ this.renderWelcomeText() }
+							{ this.renderButtons() }
+						</div>
+					</div>
 				</div>
-			</>
+			</div>
 		);
 	}
 }
