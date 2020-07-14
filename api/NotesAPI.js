@@ -1,6 +1,6 @@
 const ObjectId = require('mongodb').ObjectId;
 const NoteFields = ['title', 'subject', 'topic', 'content', 'url', 'favoriteCount'];
-const { GetErrorObject, GetNotesProjection, size } = require('API');
+const { GetErrorObject, GetNotesProjection, size } = require('./API');
 
 function NotesAPI(clientRef) {
 	this.client = clientRef;
@@ -116,7 +116,7 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 	 */
 
 	const { subject, pageNumber } = req;
-	const topic = req?.topic;
+	const topic = req.topic;
 	let notes;
 	let result;
 
