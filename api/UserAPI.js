@@ -94,7 +94,7 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userInfo: {userID, firstName, lastName, email} or {}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites} or {}, error: boolean, result: errorObj
 	 */
 
 	const { login, password } = req;
@@ -134,7 +134,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 			userID: result['_id'],
 			firstName: result['firstName'],
 			lastName: result['lastName'],
-			email: result['email']
+			email: result['email'],
+			favorites: result['favoriteNotes']
 		},
 		error: result['error'],
 		result: result['errorObject']
@@ -199,7 +200,7 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
  */
 };
 
-UserAPI.prototype.ResetPassword = async function(req, res, smtp) {
+UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	/*
 	 * incoming: userID
 	 * outgoing: error: boolean, result: errorObj
@@ -298,6 +299,41 @@ UserAPI.prototype.UpdatePassword = async function(req, res) {
 		if (!result)
 			throw 'No such user';
 		await db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		GetErrorObject(200);
+	}
+	catch (e) {
+		result = GetErrorObject('default', e.toString());
+	}
+
+	let js = {
+		userID: userID,
+		error: result['error'],
+		result: result['errorObject']
+	};
+
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
+};
+
+UserAPI.prototype.ChangePassword = async function(req, res) {
+	/*
+	 * incoming: userID, password, newPassword
+	 * outgoing: userID: string, error: boolean, result: errorObj
+	 */
+
+	const { userID, password, newPassword } = req;
+
+	const query = { $set: { 'password': newPassword } };
+	let result = '';
+
+	try {
+		const db = this.client.db();
+
+		const result = await db.collection('Users').findOne({ _id: ObjectId(userID), password: password });
+
+		if (!result)
+			throw 'No such user';
+		await db.collection('Users').updateOne({ _id: ObjectId(userID), password: password }, query);
 		GetErrorObject(200);
 	}
 	catch (e) {
