@@ -174,7 +174,7 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-NotesAPI.prototype.GetFavoritedNotes = async function(req, res) {
+NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 	/*
 	 * incoming: userID, pageNumber
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
@@ -190,7 +190,7 @@ NotesAPI.prototype.GetFavoritedNotes = async function(req, res) {
 		// TODO: If no favorites exist, return
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
-		favorites = userData['favoritedNotes'];
+		favorites = userData['favoriteNotes'];
 		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).limit(size).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
