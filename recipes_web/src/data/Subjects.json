@@ -1,0 +1,33 @@
+{
+	"Math": {
+		"color": "#A96148",
+		"icon": "AiFillCalculator",
+		"topics": ["Geometry", "Algebra", "Calculus", "Statistics", "Discrete Math"]
+	},
+	"Science": {
+		"color": "#1082D8",
+		"icon": "AiOutlineExperiment",
+		"topics": ["Biology", "Chemistry", "Earth Science", "Health and Medicine", "Physics"]
+	},
+	"Engineering": {
+		"color": "#FF7400",
+		"icon": "AiFillTool",
+		"topics": ["Aerospace Engineering", "Computer Engineering", "Mechanical Engineering",
+		           "Civil Engineering", "Electrical Engineering", "Computer Science"]
+	},
+	"Arts and Humanities": {
+		"color": "#FF6262",
+		"icon": "AiOutlineHighlight",
+		"topics": ["History", "English", "Education", "Philosophy", "Visual Arts", "Languages"]
+	},
+	"Social Science": {
+		"color": "FFE300",
+		"icon": "AiOutlineRead",
+		"topics": ["Economics", "Business", "Geography", "Political Science", "Psychology", "Sociology"]
+	},
+	"Other": {
+		"color": "#B25DC2",
+		"icon": "AiOutlineBulb",
+		"topics": ["Finance", "Hobbies", "Sports"]
+	}
+}

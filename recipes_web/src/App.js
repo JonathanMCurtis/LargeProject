@@ -1,13 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { Router } from './config';
 
-class App extends Component {
-	render() {
-		return (
-			<div>
-				<p>Empty page</p>
-			</div>
-		);
-	}
-}
-
-export default App;
+export default () => <Router />;
