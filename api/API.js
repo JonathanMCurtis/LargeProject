@@ -46,5 +46,17 @@ module.exports.GetNotesProjection = function() {
 	};
 };
 
+module.exports.GetRandomString = function(length) {
+	let ret = '';
+
+	for (let i = 0; i < length; i++) {
+		const rand = 'a' + (Math.floor(Math.random() * 26));
+
+		ret += rand;
+	}
+
+	return ret;
+};
+
 // Number of results to return per page
 module.exports.size = 15;
