@@ -10,13 +10,6 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	 * incoming: firstName, lastName, login, password, email
 	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
 	 */
-
-	/*
-	 * TODO:
-	 * 	Unique UserID (More specific error)
-	 *  Unique Email (More specific error)
-	 */
-
 	const { firstName, lastName, login, password, email } = req;
 	const rand = GetRandomString();
 
@@ -36,6 +29,11 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 
 	try {
 		const db = this.client.db();
+
+		const exists = await db.collection('Users').findOne({ $or: [{ 'login': login }, { 'email': email }] });
+
+		if (exists)
+			throw 401;
 
 		await db.collection('Users').insertOne(newUser);
 		result = GetErrorObject(200);
@@ -192,7 +190,7 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 	if (_results.length > 0)
 		js.UserID = _results[0]['_id'];
 	// TODO: Replace with final URL, or environmental variable
-	res.redirect('https://recipes21.herokuapp.com');
+	res.redirect('https://studyshare21.herokuapp.com');
 
 /*
  * res.setHeader('Content-Type', 'application/json');
