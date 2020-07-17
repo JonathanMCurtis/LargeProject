@@ -92,7 +92,7 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites} or {}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified} or {}, error: boolean, result: errorObj
 	 */
 
 	const { login, password } = req;
@@ -103,7 +103,7 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'login': login, 'password': password });
 		if (_user === null)
 			throw 400;
 		else
@@ -133,7 +133,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 			firstName: result['firstName'],
 			lastName: result['lastName'],
 			email: result['email'],
-			favorites: result['favoriteNotes']
+			favorites: result['favoriteNotes'],
+			verified: result['verified']
 		},
 		error: result['error'],
 		result: result['errorObject']
