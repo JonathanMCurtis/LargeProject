@@ -1,0 +1,14 @@
+/* Registration Card styles */
+
+#rc-background {
+	background-color: aliceblue;
+}
+
+ #rc-form {
+	background-color: aliceblue;
+	width: 100%;
+	max-width: 400px;
+	margin: 0 auto;
+	padding: 25px;
+	border: 1px solid black;
+} 
