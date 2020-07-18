@@ -8,7 +8,7 @@ import {
 	Tab
 } from 'react-bootstrap';
 import Subjects from '../data/Subjects.json';
-import './styles.css';
+import './extramatterstyles.css';
 // import the fuckin logos cus react memery
 import {
 	AiFillCalculator,
@@ -38,9 +38,9 @@ class Matter extends Component {
 	// renders the text at the top
 	renderWelcomeText () {
 		return (
-			<div className = "text-white text-center">
-				<h2 className = "display-1">Search for topics below</h2>
-				<p className = "lead">Or use the category tabs to find one instead</p>
+			<div className = 'text-white text-center'>
+				<h2 className = 'display-1'>Search for topics below</h2>
+				<p className = 'lead'>Or use the category tabs to find one instead</p>
 			</div>
 		);
 	}
@@ -48,18 +48,18 @@ class Matter extends Component {
 	// renders the subject tabs (and their subsequent categories)
 	renderSubjects() {
 		return (
-			<Tab.Container id = "subject-tabs"
-				defaultActiveKey = "none">
+			<Tab.Container id = 'subject-tabs'
+				defaultActiveKey = 'none'>
 				<Col>
-					<Row className = "justify-content-center">
-						<Nav variant = "tabs" className = "flex-row justify-content-center testinglol">
+					<Row className = 'justify-content-center'>
+						<Nav variant = 'tabs' className = 'flex-row justify-content-center testinglol'>
 							{
 								Object.keys(Subjects).map(
 									(item) => (
 										<Nav.Item>
 											<Nav.Link eventKey = { item }>
-												<div className = "icon-art">
-													<div class = "d-inline-flex p-2">
+												<div className = 'icon-art'>
+													<div class = 'd-inline-flex p-2'>
 														<h1><b> { item } </b></h1>
 														{ this.renderIcon(item, Subjects[item].color) }
 													</div>
@@ -72,7 +72,7 @@ class Matter extends Component {
 						</Nav>
 					</Row>
 					{ /* These define the events upon clicking a tab (shows categories) */ }
-					<Row sm = { 9 } className = "justify-content-center">
+					<Row sm = { 9 } className = 'justify-content-center'>
 						<Tab.Content>
 							{
 								Object.keys(Subjects).map(
@@ -93,12 +93,12 @@ class Matter extends Component {
 	renderCategory (obj) {
 		if (obj != null) {
 			return (
-				<div className = "item-list top30">
+				<div className = 'item-list top30'>
 					{
 						obj.topics.map(
 							// item is the category name (can also set button as submit type for search API)
 							(item) => (
-								<Button size = "lg" className = "mr-3"> { item } </Button>
+								<Button size = 'lg' className = 'mr-3'> { item } </Button>
 							))
 						// TODO: put buttons in a grid of sorts?
 					}
@@ -110,18 +110,18 @@ class Matter extends Component {
 
 	render () {
 		return (
-			<div id = "home-content" class = "">
+			<div id = 'home-content' class = 'matterbody'>
 				<NavBar></NavBar>
 				{ this.renderWelcomeText() }
 				{ /* Searchbox shit */ }
-				<div className = "container h-100 px-md-20 shadow-sm">
-					<div className = "row h-100 top30">
-						<div className = "col-12 my-auto d-inline-flex">
-							<input type = "text"
-								placeholder = "Search.."
-								className = "col-12 search-box">
+				<div className = 'container h-100 px-md-20 shadow-sm'>
+					<div className = 'row h-100 top30'>
+						<div className = 'col-12 my-auto d-inline-flex'>
+							<input type = 'text'
+								placeholder = 'Search..'
+								className = 'col-12 search-box'>
 							</input>
-							<Button className = "row-1 search-btn btn-large">
+							<Button className = 'row-1 search-btn btn-large'>
 								Search
 							</Button>
 						</div>
@@ -129,7 +129,7 @@ class Matter extends Component {
 				</div>
 
 				{ /* Below are the subject tabs */ }
-				<div className = "overlay text-center">
+				<div className = 'overlay text-center'>
 					{ this.renderSubjects() }
 				</div>
 			</div>
