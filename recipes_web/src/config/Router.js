@@ -1,13 +1,15 @@
 import React from 'react';
-import { Home, SubjectHome } from '../pages';
+import { Home, Subject } from '../pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import ForgotPassword from '../pages/ForgotPassword';
 
 export const Router = () => {
 	return (
 		<BrowserRouter>
 			<Switch>
 				<Route exact path = '/' component = { Home } />
-				<Route exact path = '/subjects' component = { SubjectHome } />
+				<Route exact path = '/subjects' component = { Subject } />
+				<Route exact path = '/forgot-password' component = { ForgotPassword } />
 			</Switch>
 		</BrowserRouter>
 	);

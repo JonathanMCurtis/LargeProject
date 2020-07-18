@@ -1,95 +1,61 @@
 import React, { Component } from 'react';
-import { Login } from '../components/Forms';
-import { Signup } from '../components/Forms';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { Button, ButtonGroup, Registration } from './';
 import './styles.css';
 
 class Home extends Component {
 	constructor (props) {
 		super(props);
-		this.state = { loginModal: false, signupModal: false };
-	}
 
-	// Render functions for the modal forms
-
-	renderLoginModal () {
-		return (
-			<Modal centered show = { this.state.loginModal } onHide = { () => this.setState({ loginModal: false }) }>
-				<Modal.Header closeButton>
-					<Modal.Title>Please log into your account:</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<Login />
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant = "success">Login</Button>
-					<Button variant = "outline-secondary">Forgot Password?</Button>
-				</Modal.Footer>
-			</Modal>
-		);
-	}
-
-	renderSignupModal () {
-		return (
-			<Modal centered show = { this.state.signupModal } onHide = { () => this.setState({ signupModal: false }) }>
-				<Modal.Header closeButton>
-					<Modal.Title>Please log into your account:</Modal.Title>
-				</Modal.Header>
-
-				<Modal.Body>
-					<Signup />
-				</Modal.Body>
-
-				<Modal.Footer>
-					<Button variant = "success">Sign Up</Button>
-				</Modal.Footer>
-			</Modal>
-		);
+		this.state = { animate: false, register: '' };
 	}
 
 	renderWelcomeText () {
 		return (
-			<div className = "text-white text-center">
-				<h1 className = "display-1">Welcome to Study Share!</h1>
-				<p className = "lead">A place to find share your notes and study with others!</p>
+			<div className = 'text-white mb-5 typewriter'>
+				<h1 className = 'display-1'>Welcome to Study Share</h1>
+				<p className = 'lead'>A place to find and share notes, and study with others!</p>
 			</div>
 		);
 	}
 
 	renderButtons () {
+		const { loggedIn } = this.props;
+
 		return (
-			<div className = "d-flex justify-content-center">
-				<Button className = "mr-2"
-					variant = "primary"
-					size = "lg"
-					onClick = { () => this.setState({ loginModal: true }) }>Login
-				</Button>
-				<Button variant = "secondary"
-					size = "lg"
-					onClick = { () => this.setState({ signupModal: true }) }>Sign Up
-				</Button>
-			</div>
+			(loggedIn && <Link className = 'btn btn-primary' to = '/subjects'>Take me back!</Link>)
+				|| <>
+					<ButtonGroup className = 'mx-auto pb-2'>
+						<Button onClick = { () => this.setState({ animate: true, register: 'login' }) }>
+						Login
+						</Button>
+						<Button variant = 'secondary' onClick = { () => this.setState({ animate: true, register: 'signup' }) }>
+						Sign Up
+						</Button>
+					</ButtonGroup>
+					<p><Button variant = 'warning'>Continue as guest</Button></p>
+				</>
 		);
 	}
 
 	render () {
-		return (
-			<div id = "home-content">
-				{ this.renderLoginModal() }
-				{ this.renderSignupModal() }
+		const { animate, register } = this.state;
 
-				<div className = "container h-100">
-					<div className = "row h-100">
-						<div className = "col-12 my-auto">
-							{ this.renderWelcomeText() }
-							{ this.renderButtons() }
-						</div>
-					</div>
+		return (
+			<div className = 'splash overflow-hidden text-center'>
+				<div className = { (animate && 'welcome splash-content') || 'splash-content' }>
+					{ this.renderWelcomeText() }
+					{ this.renderButtons() }
+				</div>
+				<div className = { (animate && 'registration splash-content') || '' }>
+					{ animate && <Registration render = { register } /> }
 				</div>
 			</div>
 		);
 	}
 }
 
-export default Home;
+const mapStateToProps = ({ loggedIn, guest }) => ({ loggedIn, guest });
+
+export default connect(mapStateToProps)(Home);
