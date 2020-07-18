@@ -1,76 +1,88 @@
 
 import React, { Component } from 'react';
 import {
-	ImageBackground,
 	View,
 	Text,
-	StyleSheet,
 	TextInput,
+	StyleSheet,
+	TouchableOpacity,
 	Dimensions,
-	TouchableOpacity
+	ImageBackground
 } from 'react-native';
+import { Button } from 'react-native-elements';
 
-import bgImage from './app/img/old-library.jpg'; // image for background
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // imports icons from vector package
-
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import bgImage from './app/img/books1.jpg';
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class Example extends Component {
-	constructor() { // toggles password hidden or visible on click
-		super();
-		this.state = { showPass: true, press: false };
-	}
-
-	showPass() {
-		if (!this.state.press)
-			this.setState({ showPass: false, press: true });
-		else
-			this.setState({ showPass: true, press: false });
-	}
-
-	// Example
-
-	renderLinks(text) {
-		return (
-			<TouchableOpacity style = { styles.btnLogin }>
-				<Text style = { styles.text }>{ text }</Text>
-			</TouchableOpacity>
-
-		);
-	}
+export default class App extends Component {
 	render() {
+		const {
+			containerStyle,
+			searchTextStyle,
+			buttonStyle
+		} = styles;
+
 		return (
 			<ImageBackground source = { bgImage } style = { styles.backgroundContainer }>
-				<View style = { styles.logoContainer }>
-					<Text style = { styles.logoText }>Welcome to Study Share!</Text>
-				</View>
-				<View style = { styles.inputContainer }>
-					<TextInput
-						style = { styles.input }
-						placeholder = { 'Username' }
-						placeholderTextColor = { 'rgba(255, 255, 255, 0.7)' }
-						underlineColorAndroid = 'transparent'
-					/>
-				</View>
-				<View style = { styles.inputContainer }>
-					<TextInput
-						style = { styles.input }
-						placeholder = { 'Password' }
-						secureTextEntry = { this.state.showPass }
-						placeholderTextColor = { 'rgba(255, 255, 255, 0.7)' }
-						underlineColorAndroid = 'transparent'
-					/>
-					<TouchableOpacity style = { styles.btnEye } onPress = { () => this.showPass() }>
-						<Icon name = { this.state.press == false ? 'eye' : 'eye-off' } size = { 26 } color = { 'rgba(255, 255, 255, 0.7)' } />
-					</TouchableOpacity>
-				</View>
-				{ this.renderLinks('Login') }
-				{ this.renderLinks('Sign Up') }
+			 <Text style = { styles.headerText }>Subjects</Text>
+				<View style = { styles.container }>
 
-				<TouchableOpacity style = { styles.btnforgotPass }>
-					<Text style = { styles.text }> Forgot Password </Text>
+					<View style = { containerStyle }>
+						<TextInput
+							style = { searchTextStyle }
+						 />
+
+						<Button
+							buttonStyle = { buttonStyle }
+
+							title = { 'Search' }
+						/>
+
+					</View>
+					<View><Text style = { styles.logoText }>...Or look up notes from these subjects:</Text>
+					</View>
+
+				</View>
+				<TouchableOpacity style = { styles.btnMath }>
+
+					<Text style = { styles.text }> Math
+						<Icon name = { 'calculator-variant' } size = { 26 } color = { 'black' } />
+					</Text>
+
 				</TouchableOpacity>
 
+				<TouchableOpacity style = { styles.btnScience }>
+					<Text style = { styles.text }> Science
+						<Icon name = { 'flask-outline' } size = { 26 } color = { 'black' } />
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity style = { styles.btnArts }>
+					<Text style = { styles.text }> Arts and Humanities
+						<Icon name = { 'script-outline' } size = { 26 } color = { 'black' } />
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity style = { styles.btnSocialSciences }>
+					<Text style = { styles.text }> Social Sciences
+						<Icon name = { 'human-greeting' } size = { 26 } color = { 'black' } />
+					</Text>
+				</TouchableOpacity>
+
+				<TouchableOpacity style = { styles.btnTechnology }>
+
+					<Text style = { styles.text }> Technology
+						<Icon name = { 'laptop-windows' } size = { 26 } color = { 'black' } />
+					</Text>
+
+				</TouchableOpacity>
+
+				<TouchableOpacity style = { styles.btnOther }>
+					<Text style = { styles.text }> Other
+						<Icon name = { 'lightbulb-multiple-outline' } size = { 26 } color = { 'black' } />
+					</Text>
+				</TouchableOpacity>
 			</ImageBackground>
 		);
 	}
@@ -84,59 +96,88 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center'
 	},
-	logoContainer: {
-		alignItems: 'center',
-		marginBottom: '20%'
+
+	containerStyle: {
+		flexDirection: 'row',
+		marginTop: 75,
+		marginLeft: 10,
+		marginRight: 10
+	},
+	headerText: {
+		color: 'black',
+		fontWeight: 'bold',
+		fontSize: 30
 	},
 	logoText: {
 		color: 'white',
-		fontSize: 30,
+		fontSize: 16,
 		fontWeight: '500',
+		paddingTop: '5%'
+	},
+
+	searchTextStyle: {
+		flex: 1,
+		paddingBottom: '-5%'
+
+	},
+	buttonStyle: {
+		height: 30,
+		marginBottom: 8,
+		justifyContent: 'center'
+	},
+	btnMath: {
+		width: WIDTH - 250,
+		height: '6%',
+		borderRadius: 25,
+		backgroundColor: '#f59ff5',
+		justifyContent: 'center',
 		marginTop: '5%'
 	},
-	inputContainer: {
-		marginTop: '4%'
-	},
-	input: {
-		width: WIDTH - 55,
-		height: '-20%',
+	btnScience: {
+		width: WIDTH - 250,
+		height: '6%',
 		borderRadius: 25,
-		fontSize: 16,
-		paddingLeft: '10%',
-		backgroundColor: 'rgba(0, 0, 0, 0.35)',
-		color: 'rgba(255, 255, 255, 0.7)',
-		marginHorizontal: '5%'
+		backgroundColor: '#6ced70',
+		justifyContent: 'center',
+		marginTop: '5%'
 	},
-	btnEye: {
-		position: 'absolute',
-		bottom: 8,
-		right: 37
+	btnArts: {
+		width: WIDTH - 150,
+		height: '6%',
+		borderRadius: 25,
+		backgroundColor: '#63bcf3',
+		justifyContent: 'center',
+		marginTop: '5%'
 	},
-	btnLogin: {
+	btnSocialSciences: {
 		width: WIDTH - 200,
 		height: '6%',
 		borderRadius: 25,
-		backgroundColor: '#0275d8',
+		backgroundColor: '#edf19b',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
-	btnSignup: {
+	btnTechnology: {
 		width: WIDTH - 200,
-		height: '10%',
+		height: '6%',
 		borderRadius: 25,
-		backgroundColor: '#0275d8',
+		backgroundColor: '#77eed3',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
-	btnforgotPass: {
-		height: '5%',
+	btnOther: {
+		width: WIDTH - 200,
+		height: '6%',
+		borderRadius: 25,
+		backgroundColor: '#e6ab1a',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
 	text: {
-		color: 'rgba(255, 255, 255, 0.7)',
+		color: 'black',
 		fontSize: 16,
 		textAlign: 'center'
 
 	}
+
 });
