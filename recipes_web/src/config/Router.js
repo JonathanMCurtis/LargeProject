@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, SubjectHome } from '../pages';
+import { Home, Subject } from '../pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 export const Router = () => {
@@ -7,7 +7,7 @@ export const Router = () => {
 		<BrowserRouter>
 			<Switch>
 				<Route exact path = '/' component = { Home } />
-				<Route exact path = '/subjects' component = { SubjectHome } />
+				<Route exact path = '/subjects' component = { Subject } />
 			</Switch>
 		</BrowserRouter>
 	);

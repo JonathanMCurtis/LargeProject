@@ -7,7 +7,7 @@ env:
   browser: true
 parserOptions:
   ecmaFeatures:
-    jsx: true 
+    jsx: true
 rules:
   # ESLint
   no-var: error                            # disallow use of var for variables
@@ -28,6 +28,9 @@ rules:
   one-var:                                 # require one variable declaration per let/const
     - error
     - never
+  jsx-quotes:                             # require single-quotes for JSX
+    - error
+    - prefer-single
   no-mixed-spaces-and-tabs:                # disallow tabs + spaces for indentation except for smart-tabs
     - error
     - smart-tabs
@@ -59,7 +62,7 @@ rules:
     - error
     - multi-or-nest
     - consistent
-  quotes:                                  # require double-quotes instead of single
+  quotes:                                  # require single-quotes instead of double
     - error
     - single
     - avoidEscape: true
