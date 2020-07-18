@@ -1,6 +1,8 @@
 import React from 'react';
 import { Component } from 'react';
+import { Link } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 // Holds inputs for login modal
 class Login extends Component {
@@ -16,6 +18,12 @@ class Login extends Component {
 						<Form.Label>Password:</Form.Label>
 						<Form.Control type = 'password'></Form.Control>
 					</Form.Group>
+					<Button variant = 'primary' type = 'submit' onClick = ''>
+						Login
+					</Button>
+					<Link className = 'btn btn-outline-secondary ml-1' to = '/forgot-password'>Forgot password?</Link>
+					<hr />
+					<Link className = 'small' to ='#'>Don't have an account? Sign up today!</Link>
 				</Form>
 			</div>
 		);
@@ -52,6 +60,9 @@ class Signup extends Component {
 						<Form.Label>Verify your password:</Form.Label>
 						<Form.Control type = 'password'></Form.Control>
 					</Form.Group>
+					<Button variant = 'primary' onClick = ''>Sign Up</Button>
+					<hr />
+					<Link className = 'small' to ='#'>Already have an account? Log in here!</Link>
 				</Form>
 			</div>
 		);

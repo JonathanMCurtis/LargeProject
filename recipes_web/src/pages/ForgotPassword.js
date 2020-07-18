@@ -17,6 +17,7 @@ export default class ForgotPassword extends Component {
 					<Form.Control type = 'test' placeholder = 'Enter your username...'></Form.Control>
 				</Form.Group>
 				<Button className = 'btn-block'>Send Verfication Email</Button>
+				<Link className = 'btn btn-secondary btn-block mt-1' to = './'>Take me back</Link>
 			</Form>
 		);
 	}
