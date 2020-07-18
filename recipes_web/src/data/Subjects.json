@@ -20,8 +20,8 @@
 		"icon": "AiOutlineHighlight",
 		"topics": ["History", "English", "Education", "Philosophy", "Visual Arts", "Languages"]
 	},
-	"Social Science": {
-		"color": "FFE300",
+	"Social Sciences": {
+		"color": "#FFE300",
 		"icon": "AiOutlineRead",
 		"topics": ["Economics", "Business", "Geography", "Political Science", "Psychology", "Sociology"]
 	},

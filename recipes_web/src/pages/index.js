@@ -1,6 +1,5 @@
 // Pages Exports
 export { default as Home } from './Home';
-export { default as Matter } from './Matter';
 export { default as Subject } from './Subjects';
 export { default as Registration } from './Registration';
 
