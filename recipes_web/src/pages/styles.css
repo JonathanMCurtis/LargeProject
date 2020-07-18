@@ -4,19 +4,25 @@ html, body, #root {
 	padding: 0;
 }
 
-@media screen and (max-width: 766px) {
-	html {
-		font-size: calc(1.25vw + 1.25vh);
-	}
-}
-
-@media screen and (min-width: 767px) {
+@media only screen and (max-width: 600px) {
 	html {
 		font-size: calc(1vw + 1vh);
 	}
 }
 
-@media screen and (min-width: 1200px) {
+@media only screen and (min-width: 600px) {
+	html {
+		font-size: calc(1vw + 1vh);
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	html {
+		font-size: calc(1vw + 1vh);
+	}
+}
+
+@media only screen and (min-width: 992px) {
 	html {
 		font-size: calc(0.75vw + 0.75vh);
 	}
@@ -46,7 +52,8 @@ html, body, #root {
 }
 
 .typewriter p {
-	width: 45ch;
+	max-width: max-content;
+	width: 100%;
 	margin: 0 auto;
 	white-space: nowrap;
 	overflow: hidden;
