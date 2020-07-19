@@ -101,3 +101,11 @@ html, body, #root {
 .about {
 	width: 50rem;
 }
+
+.subjects {
+	text-align: center;
+	margin-top: 1%;
+	margin-bottom: 1%;
+	margin-right: 0.2%;
+	margin-left: 0.2%;
+}
