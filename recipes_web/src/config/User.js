@@ -19,7 +19,8 @@ const ACTIONS = {
 	RESEND_VERIFICATION: 'RESEND_VERIFICATION',
 	UPDATE_FAVORITE: 'UPDATE_FAVORITE',
 	LOGIN_GUEST: 'LOGIN_GUEST',
-	LOG_OUT_USER: 'LOG_OUT_USER'
+	LOG_OUT_USER: 'LOG_OUT_USER',
+	CLOSE_BANNER: 'CLOSE_BANNER'
 };
 
 const initialState = {
@@ -29,7 +30,8 @@ const initialState = {
 	email: '',
 	favorites: {},
 	loggedIn: false,
-	guest: false
+	guest: false,
+	banner: true
 };
 
 export default (state = initialState, action) => {
@@ -54,6 +56,8 @@ export default (state = initialState, action) => {
 			return { ...state, error };
 		case ACTIONS.LOG_OUT_USER:
 			return initialState;
+		case ACTIONS.CLOSE_BANNER:
+			return { ...state, banner: false };
 		default:
 			return state;
 	}
@@ -167,7 +171,7 @@ export const resetPassword = user => {
 
 export const updatePassword = user => {
 	return dispatch => {
-		return fetch(user.rand && UpdatePassword || ChangePassword, fetchPOST(user))
+		return fetch((user.rand && UpdatePassword) || ChangePassword, fetchPOST(user))
 			.then(response => response.json())
 			.then(data => dispatch({ type: 'UPDATE_PASSWORD', data }));
 	};
@@ -184,7 +188,7 @@ export const updatePassword = user => {
 
 export const favorite = (IDs, action) => {
 	return dispatch => {
-		return fetch(action === 'add' && AddFavorite || RemoveFavorite, fetchPOST(IDs))
+		return fetch((action === 'add' && AddFavorite) || RemoveFavorite, fetchPOST(IDs))
 			.then(response => response.json())
 			.then(data => dispatch({ type: 'UPDATE_FAVORITE', data }));
 	};
@@ -198,4 +202,8 @@ export const logoutUser = () => {
 	return dispatch => {
 		return dispatch({ type: 'LOG_OUT_USER' });
 	};
+};
+
+export const closeBanner = () => {
+	return dispatch => dispatch({ type: 'CLOSE_BANNER' });
 };
