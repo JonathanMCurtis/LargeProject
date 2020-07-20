@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
+import Table from 'react-bootstrap/Table';
+import { icon } from '../data/images';
 import './styles.css';
 
 export default class RegistrationCard extends Component {
@@ -8,21 +8,25 @@ export default class RegistrationCard extends Component {
 		const { title, description, children } = this.props;
 
 		return (
-			<div className = 'card text-center'>
-				<Row className = 'h-100'>
-					<Col className = 'h-100 card-content'>
-						<h2 className = 'my-2'>{ title }</h2>
-						{ description && <h3 className = 'lead mb-3 text-center'>{ description }</h3> }
-						<hr></hr>
-						<div className = 'card-content'>
-							{ children }
-							<p className = 'text-muted mt-auto mb-0'>&copy; Study Share 2020</p>
-						</div>
-					</Col>
-					<Col sm = { 8 } className = 'card-small'>
-						<h1>Hey, bitch</h1>
-					</Col>
-				</Row>
+			<div className = 'card text-center border-0 overflow-hidden'>
+				<Table>
+					<tbody>
+						<tr className = 'border-0'>
+							<td id = 'left' className = 'px-5 border-0'>
+								<div className = 'my-auto'>
+									<img className = 'mx-auto py-4' src = { icon } width = '25%' />
+									<h3 className = 'pb-4'>{ title }</h3>
+									{ description && <h3 className = 'lead pt-n4 pb-4'>{ description }</h3> }
+									{ children }
+									<p className = 'text-muted py-4'>&copy; Study Share 2020</p>
+								</div>
+							</td>
+							<td id = 'right' className = 'align-middle pattern-zigzag-xl text-right border-0 '>
+								<h1 className = 'display-2 text-light'>Study Share</h1>
+							</td>
+						</tr>
+					</tbody>
+				</Table>
 			</div>
 		);
 	}
