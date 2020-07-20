@@ -191,7 +191,7 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
 		favorites = userData['favoriteNotes'];
-		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
