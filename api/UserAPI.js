@@ -190,7 +190,7 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 
 	if (_results.length > 0)
 		js.UserID = _results[0]['_id'];
-	// TODO: Replace with final URL, or environmental variable
+
 	res.redirect('https://studyshare21.herokuapp.com');
 
 /*
