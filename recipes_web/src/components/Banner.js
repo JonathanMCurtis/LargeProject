@@ -23,7 +23,7 @@ const BannerComponent = ({ children, onClose }) => {
 								{ children }
 							</td>
 							<td className = 'text-right pr-4 align-middle'>
-								{ <MdClose onClick = { () => setShow(false) && onClose && onClose() } size = '25px' /> }
+								{ <MdClose onClick = { () => { setShow(false); onClose && onClose() } } size = '25px' /> }
 							</td>
 						</tr>
 					</tbody>
@@ -35,7 +35,7 @@ const BannerComponent = ({ children, onClose }) => {
 
 class Banner extends Component {
 	render() {
-		const { guest, verified, loggedIn, banner } = this.props;
+		const { guest, verified, loggedIn, banner, closeBanner } = this.props;
 
 		let guestMessage = <>
 			You are currently logged in as a guest and won't be able to add or save notes. { ' ' }
