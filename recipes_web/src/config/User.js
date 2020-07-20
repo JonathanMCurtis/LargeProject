@@ -28,6 +28,7 @@ const initialState = {
 	firstName: '',
 	lastName: '',
 	email: '',
+	verified: false,
 	favorites: {},
 	loggedIn: false,
 	guest: false,

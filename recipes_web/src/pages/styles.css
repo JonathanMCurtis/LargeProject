@@ -39,6 +39,7 @@ html, body, #root {
 }
 
 .splash-content {
+	width: 100%;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -59,7 +60,7 @@ html, body, #root {
 	overflow: hidden;
 	border-right: 0.1em solid orange;
 	animation:
-		type 3.5s steps(45, end),
+		type 3.75s steps(45, end),
 		blink 1s step-end infinite alternate;
 }
 

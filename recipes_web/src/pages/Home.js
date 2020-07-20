@@ -44,7 +44,7 @@ class Home extends Component {
 
 		return (
 			<div className = 'splash overflow-hidden text-center'>
-				<div className = { (animate && 'welcome splash-content') || 'splash-content' }>
+				<div className = { (animate && 'welcome splash-content w-75') || 'splash-content w-75' }>
 					{ this.renderWelcomeText() }
 					{ this.renderButtons() }
 				</div>

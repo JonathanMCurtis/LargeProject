@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import './styles.css';
 
 export default class RegistrationCard extends Component {
@@ -7,16 +8,21 @@ export default class RegistrationCard extends Component {
 		const { title, description, children } = this.props;
 
 		return (
-			<div id = 'rc-background' className = 'h-100 w-100'>
-				{ /* <Link className = 'btn btn-outline-primary mt-1 ml-1' to = '/'>Go Back</Link> */ }
-				<div id = 'rc-form'>
-					<h1 id = 'rc-title' className = 'mt-2 text-center font-weight-normal'>{ title }</h1>
-					<h1 className = 'lead mb-4 text-center'>{ description }</h1>
-					<hr />
-					{ children }
-					<span id = 'result'></span>
-					<p className = 'mt-3 mb-2 text-muted text-center'>&copy; Study Share 2020</p>
-				</div>
+			<div className = 'card text-center'>
+				<Row className = 'h-100'>
+					<Col className = 'h-100 card-content'>
+						<h2 className = 'my-2'>{ title }</h2>
+						{ description && <h3 className = 'lead mb-3 text-center'>{ description }</h3> }
+						<hr></hr>
+						<div className = 'card-content'>
+							{ children }
+							<p className = 'text-muted mt-auto mb-0'>&copy; Study Share 2020</p>
+						</div>
+					</Col>
+					<Col sm = { 8 } className = 'card-small'>
+						<h1>Hey, bitch</h1>
+					</Col>
+				</Row>
 			</div>
 		);
 	}

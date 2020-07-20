@@ -23,7 +23,7 @@ class Login extends Component {
 					</Button>
 					<Link className = 'btn btn-outline-secondary ml-1' to = '/forgot-password'>Forgot password?</Link>
 					<hr />
-					<Link className = 'small' to ='#'>Don't have an account? Sign up today!</Link>
+					<Link onClick = { () => this.props.onSubmit() }>Don't have an account? Sign up today!</Link>
 				</Form>
 			</div>
 		);
@@ -48,21 +48,9 @@ class Signup extends Component {
 						<Form.Label>Email:</Form.Label>
 						<Form.Control type = 'email'></Form.Control>
 					</Form.Group>
-					<Form.Group controlId = 'signupUsername'>
-						<Form.Label>Username:</Form.Label>
-						<Form.Control type = 'input'></Form.Control>
-					</Form.Group>
-					<Form.Group controlId = 'signupPassword'>
-						<Form.Label>Password:</Form.Label>
-						<Form.Control type = 'password'></Form.Control>
-					</Form.Group>
-					<Form.Group controlId = 'signupVerifyPwd'>
-						<Form.Label>Verify your password:</Form.Label>
-						<Form.Control type = 'password'></Form.Control>
-					</Form.Group>
 					<Button variant = 'primary' onClick = ''>Sign Up</Button>
 					<hr />
-					<Link className = 'small' to ='#'>Already have an account? Log in here!</Link>
+					<Link onClick = { () => this.props.onSubmit() } className = 'small' to ='#'>Already have an account? Log in here!</Link>
 				</Form>
 			</div>
 		);
