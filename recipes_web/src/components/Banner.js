@@ -23,7 +23,7 @@ const BannerComponent = ({ children, onClose }) => {
 								{ children }
 							</td>
 							<td className = 'text-right pr-4 align-middle'>
-								{ <MdClose onClick = { () => { setShow(false); onClose && onClose() } } size = '25px' /> }
+								<MdClose onClick = { () => { setShow(false); onClose && setTimeout(() => onClose(), 1000) } } size = '25px' />
 							</td>
 						</tr>
 					</tbody>
