@@ -111,11 +111,11 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 
 NotesAPI.prototype.GetNotes = async function(req, res) {
 	/*
-	 * incoming: subject, topic, pageNumber
+	 * incoming: subject, topic
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
-	const { subject, pageNumber } = req;
+	const { subject } = req;
 	const topic = req.topic;
 	let notes;
 	let result;
@@ -127,7 +127,7 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 		if (topic)
 			query.topic = topic;
 
-		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find(query).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -146,18 +146,18 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 
 NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 	/*
-	 * incoming: userID, pageNumber
+	 * incoming: userID
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
-	const { noteID, pageNumber } = req;
+	const { noteID } = req;
 	let notes;
 	let result;
 
 	try {
 		const db = this.client.db();
 
-		notes = await db.collection('Notes').find({ userID: noteID }).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find({ userID: noteID }).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -176,7 +176,7 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 
 NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 	/*
-	 * incoming: userID, pageNumber
+	 * incoming: userID
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
@@ -210,13 +210,13 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 
 NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 	/*
-	 * incoming: search, pageNumber
+	 * incoming: search
 	 * outgoing: notes[{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
 	let result;
 
-	const { search, pageNumber } = req;
+	const { search } = req;
 	let notes;
 
 	let _search = search.trim() + '.*';
@@ -226,7 +226,7 @@ NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 		let query = {};
 
 		query[_field] = { $regex: _search, $options: 'r' };
-		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find(query).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
