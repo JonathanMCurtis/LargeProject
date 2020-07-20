@@ -43,7 +43,7 @@ export default (state = initialState, action) => {
 		case ACTIONS.CREATE_USER_SUCCESS:
 			return { ...state, ...data.userInfo, error };
 		case ACTIONS.LOGIN_GUEST:
-			return { ...initialState, guest: true };
+			return { ...state, banner: state.banner, guest: true };
 		case ACTIONS.LOAD_USER_SUCCESS:
 			return { loggedIn: true, ...data.userInfo };
 		case ACTIONS.CREATE_USER_FAIL:
@@ -130,9 +130,7 @@ export const loginUser = user => {
  */
 
 export const loginGuest = () => {
-	return dispatch => {
-		return dispatch({ type: 'LOGIN_GUEST' });
-	};
+	return dispatch => dispatch({ type: 'LOGIN_GUEST' });
 };
 
 /**
@@ -200,9 +198,7 @@ export const favorite = (IDs, action) => {
  */
 
 export const logoutUser = () => {
-	return dispatch => {
-		return dispatch({ type: 'LOG_OUT_USER' });
-	};
+	return dispatch => dispatch({ type: 'LOG_OUT_USER' });
 };
 
 export const closeBanner = () => {

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Button, ButtonGroup, Registration } from './';
+import { loginGuest } from '../config';
 import './styles.css';
 
 class Home extends Component {
@@ -15,13 +16,15 @@ class Home extends Component {
 		return (
 			<div className = 'text-white mb-5 typewriter'>
 				<h1 className = 'display-1'>Welcome to Study Share</h1>
-				<p className = 'lead'>A place to find and share notes, and study with others!</p>
+				<div className = 'typewriter-container'>
+					<p className = 'lead'>A place to find and share notes, and study with others!</p>
+				</div>
 			</div>
 		);
 	}
 
 	renderButtons () {
-		const { loggedIn } = this.props;
+		const { loggedIn, loginGuest } = this.props;
 
 		return (
 			(loggedIn && <Link className = 'btn btn-primary' to = '/subjects'>Take me back!</Link>)
@@ -34,7 +37,9 @@ class Home extends Component {
 						Sign Up
 						</Button>
 					</ButtonGroup>
-					<p><Button variant = 'warning'>Continue as guest</Button></p>
+					<p>
+						<Link className = 'btn btn-primary' to = '/subjects' onClick = { () => loginGuest() }>Continue as guest</Link>
+					</p>
 				</>
 		);
 	}
@@ -57,5 +62,6 @@ class Home extends Component {
 }
 
 const mapStateToProps = ({ loggedIn, guest }) => ({ loggedIn, guest });
+const mapDispatchToProps = { loginGuest };
 
-export default connect(mapStateToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

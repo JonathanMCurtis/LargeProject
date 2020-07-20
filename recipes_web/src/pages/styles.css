@@ -1,30 +1,12 @@
-html, body, #root {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
 @media only screen and (max-width: 600px) {
 	html {
-		font-size: calc(1vw + 1vh);
+		font-size: 0.75rem;
 	}
 }
 
 @media only screen and (min-width: 600px) {
 	html {
-		font-size: calc(1vw + 1vh);
-	}
-}
-
-@media only screen and (min-width: 768px) {
-	html {
-		font-size: calc(1vw + 1vh);
-	}
-}
-
-@media only screen and (min-width: 992px) {
-	html {
-		font-size: calc(0.75vw + 0.75vh);
+		font-size: 1rem;
 	}
 }
 
@@ -52,6 +34,10 @@ html, body, #root {
 	background-color: transparent !important;
 }
 
+.typewriter-container {
+	display: inline-block;
+}
+
 .typewriter p {
 	max-width: max-content;
 	width: 100%;
@@ -60,7 +46,7 @@ html, body, #root {
 	overflow: hidden;
 	border-right: 0.1em solid orange;
 	animation:
-		type 3.75s steps(45, end),
+		type 3.5s steps(45, end),
 		blink 1s step-end infinite alternate;
 }
 
