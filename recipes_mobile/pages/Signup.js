@@ -55,7 +55,7 @@ export default class Example extends Component {
 					<TextInput
 						style = { styles.input }
 						placeholder = { 'First Name' }
-						placeholderTextColor = { '#e4b1ab' }
+						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
 				</View>
@@ -63,7 +63,7 @@ export default class Example extends Component {
 					<TextInput
 						style = { styles.input }
 						placeholder = { 'Last Name' }
-						placeholderTextColor = { '#e4b1ab' }
+						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
 				</View>
@@ -71,7 +71,7 @@ export default class Example extends Component {
 					<TextInput
 						style = { styles.input }
 						placeholder = { 'Username' }
-						placeholderTextColor = { '#e4b1ab' }
+						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
 				</View>
@@ -79,7 +79,7 @@ export default class Example extends Component {
 					<TextInput
 						style = { styles.input }
 						placeholder = { 'Email' }
-						placeholderTextColor = { '#e4b1ab' }
+						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
 				</View>
@@ -88,11 +88,11 @@ export default class Example extends Component {
 						style = { styles.input }
 						placeholder = { 'Password' }
 						secureTextEntry = { this.state.showPass }
-						placeholderTextColor = { '#e4b1ab' }
+						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
 					<TouchableOpacity style = { styles.btnEye } onPress = { () => this.showPass() }>
-						<Icon name = { this.state.press == false ? 'eye' : 'eye-off' } size = { 26 } color = { 'rgba(255, 255, 255, 0.7)' } />
+						<Icon name = { this.state.press == false ? 'eye' : 'eye-off' } size = { 26 } color = { '#fee4b0' } />
 					</TouchableOpacity>
 				</View>
 				{ this.renderLinks('Create Account') }
@@ -119,8 +119,14 @@ const styles = StyleSheet.create({
 		marginBottom: '10%'
 	},
 	logoText: {
-		color: '#fb4d3d',
+		color: '#fabc3c',
 		fontSize: 30,
+		fontWeight: '500',
+		marginTop: '5%'
+	},
+	subLogo: {
+		color: '#fb4d3d',
+		fontSize: 16,
 		fontWeight: '500',
 		marginTop: '5%'
 	},
@@ -133,8 +139,8 @@ const styles = StyleSheet.create({
 		borderRadius: 25,
 		fontSize: 16,
 		paddingLeft: '10%',
-		backgroundColor: 'rgba(0, 0, 0, 0.35)',
-		color: '#e4b1ab',
+		backgroundColor: 'rgba(0, 0, 0, 0.55)',
+		color: '#fee4b0',
 		marginHorizontal: '5%'
 	},
 	btnEye: {
@@ -146,12 +152,12 @@ const styles = StyleSheet.create({
 		width: WIDTH - 200,
 		height: '6%',
 		borderRadius: 25,
-		backgroundColor: '#fb4d3d',
+		backgroundColor: '#9a031e',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
 	text: {
-		color: 'white',
+		color: '#fee4b0',
 		fontSize: 16,
 		textAlign: 'center'
 
