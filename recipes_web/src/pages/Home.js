@@ -31,10 +31,10 @@ class Home extends Component {
 				|| <>
 					<ButtonGroup className = 'mx-auto pb-2'>
 						<Button onClick = { () => this.setState({ animate: true, register: 'login' }) }>
-						Login
+							Login
 						</Button>
 						<Button variant = 'secondary' onClick = { () => this.setState({ animate: true, register: 'signup' }) }>
-						Sign Up
+							Sign Up
 						</Button>
 					</ButtonGroup>
 					<p>
@@ -61,7 +61,7 @@ class Home extends Component {
 	}
 }
 
-const mapStateToProps = ({ loggedIn, guest }) => ({ loggedIn, guest });
+const mapStateToProps = ({ user: { loggedIn } }) => ({ loggedIn });
 const mapDispatchToProps = { loginGuest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

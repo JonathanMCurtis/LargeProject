@@ -11,12 +11,20 @@
 }
 
 .splash {
-	background-image: url(../data/images/old-library.jpg); 
+	background-image: url(../data/images/old-library.jpg);
 	width: 100%;
 	height: 100%;
 	background-size: cover;
 	background-position: center;
 	box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.6);
+	position: absolute;
+}
+
+.page {
+	width: 100%;
+	height: 100%;
+	background-size: cover;
+	background-position: center;
 	position: absolute;
 }
 
