@@ -8,7 +8,7 @@ function UserAPI(clientRef) {
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
 	 * incoming: firstName, lastName, login, password, email
-	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified}, error: boolean, result: errorObj
 	 */
 	const { firstName, lastName, login, password, email } = req;
 	const rand = GetRandomString();
@@ -47,7 +47,9 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 			'userID': newUser['_id'],
 			'firstName': firstName,
 			'lastName': lastName,
-			'email': email
+			'email': email,
+			'favorites': [],
+			'verified': false
 		},
 		error: result['error'],
 		result: result['errorObject']
