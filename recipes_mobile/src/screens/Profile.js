@@ -9,13 +9,13 @@ import {
 	Image
 } from 'react-native';
 
-import bgImage from './app/img/books.jpg'; // image for background
-import logo from './app/img/favicon.png';
+import bgImage from '../data/img/books.jpg'; // image for background
+import logo from '../data/img/favicon.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // imports icons from vector package
 
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class Example extends Component {
+export class Profile extends Component {
 	renderLinks(text) {
 		return (
 

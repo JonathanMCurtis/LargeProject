@@ -12,10 +12,10 @@ import {
 import { Button } from 'react-native-elements';
 
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import bgImage from './app/img/books1.jpg';
+import bgImage from '../data/img/books1.jpg';
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class App extends Component {
+export class Subjects extends Component {
 	render() {
 		const {
 			containerStyle,

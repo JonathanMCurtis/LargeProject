@@ -10,13 +10,13 @@ import {
 	Image
 } from 'react-native';
 
-import bgImage from './app/img/old-library.jpg'; // image for background
-import logo from './app/img/favicon.png';
+import bgImage from '../data/img/old-library.jpg'; // image for background
+import logo from '../data/img/favicon.png';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'; // imports icons from vector package
 
 const { width: WIDTH } = Dimensions.get('window');
 
-export default class Example extends Component {
+export class Signup extends Component {
 	constructor() { // toggles password hidden or visible on click
 		super();
 		this.state = { showPass: true, press: false };
