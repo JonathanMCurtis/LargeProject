@@ -30,7 +30,7 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
-		const exists = await db.collection('Users').findOne({ $or: [{ 'login': login }, { 'email': email }] });
+		const exists = await db.collection('Users').findOne({ 'login': login });
 
 		if (exists)
 			throw 401;
@@ -201,11 +201,11 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 
 UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	/*
-	 * incoming: userID
+	 * incoming: email
 	 * outgoing: error: boolean, result: errorObj
 	 */
 
-	const { userID } = req;
+	const { email } = req;
 
 	let result;
 	let _user;
@@ -213,7 +213,7 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ '_id': userID, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'email': email, 'verified': true });
 		if (_user === null)
 			throw 400;
 
@@ -223,7 +223,7 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 		const newRand = GetRandomString();
 		const query = { $set: { 'password': newPass, 'rand': newRand, 'resetPassword': true } };
 
-		db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		db.collection('Users').updateOne({ _id: ObjectId(_user['_id']) }, query);
 
 		sendPasswordResetEmail(_user, smtp, newRand);
 	}
@@ -266,7 +266,7 @@ function sendPasswordResetEmail(user, smtp, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Password Reset Request',
-		html: 'Hello,<br> Please use the following code to confirm your email address.<br>Your code is: <b>' + rand + '<\b>'
+		html: 'Hello,<br> Please use the following code to reset your password.<br>Your code is: <b>' + rand + '<\b>'
 	};
 
 	console.log(mailOptions);
