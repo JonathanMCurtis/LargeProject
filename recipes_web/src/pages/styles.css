@@ -96,3 +96,11 @@
 	margin-right: 0.2%;
 	margin-left: 0.2%;
 }
+
+#verify-email {
+	width: 500px;
+	height: 100vh;
+	margin: auto;
+	padding: 10px;
+	border: 1px soild black;
+}
