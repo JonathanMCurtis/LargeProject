@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const { GetErrorObject, GetRandomString } = require('./API').GetErrorObject;
+const { GetErrorObject, GetRandomString } = require('./API');
 
 function UserAPI(clientRef) {
 	this.client = clientRef;
