@@ -42,7 +42,8 @@ module.exports.GetNotesProjection = function() {
 		subject: 1,
 		topic: 1,
 		submissionDate: 1,
-		favoriteCount: 1
+		favoriteCount: 1,
+		login: 1
 	};
 };
 
