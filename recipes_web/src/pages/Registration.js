@@ -40,15 +40,15 @@ class Registration extends Component {
 
 		return (
 			(register === 'login' && <RegistrationCard title = 'Log into your account'>
-				<button className = 'button-link text-primary' onClick = { () => this.setState({ register: 'signup' }) }>Don't have an account? Sign up today!</button>
+				<button className = 'button-link text-primary' onClick = { () => this.setState({ error: false }, this.setState({ register: 'signup' })) }>Don't have an account? Sign up today!</button>
 				<Collapse in = { error }>
-					<div className = 'alert alert-danger mt-2'>Incorrect username or password</div>
+					<div className = 'm-0'><div className = 'alert alert-danger mt-2'>Incorrect username or password</div></div>
 				</Collapse>
 				<LoginForm onSubmit = { values => this.login(values) } />
 				<Link className = 'py-3' to = '/forgot-password'>Forgot password?</Link>
 			</RegistrationCard>)
 			|| <RegistrationCard title = 'Create your new account'>
-				<button className = 'button-link text-primary' onClick = { () => this.setState({ register: 'login' }) }>Already have an account? Log in here!</button>
+				<button className = 'button-link text-primary' onClick = { () => this.setState({ error: false }, this.setState({ register: 'login' })) }>Already have an account? Log in here!</button>
 				<Collapse in = { error }>
 					<div className = 'alert alert-danger mt-2'>Email already in use</div>
 				</Collapse>

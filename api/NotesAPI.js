@@ -9,11 +9,11 @@ function NotesAPI(clientRef) {
 
 NotesAPI.prototype.CreateNote = async function(req, res) {
 	/*
-	 * incoming: title, subject, topic, content, url, userID
+	 * incoming: title, subject, topic, content, url, userID, login
 	 * outgoing: noteID: string, error: boolean, result: errorObj
 	 */
 
-	const { title, subject, topic, content, url, userID } = req;
+	const { title, subject, topic, content, url, userID, login } = req;
 	const submissionDate = Date.now();
 	let result;
 
@@ -26,7 +26,8 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		favoriteCount: 0,
 		submissionDate: submissionDate,
 		lastUpdate: submissionDate,
-		userID: userID
+		userID: userID,
+		login: login
 	};
 
 	try {
@@ -98,7 +99,8 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 				favoriteCount: note['favoriteCount'],
 				submissionDate: note['submissionDate'],
 				lastUpdate: note['lastUpdated'],
-				userID: note['submissionDate']
+				userID: note['submissionDate'],
+				login: note['login']
 			},
 			error: result['error'],
 			result: result['errorObject']

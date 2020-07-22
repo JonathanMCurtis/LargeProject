@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import Button from 'react-bootstrap/Button';
-import Col from 'react-bootstrap/Col';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
-import Table from 'react-bootstrap/Table';
+import Col from 'react-bootstrap/Col';
 import NavBar from '../components/NavBar';
 import Subjects from '../data/Subjects.json';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 import {
 	AiFillCalculator,
 	AiOutlineExperiment,
@@ -26,152 +27,87 @@ const Icons = {
 	AiOutlineSearch
 };
 
-export default class Topics extends Component {
+class Subject extends Component {
 	constructor(props) {
 		super(props);
 
 		this.state = { active: '' };
 	}
-	renderWelcomeText () {
-		return (
-			<div className = 'text-white text-center'>
-				<h2 className = 'display-1'>Search for topics below</h2>
-				<p className = 'lead'>Or use the subject tabs to find one instead</p>
-			</div>
-		);
-	}
 
 	renderSubjects() {
-		// let Icon = Icons['AiFillCalculator']
-
 		const Icon = name => {
 			let Icon = Icons[name];
 
-			return <Icon size = { 30 }
-						 style = {{
-							 marginLeft: '10%'
-						 }} />;
+			return <Icon size = { 30 } />;
 		};
 
 		return (
-			<div className = 'my-4 d-flex justify-content-center'>
-				{
-					Object.keys(Subjects).map(subject => (
-						<Button
-							className = 'ml-1 shadow'
-							style = {{
-								backgroundColor: Subjects[subject].color,
-								border: 'none',
-								textShadow: '2px 3px 3px #474747',
-								padding: '1%',
-								width: '15%'
-							}}
-							key = { subject }
-							onClick = { () => this.setState({ active: subject }) }
-						>
-							<div >
+			<Row sm = { 3 } xs = { 3 } lg = { 3 } className = 'justify-content-center'>
+				{ Object.keys(Subjects).map(subject => (
+					<Button
+						className = 'border-0 m-2 text-dark font-weight-bold'
+						style = {{ backgroundColor: Subjects[subject].color, maxWidth: '14em', minHeight: '4em' }}
+						key = { subject }
+						onClick = { () => this.setState({ active: subject }) }
+					>
+						<Row className = 'align-items-center'>
+							<Col>
 								{ subject }
+							</Col>
+							<Col>
 								{ Icon(Subjects[subject].icon) }
-							</div>
-						</Button>
-					))
+							</Col>
+						</Row>
+					</Button>
+				))
 				}
-			</div>
+			</Row>
 		);
 	}
 
 	renderTopics() {
 		const { active } = this.state;
 
-		// note: I tried subject.length, JS just doesnt let me...
-		let len = Subjects[active] && Subjects[active].topics.length;
-		let subject = Subjects[active] && Subjects[active].topics;
-		const COLUMN = 3; // Change this for number of columns
-		let i = 0;
-		let temp = [];
-
-		for (i = 0; i < len; i += COLUMN) {
-			let part = subject.slice(i, i + COLUMN);
-
-			temp.push(part);
-		}
-
-		let last = temp.pop();
-
-		if (last === undefined)
-			last = [];
-
-		// We will render a table of buttons
 		return (
-			<>
-				<Table
-					bordless = 'true'
-					className = 'm-0 d-flex justify-content-center'
-					style = {{ tableLayout: 'fixed' }}>
-					<tbody>
-						{
-							temp.map(sub => (
-								<tr> {
-									sub.map(topic => (
-										<td>
-											<Button style = {{
-												backgroundColor: Subjects[active].color,
-												border: 'none',
-												textShadow: '2px 3px 3px #474747'
-											}}>
-												<h2 key = { topic }>{ topic }</h2>
-											</Button>
-										</td>
-									))
-								} </tr>
-							))
-						}
-					</tbody>
-				</Table>
-				{ /* gotta do the last row separately for centering */ }
-				<Table
-					className = 'm-0 d-flex justify-content-center'
-					style = {{ tableLayout: 'fixed' }}>
-					<tbody><tr>
-						{ last.map(topic => (
-							<td>
-								<Button style = {{
-									backgroundColor: Subjects[active].color,
-									border: 'none',
-									textShadow: '2px 3px 3px #474747'
-								}}
-								onClick = ''>
-									<h2 key = { topic }>{ topic }</h2>
-								</Button>
-							</td>
-						))
-						}
-					</tr></tbody>
-				</Table>
-			</>
+			<Row sm = { 4 } className = 'justify-content-center align-items-center'>
+				{ Subjects[active] && Subjects[active].topics.map(topic => {
+					let subjectLink = active.split(' ').join('-');
+					let topicLink = topic.split(' ').join('-');
+
+					return (
+						<Link
+							className = 'btn m-2 text-black font-weight-bold'
+							style = {{ borderColor: Subjects[active].color, borderWidth: '2px' }}
+							to = { `/notes/${subjectLink}/${topicLink}` }
+						>
+							{ topic }
+						</Link>
+					);
+				}) }
+			</Row>
 		);
 	}
 
 	render () {
-		const { active } = this.state;
-
 		return (
 			<>
-				<NavBar background = { (Subjects[active] && Subjects[active].color) || '' } />
-
-				<Container className = 'subjects' fluid = 'true'>
-					<h1> SEARCH FOR YO SHIT BITCH </h1>
-					<div className = 'col-12 my-auto d-flex justify-content-center'>
+				<NavBar />
+				<Container>
+					<div className = 'py-3 d-flex justify-content-center'>
 						<input type = 'text' placeholder = 'Search...' className = 'rounded shadow-sm' />
-						<Button className = 'shadow-sm'> <AiOutlineSearch /> </Button>
+						<Button className = 'shadow-sm'>
+							<AiOutlineSearch />
+						</Button>
 					</div>
-						OR JUST USE THESE TABS IDK
+					<h4 className = 'text-left'>Or find specific notes with subjects!</h4>
 					{ this.renderSubjects() }
-
 					{ this.renderTopics() }
-
 				</Container>
 			</>
 		);
 	}
 }
+
+const mapStateToProps = ({ user }) => ({ user });
+
+export default connect(mapStateToProps)(Subject);

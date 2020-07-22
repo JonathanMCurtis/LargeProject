@@ -102,7 +102,7 @@ export const LoginForm = ({ onSubmit }) => {
 			initialValues = {{ login: '', password: '' }}
 			validate = { validateLogin }
 			onSubmit = { (values, { setSubmitting }) => {
-				onSubmit(values).then(error => alert(error));
+				onSubmit(values).then(error => !error && history.push('/subjects'));
 				setSubmitting(false);
 			} }
 		>

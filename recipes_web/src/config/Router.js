@@ -1,8 +1,7 @@
 import React from 'react';
-import { Home, Subject } from '../pages';
+import { Home, Subject, ForgotPassword, Notes } from '../pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Banner } from '../components';
-import ForgotPassword from '../pages/ForgotPassword';
 
 export const Router = () => {
 	return (
@@ -13,6 +12,7 @@ export const Router = () => {
 				<Switch>
 					<Route>
 						<Banner />
+						<Route exact path = '/notes/:subject/:topic' render = { routerProps => <Notes router = { routerProps } /> } />
 						<Route exact path = '/subjects' component = { Subject } />
 					</Route>
 				</Switch>
