@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import { connect } from 'react-redux';
 import { MdClose } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { closeBanner } from '../config';
+import { closeBanner, loginGuest } from '../config';
 
 const BannerComponent = ({ children, onClose }) => {
 	const [show, setShow] = useState(false);
@@ -15,7 +15,7 @@ const BannerComponent = ({ children, onClose }) => {
 
 	return (
 		<Collapse in = { show }>
-			<div>
+			<div className = 'm-0'>
 				<Table size = 'md' className = 'm-0 banner font-weight-bold'>
 					<tbody>
 						<tr>
@@ -35,7 +35,9 @@ const BannerComponent = ({ children, onClose }) => {
 
 class Banner extends Component {
 	render() {
-		const { guest, verified, loggedIn, banner, closeBanner } = this.props;
+		const { guest, verified, loggedIn, banner, closeBanner, loginGuest } = this.props;
+
+		(!guest || !loggedIn) && loginGuest();
 
 		let guestMessage = <>
 			You are currently logged in as a guest and won't be able to add or save notes. { ' ' }
@@ -50,12 +52,12 @@ class Banner extends Component {
 		return (
 			banner && (loggedIn || guest) && <BannerComponent onClose = { () => closeBanner() }>
 				{ (guest && guestMessage) || (!verified && loggedIn && unverifiedMessage) }
-			</BannerComponent>
+			</BannerComponent> || null
 		);
 	}
 }
 
-const mapStateToProps = ({ guest, verified, loggedIn, banner }) => ({ guest, verified, loggedIn, banner });
-const mapDispatchToProps = { closeBanner };
+const mapStateToProps = ({ user: { guest, verified, loggedIn, banner } }) => ({ guest, verified, loggedIn, banner });
+const mapDispatchToProps = { closeBanner, loginGuest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Banner);

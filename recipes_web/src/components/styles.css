@@ -1,11 +1,9 @@
 /* Registration Card styles */
 
 .card {
-	background-color: aliceblue;
 	width: 95vw;
 	height: 90vh;
 	margin: 0 auto;
-	background-color: white;
 }
 
 #left {
@@ -35,7 +33,6 @@
 	width: 60%;
 	background-color: #fde3b7;
 	color: #d5204a;
-	box-shadow: inset 0 0 0 100vw rgba(0, 0, 0, 0.45);
 }
 
 @media only screen and (max-width: 768px) {
