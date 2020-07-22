@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import { Link } from 'react-router-dom';
-import RegistrationCard from '../components/RegistrationCard';
+import { RegistrationCard, ForgotPasswordForm } from '../components';
 
 export default class ForgotPassword extends Component {
 	renderVerifyForm () {
@@ -16,17 +15,20 @@ export default class ForgotPassword extends Component {
 					<Form.Label className = 'mb-0'>Username:</Form.Label>
 					<Form.Control type = 'test' placeholder = 'Enter your username...'></Form.Control>
 				</Form.Group>
-				<Button className = 'btn-block'>Send Verfication Email</Button>
-				<Link className = 'btn btn-secondary btn-block mt-1' to = './'>Take me back</Link>
+				<Button>Send Verification Email</Button>
 			</Form>
 		);
 	}
 
 	render () {
 		return (
-			<RegistrationCard title = 'Forgot your password?' description = "Don't worry. Happens to the best of us. We got you.">
-				{ this.renderVerifyForm() }
-			</RegistrationCard>
+			<div className = 'page pattern-cross-dots-xl bg-primary text-dark'>
+				<div className = 'splash-content'>
+					<RegistrationCard solo = 'w-50' title = 'Forgot your password?' description = "Don't worry, it happens to the best of us. We got you.">
+						<ForgotPasswordForm />
+					</RegistrationCard>
+				</div>
+			</div>
 		);
 	}
 }

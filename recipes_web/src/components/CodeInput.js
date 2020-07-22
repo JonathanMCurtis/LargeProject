@@ -1,4 +1,5 @@
 import React from 'react';
+import Table from 'react-bootstrap/Table';
 
 export const CodeInput = props => {
 	const { numInputs, onSubmit, style } = props;
@@ -49,6 +50,16 @@ export const CodeInput = props => {
 	};
 
 	return (
-		[...Array(numInputs).keys()].map(index => <Input className = { style } key = { index } index = { index } />)
+		<Table>
+			<tr>
+				{ [...Array(numInputs).keys()].map(index => {
+					return (
+						<td>
+							<Input className = { style } key = { index } index = { index } />
+						</td>
+					);
+				}) }
+			</tr>
+		</Table>
 	);
 };
