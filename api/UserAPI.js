@@ -43,7 +43,12 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	}
 
 	let js = {
-		userID: newUser['_id'],
+		userInfo: {
+			'userID': newUser['_id'],
+			'firstName': firstName,
+			'lastName': lastName,
+			'email': email
+		},
 		error: result['error'],
 		result: result['errorObject']
 	};
@@ -60,7 +65,6 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 	 * outgoing: error: boolean, result: errorObj
 	 */
 	const { login, email } = req;
-
 	let result;
 
 	try {
@@ -78,15 +82,15 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
+
+		let js = {
+			error: result['error'],
+			result: result['errorObject']
+		};
+
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
 	}
-
-	let js = {
-		error: result['error'],
-		result: result['errorObject']
-	};
-
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
 };
 
 UserAPI.prototype.LoginUser = async function(req, res) {
