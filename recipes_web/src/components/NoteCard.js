@@ -17,7 +17,7 @@ class NoteCard extends Component {
 
 	render () {
 		return (
-			<div id = "home-content">
+			<div id = 'home-content'>
 
 			</div>
 		);
