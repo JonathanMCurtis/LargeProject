@@ -10,13 +10,6 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	 * incoming: firstName, lastName, login, password, email
 	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
 	 */
-
-	/*
-	 * TODO:
-	 * 	Unique UserID (More specific error)
-	 *  Unique Email (More specific error)
-	 */
-
 	const { firstName, lastName, login, password, email } = req;
 	const rand = GetRandomString();
 
@@ -36,6 +29,11 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 
 	try {
 		const db = this.client.db();
+
+		const exists = await db.collection('Users').findOne({ $or: [{ 'login': login }, { 'email': email }] });
+
+		if (exists)
+			throw 401;
 
 		await db.collection('Users').insertOne(newUser);
 		result = GetErrorObject(200);
@@ -94,7 +92,7 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites} or {}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified} or {}, error: boolean, result: errorObj
 	 */
 
 	const { login, password } = req;
@@ -105,7 +103,7 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'login': login, 'password': password });
 		if (_user === null)
 			throw 400;
 		else
@@ -135,7 +133,8 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 			firstName: result['firstName'],
 			lastName: result['lastName'],
 			email: result['email'],
-			favorites: result['favoriteNotes']
+			favorites: result['favoriteNotes'],
+			verified: result['verified']
 		},
 		error: result['error'],
 		result: result['errorObject']
@@ -191,8 +190,8 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 
 	if (_results.length > 0)
 		js.UserID = _results[0]['_id'];
-	// TODO: Replace with final URL, or environmental variable
-	res.redirect('https://recipes21.herokuapp.com');
+
+	res.redirect('https://studyshare21.herokuapp.com');
 
 /*
  * res.setHeader('Content-Type', 'application/json');

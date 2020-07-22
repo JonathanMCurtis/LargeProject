@@ -33,8 +33,11 @@ export default class Example extends Component {
 
 	renderLinks(text) {
 		return (
+
 			<TouchableOpacity style = { styles.btnLogin }>
+
 				<Text style = { styles.text }>{ text }</Text>
+
 			</TouchableOpacity>
 
 		);
@@ -45,15 +48,37 @@ export default class Example extends Component {
 				<View style = { styles.logoContainer }>
 					<Image source = { logo } style = { styles.logo } />
 
-					<Text style = { styles.logoText }>Welcome to Study Share!</Text>
-					<Text style = { styles.subLogo }>A place to find, share, and study notes with others!
-					</Text>
+					<Text style = { styles.logoText }>Sign Up</Text>
 				</View>
 
 				<View style = { styles.inputContainer }>
 					<TextInput
 						style = { styles.input }
+						placeholder = { 'First Name' }
+						placeholderTextColor = { '#fee4b0' }
+						underlineColorAndroid = 'transparent'
+					/>
+				</View>
+				<View style = { styles.inputContainer }>
+					<TextInput
+						style = { styles.input }
+						placeholder = { 'Last Name' }
+						placeholderTextColor = { '#fee4b0' }
+						underlineColorAndroid = 'transparent'
+					/>
+				</View>
+				<View style = { styles.inputContainer }>
+					<TextInput
+						style = { styles.input }
 						placeholder = { 'Username' }
+						placeholderTextColor = { '#fee4b0' }
+						underlineColorAndroid = 'transparent'
+					/>
+				</View>
+				<View style = { styles.inputContainer }>
+					<TextInput
+						style = { styles.input }
+						placeholder = { 'Email' }
 						placeholderTextColor = { '#fee4b0' }
 						underlineColorAndroid = 'transparent'
 					/>
@@ -70,12 +95,7 @@ export default class Example extends Component {
 						<Icon name = { this.state.press == false ? 'eye' : 'eye-off' } size = { 26 } color = { '#fee4b0' } />
 					</TouchableOpacity>
 				</View>
-				{ this.renderLinks('Login') }
-				{ this.renderLinks('Sign Up') }
-
-				<TouchableOpacity style = { styles.btnforgotPass }>
-					<Text style = { styles.forgot }> Forgot Password </Text>
-				</TouchableOpacity>
+				{ this.renderLinks('Create Account') }
 
 			</ImageBackground>
 		);
@@ -95,26 +115,27 @@ const styles = StyleSheet.create({
 		height: 100
 	},
 	logoContainer: {
-		alignItems: 'center'
+		alignItems: 'center',
+		marginBottom: '10%'
 	},
 	logoText: {
 		color: '#fabc3c',
 		fontSize: 30,
 		fontWeight: '500',
-		paddingBottom: '10%'
+		marginTop: '5%'
 	},
 	subLogo: {
-		color: '#fee4b0',
+		color: '#fb4d3d',
 		fontSize: 16,
 		fontWeight: '500',
-		paddingBottom: '15%'
+		marginTop: '5%'
 	},
 	inputContainer: {
 		marginTop: '4%'
 	},
 	input: {
 		width: WIDTH - 55,
-		height: '-10%',
+		height: '-20%',
 		borderRadius: 25,
 		fontSize: 16,
 		paddingLeft: '10%',
@@ -131,33 +152,14 @@ const styles = StyleSheet.create({
 		width: WIDTH - 200,
 		height: '6%',
 		borderRadius: 25,
-		backgroundColor: '#fee4b0',
+		backgroundColor: '#9a031e',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
-	btnSignup: {
-		width: WIDTH - 200,
-		height: '10%',
-		borderRadius: 25,
-		backgroundColor: '#fee4b0',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnforgotPass: {
-		width: WIDTH - 250,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: 'rgba(0, 0, 0, 0.3)',
-		justifyContent: 'center'
-	},
-	forgot: {
+	text: {
 		color: '#fee4b0',
 		fontSize: 16,
 		textAlign: 'center'
-	},
-	text: {
-		color: '#9a031e',
-		fontSize: 16,
-		textAlign: 'center'
+
 	}
 });
