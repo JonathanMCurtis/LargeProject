@@ -10,9 +10,10 @@ import {
 	ImageBackground
 } from 'react-native';
 import { Button } from 'react-native-elements';
-
+import Subject from '../data/Subjects.json';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import bgImage from '../data/img/books1.jpg';
+import { Actions } from 'react-native-router-flux';
 const { width: WIDTH } = Dimensions.get('window');
 
 export class Subjects extends Component {
@@ -44,45 +45,17 @@ export class Subjects extends Component {
 					</View>
 
 				</View>
-				<TouchableOpacity style = { styles.btnMath }>
-
-					<Text style = { styles.text }> Math
-						<Icon name = { 'calculator-variant' } size = { 26 } color = { 'black' } />
-					</Text>
-
-				</TouchableOpacity>
-
-				<TouchableOpacity style = { styles.btnScience }>
-					<Text style = { styles.text }> Science
-						<Icon name = { 'flask-outline' } size = { 26 } color = { 'black' } />
-					</Text>
-				</TouchableOpacity>
-
-				<TouchableOpacity style = { styles.btnArts }>
-					<Text style = { styles.text }> Arts and Humanities
-						<Icon name = { 'script-outline' } size = { 26 } color = { 'black' } />
-					</Text>
-				</TouchableOpacity>
-
-				<TouchableOpacity style = { styles.btnSocialSciences }>
-					<Text style = { styles.text }> Social Sciences
-						<Icon name = { 'human-greeting' } size = { 26 } color = { 'black' } />
-					</Text>
-				</TouchableOpacity>
-
-				<TouchableOpacity style = { styles.btnTechnology }>
-
-					<Text style = { styles.text }> Technology
-						<Icon name = { 'laptop-windows' } size = { 26 } color = { 'black' } />
-					</Text>
-
-				</TouchableOpacity>
-
-				<TouchableOpacity style = { styles.btnOther }>
-					<Text style = { styles.text }> Other
-						<Icon name = { 'lightbulb-multiple-outline' } size = { 26 } color = { 'black' } />
-					</Text>
-				</TouchableOpacity>
+				{ Object.keys(Subject).map(subject => (
+					<TouchableOpacity
+						key = { subject }
+						onPress = { () => Actions.push('topics', { subject, topics: Subject[subject].topics }) }
+						style = { [styles.btn, { backgroundColor: Subject[subject].color }] }
+					>
+						<Text style = { styles.text }>{ subject + ' ' }
+							<Icon name = { Subject[subject].icon } size = { 26 } color = { 'black' } />
+						</Text>
+					</TouchableOpacity>
+				)) }
 			</ImageBackground>
 		);
 	}
@@ -114,62 +87,23 @@ const styles = StyleSheet.create({
 		fontWeight: '500',
 		paddingTop: '5%'
 	},
-
 	searchTextStyle: {
 		flex: 1,
-		paddingBottom: '-5%'
-
+		paddingBottom: '-5%',
+		height: 40,
+		borderColor: 'gray',
+		borderWidth: 1
 	},
 	buttonStyle: {
 		height: 30,
 		marginBottom: 8,
 		justifyContent: 'center'
 	},
-	btnMath: {
-		width: WIDTH - 250,
+	btn: {
+		width: WIDTH - 200,
 		height: '6%',
 		borderRadius: 25,
 		backgroundColor: '#f59ff5',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnScience: {
-		width: WIDTH - 250,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: '#6ced70',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnArts: {
-		width: WIDTH - 150,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: '#63bcf3',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnSocialSciences: {
-		width: WIDTH - 200,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: '#edf19b',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnTechnology: {
-		width: WIDTH - 200,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: '#77eed3',
-		justifyContent: 'center',
-		marginTop: '5%'
-	},
-	btnOther: {
-		width: WIDTH - 200,
-		height: '6%',
-		borderRadius: 25,
-		backgroundColor: '#e6ab1a',
 		justifyContent: 'center',
 		marginTop: '5%'
 	},
