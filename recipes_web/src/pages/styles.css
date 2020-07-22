@@ -97,18 +97,18 @@
 	width: 50rem;
 }
 
-.subjects {
-	text-align: center;
-	margin-top: 1%;
-	margin-bottom: 1%;
-	margin-right: 0.2%;
-	margin-left: 0.2%;
-}
-
 #verify-email {
 	width: 500px;
 	height: 100vh;
 	margin: auto;
 	padding: 10px;
 	border: 1px soild black;
+}
+
+.noteCard {
+	all: unset;
+	padding: 1em 2em 1em 2em;
+	background-color: lightgray;
+	border-radius: 5px;
+	width: 14em;
 }
