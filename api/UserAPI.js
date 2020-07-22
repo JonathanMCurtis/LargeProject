@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const { GetErrorObject, GetRandomString } = require('./API').GetErrorObject;
+const { GetErrorObject, GetRandomString } = require('./API');
 
 function UserAPI(clientRef) {
 	this.client = clientRef;
@@ -8,7 +8,7 @@ function UserAPI(clientRef) {
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
 	 * incoming: firstName, lastName, login, password, email
-	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified}, error: boolean, result: errorObj
 	 */
 	const { firstName, lastName, login, password, email } = req;
 	const rand = GetRandomString();
@@ -30,7 +30,7 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
-		const exists = await db.collection('Users').findOne({ $or: [{ 'login': login }, { 'email': email }] });
+		const exists = await db.collection('Users').findOne({ 'login': login });
 
 		if (exists)
 			throw 401;
@@ -43,7 +43,14 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	}
 
 	let js = {
-		userID: newUser['_id'],
+		userInfo: {
+			'userID': newUser['_id'],
+			'firstName': firstName,
+			'lastName': lastName,
+			'email': email,
+			'favorites': [],
+			'verified': false
+		},
 		error: result['error'],
 		result: result['errorObject']
 	};
@@ -60,7 +67,6 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 	 * outgoing: error: boolean, result: errorObj
 	 */
 	const { login, email } = req;
-
 	let result;
 
 	try {
@@ -78,15 +84,15 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
+
+		let js = {
+			error: result['error'],
+			result: result['errorObject']
+		};
+
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
 	}
-
-	let js = {
-		error: result['error'],
-		result: result['errorObject']
-	};
-
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
 };
 
 UserAPI.prototype.LoginUser = async function(req, res) {
@@ -201,11 +207,11 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 
 UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	/*
-	 * incoming: userID
+	 * incoming: email
 	 * outgoing: error: boolean, result: errorObj
 	 */
 
-	const { userID } = req;
+	const { email } = req;
 
 	let result;
 	let _user;
@@ -213,7 +219,7 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ '_id': userID, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'email': email, 'verified': true });
 		if (_user === null)
 			throw 400;
 
@@ -223,7 +229,7 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 		const newRand = GetRandomString();
 		const query = { $set: { 'password': newPass, 'rand': newRand, 'resetPassword': true } };
 
-		db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		db.collection('Users').updateOne({ _id: ObjectId(_user['_id']) }, query);
 
 		sendPasswordResetEmail(_user, smtp, newRand);
 	}
@@ -266,7 +272,7 @@ function sendPasswordResetEmail(user, smtp, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Password Reset Request',
-		html: 'Hello,<br> Please use the following code to confirm your email address.<br>Your code is: <b>' + rand + '<\b>'
+		html: 'Hello,<br> Please use the following code to reset your password.<br>Your code is: <b>' + rand + '<\b>'
 	};
 
 	console.log(mailOptions);
