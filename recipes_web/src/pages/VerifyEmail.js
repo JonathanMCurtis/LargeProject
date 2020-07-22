@@ -7,7 +7,7 @@ import './styles.css';
 export default class VerifyEmail extends Component {
 	render () {
 		return (
-			<div id = 'verify-email'>
+			<div id = 'verify-email' className = 'pattern-dots-xl bg-success text-light'>
 				<Form.Group controlId = 'verify-email-form'>
 					<Form.Label><h3>Enter verification code:</h3></Form.Label>
 					<CodeInput numInputs = { 6 } />

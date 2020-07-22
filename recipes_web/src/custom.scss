@@ -1,0 +1,26 @@
+
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/mixins";
+
+$dark-red: #9a031e;
+$red: #e7013e;
+$peach: #f5717d;
+$teal: #1ea896;
+$navy-blue: #0D3B66;
+$slate: #4c5454;
+$gold: #fabc3c;
+$cream: #fee4b0;
+
+$theme-colors: (
+	primary: $red,
+	secondary: $teal,
+	success: $navy-blue,
+	danger: $dark-red,
+	warning: $gold,
+	info: $peach,
+	light: $cream,
+    dark: $slate
+);
+
+@import "../node_modules/bootstrap";

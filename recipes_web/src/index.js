@@ -5,8 +5,9 @@ import thunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { user, notes } from './config';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import 'pattern.css/dist/pattern.min.css';
+import './custom.scss';
 
 const store = initialState => createStore(combineReducers({ user, notes }), initialState, applyMiddleware(thunk));
 
