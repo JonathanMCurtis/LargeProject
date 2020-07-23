@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { NavBar } from '../components';
+import { NavBar, RegistrationCard } from '../components';
 import { connect } from 'react-redux';
 import { getNotes, search } from '../config';
 import { Container, Badge } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import './styles.css';
 
@@ -42,7 +43,7 @@ class Notes extends Component {
 	}
 
 	render () {
-		const { notes, query, action, favorites } = this.props;
+		const { notes, query, action, favorites, loggedIn } = this.props;
 		let title;
 
 		switch (action) {
@@ -76,12 +77,18 @@ class Notes extends Component {
 			<>
 				<NavBar />
 				<div className = 'page pattern-grid-xl bg-navy text-primary'>
-					<Container className = 'h-100 justify-content-md-center'>
+					{ !((action === 'favorites' || action === 'submitted') && !loggedIn) && <Container className = 'h-100 justify-content-md-center'>
 						<h1 className = 'display-3 text-secondary text-center'>{ title }</h1>
 						<div className = 'text-center'>
 							{ notesArr.map(note => NoteCard({ favorites, ...note })) }
 						</div>
 					</Container>
+					|| <div className = 'splash-content'>
+						<RegistrationCard solo = 'w-50' className = 'w-25'>
+							<p className = 'lead'>You don't seem to be logged in.</p>
+							<Link to = '/'>Login in here!</Link>
+						</RegistrationCard>
+					</div> }
 				</div>
 			</>
 		);
