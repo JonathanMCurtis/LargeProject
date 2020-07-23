@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "jest .\\api\\jest\\ --testTimeout=1000",
+    "test": "jest --testTimeout=10000",
     "start": "node server.js",
     "dev": "npx concurrently \"nodemon server.js\" \"cd recipes_web && npm run start\"",
     "lint": "eslint --config .estlintrc.yml .",
