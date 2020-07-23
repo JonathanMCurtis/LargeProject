@@ -147,7 +147,7 @@ class EditNoteCard extends Component {
 				<Container>
 					<div className = 'text-dark'>
 						<Row className = 'pt-4'>
-							{ (action === 'create' && loggedIn) && <>
+							{ ((action === 'create' && loggedIn) || action !== 'create') && <>
 							<Col sm = { 8 }>
 								<h1 className = 'display-4'>{ title }</h1>
 								<Form.Group controlId = 'title'>

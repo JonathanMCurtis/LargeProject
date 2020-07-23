@@ -13,7 +13,7 @@ class App extends Component {
 				<NavBar />
 				<Container>
 					<h2 className = 'display-4 text-primary pb-3'><u>About Us</u></h2>
-					<h3>Welcome to <span className = 'text-primary'>Study Share</span>! We're going above and beyond normal notes!</h3>
+					<h3 className = 'pb-4'>Welcome to <span className = 'text-primary'>Study Share</span>! We're going above and beyond normal notes!</h3>
 
 					<h4 className = 'text-secondary'>About Study Share</h4>
 					<p>Study Share a free note sharing website developed by the members of Group 21.
