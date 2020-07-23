@@ -1,5 +1,5 @@
 const ObjectId = require('mongodb').ObjectId;
-const { GetErrorObject, GetRandomString } = require('./API').GetErrorObject;
+const { GetErrorObject, GetRandomString } = require('./API');
 
 function UserAPI(clientRef) {
 	this.client = clientRef;
@@ -8,17 +8,10 @@ function UserAPI(clientRef) {
 UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	/*
 	 * incoming: firstName, lastName, login, password, email
-	 * outgoing: userInfo: {userID, firstName, lastName, email}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified}, error: boolean, result: errorObj
 	 */
-
-	/*
-	 * TODO:
-	 * 	Unique UserID (More specific error)
-	 *  Unique Email (More specific error)
-	 */
-
 	const { firstName, lastName, login, password, email } = req;
-	const rand = GetRandomString();
+	const rand = GetRandomString(6);
 
 	const newUser = {
 		firstName: firstName,
@@ -37,6 +30,11 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
+		const exists = await db.collection('Users').findOne({ 'login': login });
+
+		if (exists)
+			throw 401;
+
 		await db.collection('Users').insertOne(newUser);
 		result = GetErrorObject(200);
 	}
@@ -45,12 +43,20 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	}
 
 	let js = {
-		userID: newUser['_id'],
+		userInfo: {
+			'userID': newUser['_id'],
+			'firstName': firstName,
+			'lastName': lastName,
+			'email': email,
+			'favorites': [],
+			'verified': false
+		},
 		error: result['error'],
 		result: result['errorObject']
 	};
 
-	SendVerification(req, res, smtp, newUser['_id'], newUser['email'], rand);
+	if (!result['error'])
+		SendVerification(req, res, smtp, newUser['email'], rand);
 
 	res.setHeader('Content-Type', 'application/json');
 	res.end(JSON.stringify(js, null, 3));
@@ -62,7 +68,6 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 	 * outgoing: error: boolean, result: errorObj
 	 */
 	const { login, email } = req;
-
 	let result;
 
 	try {
@@ -74,27 +79,27 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 			throw 'No such user';
 		}
 		else {
-			SendVerification(req, res, smtp, user['_id'], user['email'], user['rand']);
+			SendVerification(req, res, smtp, user['email'], user['rand']);
 			result = GetErrorObject(200);
 		}
 	}
 	catch (e) {
 		result = GetErrorObject('default', e.toString());
+
+		let js = {
+			error: result['error'],
+			result: result['errorObject']
+		};
+
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
 	}
-
-	let js = {
-		error: result['error'],
-		result: result['errorObject']
-	};
-
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
 };
 
 UserAPI.prototype.LoginUser = async function(req, res) {
 	/*
 	 * incoming: login, password
-	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites} or {}, error: boolean, result: errorObj
+	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified} or {}, error: boolean, result: errorObj
 	 */
 
 	const { login, password } = req;
@@ -105,7 +110,7 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ 'login': login, 'password': password, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'login': login, 'password': password });
 		if (_user === null)
 			throw 400;
 		else
@@ -131,11 +136,12 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 
 	let js = {
 		userInfo: {
-			userID: result['_id'],
-			firstName: result['firstName'],
-			lastName: result['lastName'],
-			email: result['email'],
-			favorites: result['favoriteNotes']
+			userID: _user['_id'],
+			firstName: _user['firstName'],
+			lastName: _user['lastName'],
+			email: _user['email'],
+			favorites: _user['favoriteNotes'],
+			verified: _user['verified']
 		},
 		error: result['error'],
 		result: result['errorObject']
@@ -145,12 +151,11 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-function SendVerification(req, res, smtp, id, email, rand) {
-	const link = 'https://group21-dev-api.herokuapp.com/api/verify?id=' + id + '&val=' + rand;
+function SendVerification(req, res, smtp, email, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Please confirm your Email account',
-		html: 'Hello,<br> Please click on the link to verify your email.<br><a href=' + link + '>Click here to verify</a>'
+		html: 'Hello,<br> Please use the following code to verify your email address: <b>' + rand + '</b>.<br>'
 	};
 
 	console.log(mailOptions);
@@ -164,24 +169,28 @@ function SendVerification(req, res, smtp, id, email, rand) {
 }
 
 UserAPI.prototype.VerifyUser = async function(req, res) {
-	let result = '';
-	let _results = [];
-	const id = '' + req.query.id;
-	const val = Number(req.query.val);
+	/*
+	 * incoming: userID, rand
+	 * outgoing: error: boolean, result: errorObj
+	 */
 
-	console.log(`Attempting to verify user ${id} with value ${val}`);
+	const { userID, rand } = req;
+
+	const query = { $set: { 'verified': true } };
+	let result;
 
 	try {
 		const db = this.client.db();
 
-		_results = await db.collection('Users').updateOne(
-			{ _id: ObjectId(id), Verification: val },
-			{ $set: { Verified: true } }
-		);
-		console.log(JSON.stringify(_results));
+		result = await db.collection('Users').findOne({ _id: ObjectId(userID), verification: rand, verified: false });
+
+		if (!result)
+			throw 'No such user';
+		await db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		GetErrorObject(200);
 	}
 	catch (e) {
-		result = e.toString();
+		result = GetErrorObject('default', e.toString());
 	}
 
 	let js = {
@@ -189,24 +198,17 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	if (_results.length > 0)
-		js.UserID = _results[0]['_id'];
-	// TODO: Replace with final URL, or environmental variable
-	res.redirect('https://recipes21.herokuapp.com');
-
-/*
- * res.setHeader('Content-Type', 'application/json');
- * res.end(JSON.stringify(js, null, 3));
- */
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
 };
 
 UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	/*
-	 * incoming: userID
-	 * outgoing: error: boolean, result: errorObj
+	 * incoming: email
+	 * outgoing: userID: string, error: boolean, result: errorObj
 	 */
 
-	const { userID } = req;
+	const { email } = req;
 
 	let result;
 	let _user;
@@ -214,17 +216,17 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	try {
 		const db = this.client.db();
 
-		_user = await db.collection('Users').findOne({ '_id': userID, 'verified': true });
+		_user = await db.collection('Users').findOne({ 'email': email, 'verified': true });
 		if (_user === null)
 			throw 400;
 
 		result = GetErrorObject(200);
 
-		const newPass = GetRandomString();
-		const newRand = GetRandomString();
+		const newPass = GetRandomString(12);
+		const newRand = GetRandomString(8);
 		const query = { $set: { 'password': newPass, 'rand': newRand, 'resetPassword': true } };
 
-		db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		db.collection('Users').updateOne({ _id: ObjectId(_user['_id']) }, query);
 
 		sendPasswordResetEmail(_user, smtp, newRand);
 	}
@@ -248,10 +250,10 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 
 	let js = {
 		userInfo: {
-			userID: result['_id'],
-			firstName: result['firstName'],
-			lastName: result['lastName'],
-			email: result['email']
+			userID: _user['_id'],
+			firstName: _user['firstName'],
+			lastName: _user['lastName'],
+			email: _user['email']
 		},
 		error: result['error'],
 		result: result['errorObject']
@@ -267,7 +269,7 @@ function sendPasswordResetEmail(user, smtp, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Password Reset Request',
-		html: 'Hello,<br> Please use the following code to confirm your email address.<br>Your code is: <b>' + rand + '<\b>'
+		html: 'Hello,<br> Please use the following code to reset your password.<br>Your code is: <b>' + rand + '</b>'
 	};
 
 	console.log(mailOptions);
@@ -289,7 +291,7 @@ UserAPI.prototype.UpdatePassword = async function(req, res) {
 	const { userID, password, rand } = req;
 
 	const query = { $set: { 'password': password, resetPassword: false } };
-	let result = '';
+	let result;
 
 	try {
 		const db = this.client.db();

@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 app.post('/api/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
 app.post('/api/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
 app.post('/api/ResendVerification', async (req, res) => userAPI.ResendVerification(req.body, res, smtpTransport));
-app.get('/api/verify', async (req, res) => userAPI.VerifyUser(req.body, res));
+app.post('/api/VerifyUser', async (req, res) => userAPI.VerifyUser(req.body, res));
 app.post('/api/PasswordRequest', async (req, res) => userAPI.PasswordRequest(req.body, res, smtpTransport));
 app.post('/api/UpdatePassword', async (req, res) => userAPI.UpdatePassword(req.body, res));
 app.post('/api/ChangePassword', async (req, res) => userAPI.ChangePassword(req.body, res));
@@ -75,7 +75,7 @@ app.post('/api/RemoveFavorite', async (req, res) => userAPI.SetFavorite(req.body
 app.post('/api/CreateNote', async (req, res) => notesAPI.CreateNote(req.body, res));
 app.post('/api/GetNote', async (req, res) => notesAPI.GetNote(req.body, res));
 app.post('/api/GetSubmittedNotes', async (req, res) => notesAPI.GetSubmittedNotes(req.body, res));
-app.post('/api/GetFavoriteNotes', async (req, res) => notesAPI.GetFavoritedNotes(req.body, res));
+app.post('/api/GetFavoriteNotes', async (req, res) => notesAPI.GetFavoriteNotes(req.body, res));
 app.post('/api/GetNotes', async (req, res) => notesAPI.GetNotes(req.body, res));
 app.post('/api/SearchByContent', async (req, res) => notesAPI.SearchByField(req.body, res, 'content'));
 app.post('/api/SearchBySubject', async (req, res) => notesAPI.SearchByField(req.body, res, 'subject'));
@@ -89,6 +89,8 @@ app.get('*', (req, res) => {
 });
 
 // Listen on the designated port, defined earlier
-app.listen(PORT, () => {
-	console.log(`Server listening on port ${PORT}.`);
+const server = app.listen(PORT, () => {
+	// console.log(`Server listening on port ${PORT}.`);
 });
+
+module.exports = server;

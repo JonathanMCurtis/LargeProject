@@ -9,11 +9,11 @@ function NotesAPI(clientRef) {
 
 NotesAPI.prototype.CreateNote = async function(req, res) {
 	/*
-	 * incoming: title, subject, topic, content, url, userID
+	 * incoming: title, subject, topic, content, url, userID, login
 	 * outgoing: noteID: string, error: boolean, result: errorObj
 	 */
 
-	const { title, subject, topic, content, url, userID } = req;
+	const { title, subject, topic, content, url, userID, login } = req;
 	const submissionDate = Date.now();
 	let result;
 
@@ -26,7 +26,8 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		favoriteCount: 0,
 		submissionDate: submissionDate,
 		lastUpdate: submissionDate,
-		userID: userID
+		userID: userID,
+		login: login
 	};
 
 	try {
@@ -46,8 +47,12 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetNote = async function(req, res) {
@@ -59,29 +64,21 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 
 	const { noteID } = req;
 	let note;
-	let userData;
 	let result;
 
 	try	{
 		const db = this.client.db();
 
-		note = await db.collection('Notes').findOne({ '_id': ObjectId(noteID) });
+		note = await db.collection('Notes').findOne({ _id: ObjectId(noteID) });
+		result = GetErrorObject(200);
 	}
 	catch (e)	{
 		result = GetErrorObject('default', e.toString());
 	}
 	let js;
 
-	if (note == null)	{
+	if (!note)	{
 		result = GetErrorObject('default', 'No note found');
-		js = {
-			note: {},
-			error: result['error'],
-			result: result['errorObject']
-		};
-	}
-	else if (userData == null) {
-		result = GetErrorObject('default', 'No such user');
 		js = {
 			note: {},
 			error: result['error'],
@@ -98,24 +95,29 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 				favoriteCount: note['favoriteCount'],
 				submissionDate: note['submissionDate'],
 				lastUpdate: note['lastUpdated'],
-				userID: note['submissionDate']
+				userID: note['submissionDate'],
+				login: note['login']
 			},
 			error: result['error'],
 			result: result['errorObject']
 		};
 	}
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetNotes = async function(req, res) {
 	/*
-	 * incoming: subject, topic, pageNumber
+	 * incoming: subject, topic
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
-	const { subject, pageNumber } = req;
+	const { subject } = req;
 	const topic = req.topic;
 	let notes;
 	let result;
@@ -127,7 +129,7 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 		if (topic)
 			query.topic = topic;
 
-		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find(query).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -140,24 +142,28 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 	/*
-	 * incoming: userID, pageNumber
+	 * incoming: userID
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
-	const { noteID, pageNumber } = req;
+	const { noteID } = req;
 	let notes;
 	let result;
 
 	try {
 		const db = this.client.db();
 
-		notes = await db.collection('Notes').find({ userID: noteID }).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find({ userID: noteID }).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -170,13 +176,17 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 	/*
-	 * incoming: userID, pageNumber
+	 * incoming: userID
 	 * outgoing: notes [{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
@@ -187,11 +197,10 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 
 	try {
 		const db = this.client.db();
-		// TODO: If no favorites exist, return
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
 		favorites = userData['favoriteNotes'];
-		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find({ '_id': { $in: favorites } }).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -204,19 +213,23 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 	/*
-	 * incoming: search, pageNumber
+	 * incoming: search
 	 * outgoing: notes[{_id, title, subject, topic, submissionDate, favoriteCount}], error: boolean, result: errorObj
 	 */
 
 	let result;
 
-	const { search, pageNumber } = req;
+	const { search } = req;
 	let notes;
 
 	let _search = search.trim() + '.*';
@@ -226,7 +239,7 @@ NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 		let query = {};
 
 		query[_field] = { $regex: _search, $options: 'r' };
-		notes = await db.collection('Notes').find(query).skip(this.start(pageNumber)).limit(size).project(GetNotesProjection()).toArray();
+		notes = await db.collection('Notes').find(query).project(GetNotesProjection()).toArray();
 		result = GetErrorObject(200);
 	}
 	catch (e) {
@@ -239,8 +252,12 @@ NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.UpdateNote = async function(req, res) {
@@ -278,8 +295,14 @@ NotesAPI.prototype.UpdateNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	console.log('Result: ' + JSON.stringify(js));
+
+	return js;
 };
 
 NotesAPI.prototype.DeleteNote = async function(req, res) {
@@ -306,8 +329,12 @@ NotesAPI.prototype.DeleteNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 module.exports = NotesAPI;

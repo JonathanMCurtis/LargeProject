@@ -1,29 +1,17 @@
-html, body, #root {
-	height: 100%;
-	margin: 0;
-	padding: 0;
-}
-
-@media screen and (max-width: 766px) {
+@media only screen and (max-width: 600px) {
 	html {
-		font-size: calc(1.25vw + 1.25vh);
+		font-size: 0.75rem;
 	}
 }
 
-@media screen and (min-width: 767px) {
+@media only screen and (min-width: 600px) {
 	html {
-		font-size: calc(1vw + 1vh);
-	}
-}
-
-@media screen and (min-width: 1200px) {
-	html {
-		font-size: calc(0.75vw + 0.75vh);
+		font-size: 1rem;
 	}
 }
 
 .splash {
-	background-image: url(../data/images/old-library.jpg); 
+	background-image: url(../data/images/old-library.jpg);
 	width: 100%;
 	height: 100%;
 	background-size: cover;
@@ -32,7 +20,16 @@ html, body, #root {
 	position: absolute;
 }
 
+.page {
+	width: 100%;
+	min-height: 100%;
+	background-size: cover;
+	background-position: center;
+	position: absolute;
+}
+
 .splash-content {
+	width: 100%;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -45,8 +42,13 @@ html, body, #root {
 	background-color: transparent !important;
 }
 
+.typewriter-container {
+	display: inline-block;
+}
+
 .typewriter p {
-	width: 45ch;
+	max-width: max-content;
+	width: 100%;
 	margin: 0 auto;
 	white-space: nowrap;
 	overflow: hidden;
@@ -89,4 +91,26 @@ html, body, #root {
 @keyframes slide-in {
 	0% { top: 200% }
 	100% { top: 50% }
+}
+
+.note-card {
+	all: unset;
+	padding: 1em 2em 1em 2em;
+	background-color: lightgray;
+	border-radius: 5px;
+	width: 14em;
+}
+
+.profile-left {
+	float: left;
+	background-color: aqua;
+	height: 90vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.profile-right {
+	width: 50%;
+	background-color: #fde3b7;
 }

@@ -42,20 +42,13 @@ module.exports.GetNotesProjection = function() {
 		subject: 1,
 		topic: 1,
 		submissionDate: 1,
-		favoriteCount: 1
+		favoriteCount: 1,
+		login: 1
 	};
 };
 
 module.exports.GetRandomString = function(length) {
-	let ret = '';
-
-	for (let i = 0; i < length; i++) {
-		const rand = 'a' + (Math.floor(Math.random() * 26));
-
-		ret += rand;
-	}
-
-	return ret;
+	return Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, length);
 };
 
 // Number of results to return per page
