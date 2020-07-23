@@ -38,7 +38,7 @@ class Home extends Component {
 						</Button>
 					</ButtonGroup>
 					<p>
-						<Link className = 'btn btn-primary' to = '/notes' onClick = { () => loginGuest() }>Continue as guest</Link>
+						<Link className = 'btn btn-navy' to = '/notes' onClick = { () => loginGuest() }>Continue as guest</Link>
 					</p>
 				</>
 		);
