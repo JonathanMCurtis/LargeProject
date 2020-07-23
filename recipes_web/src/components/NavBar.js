@@ -44,7 +44,7 @@ class NavBar extends Component {
 							<NavLink exact to = '/about' className = 'nav-link'>About</NavLink>
 						</Nav.Item>
 						{ loggedIn && <Nav.Item key = 'log-out'>
-							<NavLink className = 'nav-link' onClick = { () => logoutUser() }>Log out</NavLink>
+							<NavLink to = '/' className = 'nav-link' onClick = { () => logoutUser() }>Log out</NavLink>
 						</Nav.Item> }
 					</Nav>
 				</Container>
