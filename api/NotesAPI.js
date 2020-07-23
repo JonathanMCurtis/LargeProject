@@ -64,29 +64,21 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 
 	const { noteID } = req;
 	let note;
-	let userData;
 	let result;
 
 	try	{
 		const db = this.client.db();
 
-		note = await db.collection('Notes').findOne({ '_id': ObjectId(noteID) });
+		note = await db.collection('Notes').findOne({ _id: ObjectId(noteID) });
+		result = GetErrorObject(200);
 	}
 	catch (e)	{
 		result = GetErrorObject('default', e.toString());
 	}
 	let js;
 
-	if (note == null)	{
+	if (!note)	{
 		result = GetErrorObject('default', 'No note found');
-		js = {
-			note: {},
-			error: result['error'],
-			result: result['errorObject']
-		};
-	}
-	else if (userData == null) {
-		result = GetErrorObject('default', 'No such user');
 		js = {
 			note: {},
 			error: result['error'],
