@@ -269,7 +269,7 @@ function sendPasswordResetEmail(user, smtp, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Password Reset Request',
-		html: 'Hello,<br> Please use the following code to reset your password.<br>Your code is: <b>' + rand + '<\b>'
+		html: 'Hello,<br> Please use the following code to reset your password.<br>Your code is: <b>' + rand + '</b>'
 	};
 
 	console.log(mailOptions);
