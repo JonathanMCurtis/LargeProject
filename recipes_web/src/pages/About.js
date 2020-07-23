@@ -9,20 +9,21 @@ class App extends Component {
 	render() {
 		return (
 			<Container expand>
-				<h2>About Us</h2>
-				<h3>Welcome to Study Share! We're going above and beyond normal notes!</h3>
-				<h3>About Study Share</h3>
+				<h2 className = 'display-4 text-primary'><u>About Us</u></h2>
+				<h3>Welcome to <span className = 'text-primary'>Study Share</span>! We're going above and beyond normal notes!</h3>
+				<br />
+				<h4 className = 'text-secondary'>About Study Share</h4>
 				<p className = "about">Study Share a free note sharing website developed by the members of Group 21.
 				We created this for college students by college students.
 				We allow students to easily share their notes in no time at all! </p>
-				<h3>Our Goal</h3>
+				<h4 className = 'text-secondary'>Our Goal</h4>
 				<p className = "about">
 				Our goal for developing Study Share was to allow students an easier way to exchange notes.
 				We know that sometimes you just don't get the topic and need more help.
 				Notes can provide additional assistance to anyone struggling and allows other perspectives of a lesson
 				to be shown.
 				</p>
-				<h3>How to sign up</h3>
+				<h4 className = 'text-secondary'>How to sign up</h4>
 				<p className = "about">
 				Signing up for Study Share is very simple. Only a First name, Last Name, and email is required.
 				A username and password will be created for account login.
@@ -30,7 +31,7 @@ class App extends Component {
 				<p>This website was developed using React and React Native;
 					and can be viewed through desktop or mobile.</p>
 				<hr />
-				<h3>Our Team <FaUsers /></h3>
+				<h3 className = 'text-success'>Our Team <FaUsers /></h3>
 				<Row>
 					<Col>Jonathon Chen Bell</Col>
 					<Col>Front-End Mobile</Col>

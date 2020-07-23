@@ -1,5 +1,5 @@
 import React from 'react';
-import { Home, Subject, ForgotPassword, Notes, VerifyPassword } from '../pages';
+import { Home, Subject, ForgotPassword, Notes, VerifyPassword, Profile, About, Note, NoMatch } from '../pages';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { Banner } from '../components';
 
@@ -14,7 +14,11 @@ export const Router = () => {
 					<Route>
 						<Banner />
 						<Route exact path = '/notes' component = { Subject } />
+						<Route exact path = '/note' component = { Note } />
+						<Route exact path = '/profile' component = { Profile } />
+						<Route exact path = '/about' component = { About } />
 						<Route exact path = '/notes/:subject/:topic' render = { routerProps => <Notes router = { routerProps } /> } />
+						<Route component = { NoMatch } />
 					</Route>
 				</Switch>
 			</Switch>

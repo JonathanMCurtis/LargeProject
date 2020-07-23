@@ -104,3 +104,17 @@
 	border-radius: 5px;
 	width: 14em;
 }
+
+.profile-left {
+	float: left;
+	background-color: aqua;
+	height: 90vh;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+}
+
+.profile-right {
+	width: 50%;
+	background-color: #fde3b7;
+}

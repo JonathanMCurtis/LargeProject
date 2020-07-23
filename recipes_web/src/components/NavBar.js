@@ -3,6 +3,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
 import { NavLink, Link } from 'react-router-dom';
+import Logo from '../data/images/favicon.png'
 
 export default class NavBar extends Component {
 	render () {
@@ -16,7 +17,13 @@ export default class NavBar extends Component {
 			>
 				<Container>
 					<Navbar.Brand>
-						<Link to = '/'>Study Share</Link>
+						<img
+							src = { Logo }
+							width = '30'
+							height = '30'
+							className = 'mr-2'
+						/>
+						<Link className = 'text-light' to = '/'>Study Share</Link>
 					</Navbar.Brand>
 					<Nav className = 'ml-auto'>
 						<Nav.Item key = 'home'>
