@@ -169,24 +169,28 @@ function SendVerification(req, res, smtp, id, email, rand) {
 }
 
 UserAPI.prototype.VerifyUser = async function(req, res) {
-	let result = '';
-	let _results = [];
-	const id = '' + req.query.id;
-	const val = Number(req.query.val);
+	/*
+	 * incoming: userID, rand
+	 * outgoing: error: boolean, result: errorObj
+	 */
 
-	console.log(`Attempting to verify user ${id} with value ${val}`);
+	const { userID, rand } = req;
+
+	const query = { $set: { 'verified': true } };
+	let result;
 
 	try {
 		const db = this.client.db();
 
-		_results = await db.collection('Users').updateOne(
-			{ _id: ObjectId(id), Verification: val },
-			{ $set: { Verified: true } }
-		);
-		console.log(JSON.stringify(_results));
+		result = await db.collection('Users').findOne({ _id: ObjectId(userID), verification: rand, verified: false });
+
+		if (!result)
+			throw 'No such user';
+		await db.collection('Users').updateOne({ _id: ObjectId(userID) }, query);
+		GetErrorObject(200);
 	}
 	catch (e) {
-		result = e.toString();
+		result = GetErrorObject('default', e.toString());
 	}
 
 	let js = {
@@ -194,15 +198,8 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	if (_results.length > 0)
-		js.UserID = _results[0]['_id'];
-
-	res.redirect('https://studyshare21.herokuapp.com');
-
-/*
- * res.setHeader('Content-Type', 'application/json');
- * res.end(JSON.stringify(js, null, 3));
- */
+	res.setHeader('Content-Type', 'application/json');
+	res.end(JSON.stringify(js, null, 3));
 };
 
 UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
@@ -294,7 +291,7 @@ UserAPI.prototype.UpdatePassword = async function(req, res) {
 	const { userID, password, rand } = req;
 
 	const query = { $set: { 'password': password, resetPassword: false } };
-	let result = '';
+	let result;
 
 	try {
 		const db = this.client.db();
