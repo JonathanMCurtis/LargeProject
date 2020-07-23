@@ -43,7 +43,7 @@ export default (state = initialState, action) => {
 
 	switch (type) {
 		case ACTIONS.CREATE_USER_SUCCESS:
-			return { ...state, ...data.userInfo, error };
+			return { ...state, loggedIn: true, ...data.userInfo, error };
 		case ACTIONS.LOGIN_GUEST:
 			return { ...state, banner: state.banner, guest: true };
 		case ACTIONS.LOAD_USER_SUCCESS:
