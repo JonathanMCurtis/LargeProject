@@ -18,8 +18,8 @@ export const Router = () => {
 						<Route exact path = '/profile' component = { Profile } />
 						<Route exact path = '/about' component = { About } />
 						<Route exact path = '/notes/:subject/:topic' render = { routerProps => <Notes router = { routerProps } /> } />
-						<Route component = { NoMatch } />
 					</Route>
+					<Route component = { NoMatch } />
 				</Switch>
 			</Switch>
 		</BrowserRouter>
