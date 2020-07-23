@@ -1,13 +1,13 @@
 // Fetch URLs
-const Login = 'http://localhost:27017/api/LoginUser';
-const CreateUser = 'http://localhost:27017/api/CreateUser';
-const UpdatePassword = 'http://localhost:27017/api/UpdatePassword';
-const ReVerification = 'http://localhost:27017/api/ReVerification';
-const PasswordRequest = 'http://localhost:27017/api/PasswordRequest';
-const ChangePassword = 'http://localhost:27017/api/ChangePassword';
-const AddFavorite = 'http://localhost:27017/api/AddFavorite';
-const Verification = 'http://localhost:27017/api/VerifyUser';
-const RemoveFavorite = 'http://localhost:27017/api/RemoveFavorite';
+const Login = 'https://studyshare21.herokuapp.com/api/LoginUser';
+const CreateUser = 'https://studyshare21.herokuapp.com/api/CreateUser';
+const UpdatePassword = 'https://studyshare21.herokuapp.com/api/UpdatePassword';
+const ReVerification = 'https://studyshare21.herokuapp.com/api/ReVerification';
+const PasswordRequest = 'https://studyshare21.herokuapp.com/api/PasswordRequest';
+const ChangePassword = 'https://studyshare21.herokuapp.com/api/ChangePassword';
+const AddFavorite = 'https://studyshare21.herokuapp.com/api/AddFavorite';
+const Verification = 'https://studyshare21.herokuapp.com/api/VerifyUser';
+const RemoveFavorite = 'https://studyshare21.herokuapp.com/api/RemoveFavorite';
 
 // Actions Types
 const ACTIONS = {
