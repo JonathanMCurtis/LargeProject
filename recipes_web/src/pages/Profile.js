@@ -8,14 +8,14 @@ import './styles.css';
 
 class Profile extends Component {
 	render() {
-		const { loggedIn } = this.props;
+		const { loggedIn, firstName, email } = this.props;
 
 		return (
 			<>
 				<NavBar />
 				<div className = 'page pattern-zigzag-xl bg-white text-success'>
 					{ loggedIn && <>
-						<h1 className = 'text-primary'>Logged in as <span className = 'text-secondary'>User</span></h1>
+						<h1 className = 'text-primary'>Logged in as <span className = 'text-secondary'>{ firstName }</span></h1>
 						<Table>
 							<tbody>
 								<tr className = 'border-0'>
@@ -40,6 +40,6 @@ class Profile extends Component {
 	}
 }
 
-const mapStateToProps = ({ user: { loggedIn } }) => ({ loggedIn });
+const mapStateToProps = ({ user: { loggedIn, firstName, email } }) => ({ loggedIn });
 
 export default connect(mapStateToProps)(Profile);
