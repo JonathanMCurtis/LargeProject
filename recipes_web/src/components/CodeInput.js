@@ -1,8 +1,9 @@
 import React from 'react';
 import Table from 'react-bootstrap/Table';
+import Button from 'react-bootstrap/Button';
 
 export const CodeInput = props => {
-	const { numInputs, onSubmit, style } = props;
+	const { numInputs, onSubmit, style, buttonTitle } = props;
 	const elemRefs = [];
 	const code = [];
 
@@ -20,7 +21,7 @@ export const CodeInput = props => {
 			code.pop();
 		}
 		else if (event.keyCode === ENTER_KEY) {
-			onSubmit && onSubmit(code.toString());
+			onSubmit && maxLength === code.length && onSubmit(code.toString());
 		}
 		else if (event.keyCode !== DELETE_KEY) {
 			elem = tabIndex < maxLength - 1 && elemRefs[tabIndex + 1];
@@ -45,21 +46,31 @@ export const CodeInput = props => {
 				ref = { ref }
 				maxLength = { 1 }
 				onKeyUp = { autoTab }
+				value = { code[props.index] }
 			/>
 		);
 	};
 
 	return (
-		<Table>
-			<tr>
-				{ [...Array(numInputs).keys()].map(index => {
-					return (
-						<td>
-							<Input className = { style } key = { index } index = { index } />
-						</td>
-					);
-				}) }
-			</tr>
-		</Table>
+		<>
+			<Table>
+				<tr>
+					{ [...Array(numInputs).keys()].map(index => {
+						return (
+							<td>
+								<Input className = { style } key = { index } index = { index } />
+							</td>
+						);
+					}) }
+				</tr>
+			</Table>
+			<Button
+				onClick = { () => elemRefs.length === code.length && onSubmit(code.toString()) }
+				variant = 'primary'
+				className = 'mb-4 btn btn-block'
+			>
+				{ buttonTitle }
+			</Button>
+		</>
 	);
 };

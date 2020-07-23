@@ -2,11 +2,12 @@
 const Login = 'http://localhost:27017/api/LoginUser';
 const CreateUser = 'http://localhost:27017/api/CreateUser';
 const UpdatePassword = 'http://localhost:27017/api/UpdatePassword';
-const ReVerification = '';
-const PasswordRequest = '';
-const ChangePassword = '';
-const AddFavorite = '';
-const RemoveFavorite = '';
+const ReVerification = 'http://localhost:27017/api/ReVerification';
+const PasswordRequest = 'http://localhost:27017/api/PasswordRequest';
+const ChangePassword = 'http://localhost:27017/api/ChangePassword';
+const AddFavorite = 'http://localhost:27017/api/AddFavorite';
+const Verification = 'http://localhost:27017/api/VerifyUser';
+const RemoveFavorite = 'http://localhost:27017/api/RemoveFavorite';
 
 // Actions Types
 const ACTIONS = {
@@ -19,6 +20,7 @@ const ACTIONS = {
 	RESEND_VERIFICATION: 'RESEND_VERIFICATION',
 	UPDATE_FAVORITE: 'UPDATE_FAVORITE',
 	LOGIN_GUEST: 'LOGIN_GUEST',
+	VERIFY_EMAIL: 'VERIFY_EMAIL',
 	LOG_OUT_USER: 'LOG_OUT_USER',
 	CLOSE_BANNER: 'CLOSE_BANNER'
 };
@@ -45,7 +47,7 @@ export default (state = initialState, action) => {
 		case ACTIONS.LOGIN_GUEST:
 			return { ...state, banner: state.banner, guest: true };
 		case ACTIONS.LOAD_USER_SUCCESS:
-			return { loggedIn: true, ...data.userInfo };
+			return { ...state, loggedIn: true, ...data.userInfo };
 		case ACTIONS.CREATE_USER_FAIL:
 		case ACTIONS.LOAD_USER_FAIL:
 			return { error };
@@ -55,6 +57,8 @@ export default (state = initialState, action) => {
 		case ACTIONS.UPDATE_PASSWORD:
 		case ACTIONS.RESEND_VERIFICATION:
 			return { ...state, error };
+		case ACTIONS.VERIFY_EMAIL:
+			return { ...state, error, verified: error && false };
 		case ACTIONS.LOG_OUT_USER:
 			return initialState;
 		case ACTIONS.CLOSE_BANNER:
@@ -131,6 +135,14 @@ export const loginUser = user => {
 
 export const loginGuest = () => {
 	return dispatch => dispatch({ type: 'LOGIN_GUEST' });
+};
+
+export const verifyEmail = user => {
+	return dispatch => {
+		return fetch(Verification, fetchPOST(user))
+			.then(response => response.json())
+			.then(data => dispatch({ type: 'VERIFY_EMAIL', data }));
+	};
 };
 
 /**

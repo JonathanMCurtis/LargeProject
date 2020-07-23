@@ -97,14 +97,6 @@
 	width: 50rem;
 }
 
-#verify-email {
-	width: 500px;
-	height: 100vh;
-	margin: auto;
-	padding: 10px;
-	border: 1px soild black;
-}
-
 .noteCard {
 	all: unset;
 	padding: 1em 2em 1em 2em;

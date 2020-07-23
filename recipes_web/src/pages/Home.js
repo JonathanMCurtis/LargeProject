@@ -27,7 +27,7 @@ class Home extends Component {
 		const { loggedIn, loginGuest } = this.props;
 
 		return (
-			(loggedIn && <Link className = 'btn btn-primary' to = '/subjects'>Take me back!</Link>)
+			(loggedIn && <Link className = 'btn btn-primary' to = '/notes'>Take me back!</Link>)
 				|| <>
 					<ButtonGroup className = 'mx-auto pb-2'>
 						<Button onClick = { () => this.setState({ animate: true, register: 'login' }) }>
@@ -38,7 +38,7 @@ class Home extends Component {
 						</Button>
 					</ButtonGroup>
 					<p>
-						<Link className = 'btn btn-primary' to = '/subjects' onClick = { () => loginGuest() }>Continue as guest</Link>
+						<Link className = 'btn btn-primary' to = '/notes' onClick = { () => loginGuest() }>Continue as guest</Link>
 					</p>
 				</>
 		);

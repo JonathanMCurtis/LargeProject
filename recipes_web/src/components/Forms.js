@@ -102,7 +102,7 @@ export const LoginForm = ({ onSubmit }) => {
 			initialValues = {{ login: '', password: '' }}
 			validate = { validateLogin }
 			onSubmit = { (values, { setSubmitting }) => {
-				onSubmit(values).then(error => !error && history.push('/subjects'));
+				onSubmit(values).then(error => !error && history.push('/notes'));
 				setSubmitting(false);
 			} }
 		>
@@ -126,7 +126,7 @@ export const SignUpForm = ({ onSubmit }) => {
 			initialValues = {{ firstName: '', lastName: '', login: '', email: '', password: '' }}
 			validate = { validateSignUp }
 			onSubmit = { (values, { setSubmitting }) => {
-				onSubmit(values).then(error => !error && history.push('/subjects'));
+				onSubmit(values).then(error => !error && history.push('/notes'));
 				setSubmitting(false);
 			} }
 		>

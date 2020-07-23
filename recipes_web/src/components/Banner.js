@@ -4,7 +4,7 @@ import Table from 'react-bootstrap/Table';
 import { connect } from 'react-redux';
 import { MdClose } from 'react-icons/md';
 import { Link } from 'react-router-dom';
-import { closeBanner, loginGuest } from '../config';
+import { closeBanner } from '../config';
 
 const BannerComponent = ({ children, onClose }) => {
 	const [show, setShow] = useState(false);
@@ -35,9 +35,7 @@ const BannerComponent = ({ children, onClose }) => {
 
 class Banner extends Component {
 	render() {
-		const { guest, verified, loggedIn, banner, closeBanner, loginGuest } = this.props;
-
-		(!guest || !loggedIn) && loginGuest();
+		const { guest, verified, loggedIn, banner, closeBanner } = this.props;
 
 		let guestMessage = <>
 			You are currently logged in as a guest and won't be able to add or save notes. { ' ' }
@@ -58,6 +56,6 @@ class Banner extends Component {
 }
 
 const mapStateToProps = ({ user: { guest, verified, loggedIn, banner } }) => ({ guest, verified, loggedIn, banner });
-const mapDispatchToProps = { closeBanner, loginGuest };
+const mapDispatchToProps = { closeBanner };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Banner);
