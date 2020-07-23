@@ -136,12 +136,12 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 
 	let js = {
 		userInfo: {
-			userID: result['_id'],
-			firstName: result['firstName'],
-			lastName: result['lastName'],
-			email: result['email'],
-			favorites: result['favoriteNotes'],
-			verified: result['verified']
+			userID: _user['_id'],
+			firstName: _user['firstName'],
+			lastName: _user['lastName'],
+			email: _user['email'],
+			favorites: _user['favoriteNotes'],
+			verified: _user['verified']
 		},
 		error: result['error'],
 		result: result['errorObject']
@@ -205,7 +205,7 @@ UserAPI.prototype.VerifyUser = async function(req, res) {
 UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 	/*
 	 * incoming: email
-	 * outgoing: error: boolean, result: errorObj
+	 * outgoing: userID: string, error: boolean, result: errorObj
 	 */
 
 	const { email } = req;
@@ -250,10 +250,10 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 
 	let js = {
 		userInfo: {
-			userID: result['_id'],
-			firstName: result['firstName'],
-			lastName: result['lastName'],
-			email: result['email']
+			userID: _user['_id'],
+			firstName: _user['firstName'],
+			lastName: _user['lastName'],
+			email: _user['email']
 		},
 		error: result['error'],
 		result: result['errorObject']
