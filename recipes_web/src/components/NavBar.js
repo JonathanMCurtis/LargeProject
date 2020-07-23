@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import Container from 'react-bootstrap/Container';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import { NavLink, Link } from 'react-router-dom';
+import Logo from '../data/images/favicon.png';
+import { connect } from 'react-redux';
+import { logoutUser } from '../config';
 
-export default class NavBar extends Component {
+class NavBar extends Component {
 	render () {
-		const { background } = this.props;
+		const { background, loggedIn, logoutUser } = this.props;
 
 		return (
 			<Navbar
@@ -16,24 +20,40 @@ export default class NavBar extends Component {
 			>
 				<Container>
 					<Navbar.Brand>
-						<Link to = '/'>Study Share</Link>
+						<img
+							src = { Logo }
+							width = '30'
+							height = '30'
+							className = 'mr-2'
+						/>
+						<Link className = 'text-light' to = '/'>Study Share</Link>
 					</Navbar.Brand>
 					<Nav className = 'ml-auto'>
 						<Nav.Item key = 'home'>
-							<NavLink exact to = '/' className = 'nav-link'>Home</NavLink>
+							<NavLink exact to = '/notes' className = 'nav-link'>Home</NavLink>
 						</Nav.Item>
 						<Nav.Item key = 'account'>
-							<NavLink exact to = '/' className = 'nav-link'>Account</NavLink>
+							<NavLink exact to = '/profile' className = 'nav-link'>Account</NavLink>
 						</Nav.Item>
-						<Nav.Item key = 'notes'>
-							<NavLink exact to = '/' className = 'nav-link'>Notes</NavLink>
-						</Nav.Item>
+						<NavDropdown title = 'Notes'>
+							<NavDropdown.Item href = '/notes/new-note'>Create note</NavDropdown.Item>
+							<NavDropdown.Item href = '/notes/submitted'>My notes</NavDropdown.Item>
+							<NavDropdown.Item href = '/notes/saved'>Saved notes</NavDropdown.Item>
+						</NavDropdown>
 						<Nav.Item key = 'about'>
-							<NavLink exact to = '/' className = 'nav-link'>About</NavLink>
+							<NavLink exact to = '/about' className = 'nav-link'>About</NavLink>
 						</Nav.Item>
+						{ loggedIn && <Nav.Item key = 'log-out'>
+							<NavLink to = '/' className = 'nav-link' onClick = { () => logoutUser() }>Log out</NavLink>
+						</Nav.Item> }
 					</Nav>
 				</Container>
 			</Navbar>
 		);
 	}
 }
+
+const mapDispatchToProps = { logoutUser };
+const mapStateToProps = ({ user: { loggedIn }}) => ({ loggedIn });
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

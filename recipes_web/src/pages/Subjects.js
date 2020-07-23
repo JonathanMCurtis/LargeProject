@@ -7,6 +7,7 @@ import NavBar from '../components/NavBar';
 import Subjects from '../data/Subjects.json';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { SearchForm } from '../components';
 import {
 	AiFillCalculator,
 	AiOutlineExperiment,
@@ -93,12 +94,7 @@ class Subject extends Component {
 			<>
 				<NavBar />
 				<Container>
-					<div className = 'py-3 d-flex justify-content-center'>
-						<input type = 'text' placeholder = 'Search...' className = 'rounded shadow-sm' />
-						<Button className = 'shadow-sm'>
-							<AiOutlineSearch />
-						</Button>
-					</div>
+					<SearchForm />
 					<h4 className = 'text-left'>Or find specific notes with subjects!</h4>
 					{ this.renderSubjects() }
 					{ this.renderTopics() }

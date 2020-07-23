@@ -4,6 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import { useHistory } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
+import { AiOutlineSearch } from 'react-icons/ai';
 import './styles.css';
 
 const validateLogin = values => {
@@ -162,15 +163,20 @@ export const SearchForm = ({ onSubmit }) => {
 			} }
 		>
 			{ ({ touched }) => (
-				<Form>
-					<Field
-						className = { touched.search && 'text-input' }
-						id = 'search'
-						name = 'search'
-						type = 'text'
-						placeholder = 'Search...'
-					/>
-				</Form>
+				<div className = 'py-3 d-flex justify-content-center'>
+					<Form className = 'w-75'>
+						<Field
+							className = { touched.search && 'text-input' }
+							id = 'search'
+							name = 'search'
+							type = 'text'
+							placeholder = 'Search...'
+						/>
+					</Form>
+					<Button className = 'shadow-sm'>
+						<AiOutlineSearch />
+					</Button>
+				</div>
 
 			) }
 		</Formik>

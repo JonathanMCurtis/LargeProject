@@ -1,12 +1,12 @@
 // Fetch URLs
-const CreateNote = 'http://localhost:27017/api/CreateNote';
-const GetNote = 'http://localhost:27017/api/GetNote';
-const GetNotes = 'http://localhost:27017/api/GetNotes';
-const GetSubmittedNotes = 'http://localhost:27017/api/GetSubmittedNotes';
-const GetFavoriteNotes = 'http://localhost:27017/api/GetFavoriteNotes';
-const Search = 'http://localhost:27017/api/SearchByContent';
-const UpdateNote = 'http://localhost:27017/api/UpdateNote';
-const DeleteNote = 'http://localhost:27017/api/DeleteNote';
+const CreateNote = 'https://studyshare21.herokuapp.com/api/CreateNote';
+const GetNote = 'https://studyshare21.herokuapp.com/api/GetNote';
+const GetNotes = 'https://studyshare21.herokuapp.com/api/GetNotes';
+const GetSubmittedNotes = 'https://studyshare21.herokuapp.com/api/GetSubmittedNotes';
+const GetFavoriteNotes = 'https://studyshare21.herokuapp.com/api/GetFavoriteNotes';
+const Search = 'https://studyshare21.herokuapp.com/api/SearchByContent';
+const UpdateNote = 'https://studyshare21.herokuapp.com/api/UpdateNote';
+const DeleteNote = 'https://studyshare21.herokuapp.com/api/DeleteNote';
 
 // Actions Types
 const ACTIONS = {
@@ -47,8 +47,6 @@ export default (state = initialState, action) => {
 			return { ...state, notes: data.notes, error };
 		case ACTIONS.UPDATE_NOTE_FAIL:
 			return { ...state, error };
-		case ACTIONS.LOG_OUT_NOTE:
-			return { ...initialState };
 		default:
 			return state;
 	}
@@ -134,7 +132,7 @@ export const search = query => {
 	};
 };
 
-export const updateNote = note => {
+export const editNote = note => {
 	return dispatch => {
 		return fetch(UpdateNote, fetchPOST(note))
 			.then(response => response.json())

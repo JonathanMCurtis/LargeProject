@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
-import { NavBar } from '../components';
+import { NavBar, RegistrationCard } from '../components';
 import { connect } from 'react-redux';
-import { getNotes } from '../config';
+import { getNotes, search } from '../config';
 import { Container, Badge } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import './styles.css';
 
-const NoteCard = ({ noteID, author, title, submissionDate, favoriteCount }) => {
+const NoteCard = ({ favorites, noteID, author, title, submissionDate, favoriteCount }) => {
 	return (
-		<button className = 'noteCard m-4 bg-light'>
+		<button className = 'text-left note-card m-4 bg-light'>
 			<h5 className = 'text-dark'>
 				{ title }
 			</h5>
 			<div>
 				<p className = 'text-secondary'>Author: <span className = 'text-dark'>{ author }</span></p>
 				<p className = 'text-secondary'>Made on: <span className = 'text-dark'>{ submissionDate }</span></p>
-				<div className = 'float-right'>
+				<div className = 'float-right mt-n4'>
 					<FaRegBookmark className = 'text-primary' />
 					<Badge variant = 'primary'>{ favoriteCount }</Badge>
 				</div>
@@ -26,16 +27,46 @@ const NoteCard = ({ noteID, author, title, submissionDate, favoriteCount }) => {
 
 class Notes extends Component {
 	componentDidMount() {
-		const { getNotes, router: { match: { params: { subject, topic } } } } = this.props;
+		const { getNotes, search, query, action, userID, loggedIn } = this.props;
 
-		getNotes({ subject: subject.split('-').join(' '), topic: topic.split('-').join(' ') });
+		if (action && action !== 'search') {
+			loggedIn && getNotes({ userID }, action);
+		}
+		else if (action === 'search') {
+			search({ search: query });
+		}
+		else {
+			const { router: { match: { params: { subject, topic } } } } = this.props;
+
+			getNotes({ subject: subject.split('-').join(' '), topic: topic.split('-').join(' ') });
+		}
 	}
 
 	render () {
-		const { notes } = this.props;
-		const { getNotes, router: { match: { params: { subject, topic } } } } = this.props;
+		const { notes, query, action, favorites, loggedIn } = this.props;
+		let title;
+
+		switch (action) {
+			case 'search':
+				title = query;
+				break;
+			case 'favorites':
+				title = 'Saved notes';
+				break;
+			case 'submitted':
+				title = 'My notes';
+				break;
+			default:
+				title = this.props.router.match.params.topic.split('-').join(' ');
+		}
 
 		const notesArr = [
+			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
+			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
+			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
+			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
+			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
+			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
 			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
 			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
 			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
@@ -43,24 +74,32 @@ class Notes extends Component {
 		];
 
 		return (
-			<div className = 'page pattern-grid-xl bg-navy text-primary'>
+			<>
 				<NavBar />
-				<Container className = 'h-100 justify-content-md-center'>
-					<div className = 'notes-container'>
-						<h1 className = 'display-1 text-secondary text-center'>{ topic }</h1>
-						{ notesArr.map(note => {
-							return (
-								NoteCard(note)
-							);
-						}) }
-					</div>
-				</Container>
-			</div>
+				<div className = 'page pattern-grid-xl bg-navy text-primary'>
+					{ !((action === 'favorites' || action === 'submitted') && !loggedIn) && <Container className = 'h-100 justify-content-md-center'>
+						<h1 className = 'display-3 text-secondary text-center'>{ title }</h1>
+						<div className = 'text-center'>
+							{ notesArr.map(note => NoteCard({ favorites, ...note })) }
+						</div>
+					</Container>
+					|| <div className = 'splash-content'>
+						<RegistrationCard solo = 'w-50' className = 'w-25'>
+							<p className = 'lead'>You don't seem to be logged in.</p>
+							<Link to = '/'>Login in here!</Link>
+						</RegistrationCard>
+					</div> }
+				</div>
+			</>
 		);
 	}
 }
 
-const mapDispatchToProps = { getNotes };
-const mapStateToProps = ({ note, note: { notes } }) => ({ notes });
+const mapDispatchToProps = { getNotes, search };
+const mapStateToProps = ({ user: { loggedIn, userID, favorites }, note: { notes, query } }) => {
+	return (
+		{ loggedIn, userID, query, notes, favorites }
+	);
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Notes);
