@@ -60,19 +60,6 @@ class Notes extends Component {
 				title = this.props.router.match.params.topic.split('-').join(' ');
 		}
 
-		const notesArr = [
-			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
-			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
-			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
-			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
-			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
-			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
-			{ title: 'Integrals', author: 'Alice', submissionDate: '7/22/2020', favoriteCount: 10 },
-			{ title: 'Limits', author: 'Bob', submissionDate: '7/20/2020', favoriteCount: 7 },
-			{ title: 'Other Calculus things', author: 'Cole', submissionDate: '7/20/2020', favoriteCount: 21 },
-			{ title: 'Even more Calculus things', author: 'Danny', submissionDate: '7/20/2020', favoriteCount: 21 }
-		];
-
 		return (
 			<>
 				<NavBar />
@@ -80,7 +67,7 @@ class Notes extends Component {
 					{ !((action === 'favorites' || action === 'submitted') && !loggedIn) && <Container className = 'h-100 justify-content-md-center'>
 						<h1 className = 'display-3 text-secondary text-center'>{ title }</h1>
 						<div className = 'text-center'>
-							{ notesArr.map(note => NoteCard({ favorites, ...note })) }
+							{ notes.map(note => NoteCard({ favorites, ...note })) }
 						</div>
 					</Container>
 					|| <div className = 'splash-content'>

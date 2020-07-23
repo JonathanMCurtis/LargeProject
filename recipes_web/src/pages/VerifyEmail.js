@@ -33,7 +33,7 @@ class Verify extends Component {
 			<div id = 'verify-email' className = 'page pattern-dots-xl bg-success text-light'>
 				<div className = 'splash-content'>
 					<RegistrationCard solo = 'w-50' className = 'w-25'>
-						{ this.props.loggedIn && <><Form.Group controlId = 'verify-email-form'>
+						{ true && <><Form.Group controlId = 'verify-email-form'>
 							<Form.Label><h3>Enter verification code</h3></Form.Label>
 							<CodeInput numInputs = { 6 } onSubmit = { code => this.verify(code) } buttonTitle = 'Verify your email' />
 						</Form.Group>

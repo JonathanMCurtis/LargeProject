@@ -54,6 +54,7 @@ export default (state = initialState, action) => {
 		case ACTIONS.UPDATE_FAVORITE:
 			return { ...state, favorites: data.favorites };
 		case ACTIONS.RESET_PASSWORD:
+			return { ...state, error, ...data.userInfo };
 		case ACTIONS.UPDATE_PASSWORD:
 		case ACTIONS.RESEND_VERIFICATION:
 			return { ...state, error };
