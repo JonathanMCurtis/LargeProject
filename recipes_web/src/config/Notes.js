@@ -34,6 +34,7 @@ export default (state = initialState, action) => {
 
 	switch (type) {
 		case ACTIONS.CREATE_NOTE_SUCCESS:
+			return { ...state, currentNote: { noteID: data.noteID }, error };
 		case ACTIONS.UPDATE_NOTE_SUCCESS:
 		case ACTIONS.LOAD_NOTE_SUCCESS:
 			return { ...state, currentNote: data.note, error };
