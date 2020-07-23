@@ -43,11 +43,11 @@ class Notes extends Component {
 		];
 
 		return (
-			<div className = 'notes-bg pattern-grid-lg bg-secondary text-light'>
+			<div className = 'page pattern-grid-xl bg-navy text-primary'>
 				<NavBar />
 				<Container className = 'h-100 justify-content-md-center'>
 					<div className = 'notes-container'>
-						<h1 className = 'display-1 text-success text-center'>{ topic }</h1>
+						<h1 className = 'display-1 text-secondary text-center'>{ topic }</h1>
 						{ notesArr.map(note => {
 							return (
 								NoteCard(note)

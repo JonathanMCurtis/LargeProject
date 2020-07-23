@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
-import { Row, Col, Form, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button} from 'react-bootstrap';
 import Subjects from '../data/Subjects.json';
 import './styles.css';
 
@@ -67,39 +67,33 @@ export default class EditNoteCard extends Component {
 		const { title, btn1, btn2 } = this.props;
 
 		return (
-			<div>
+			<div className = 'page pattern-vertical-lines-xl bg-white text-primary'>
 				<NavBar />
-				<Row>
-					<Col sm = { 8 }>
-						<h1>{ title }</h1>
+				<Container>
+					<div className = 'text-dark'>
+						<Row>
+							<Col sm = { 8 }>
+								<h1 className = 'display-4'>{ title }</h1>
 
-						<Form.Group controlId = 'note-form-textarea'>
-							<Form.Control as = 'textarea' rows = '10' />
-						</Form.Group>
+								<Form.Group controlId = 'note-form-textarea'>
+									<Form.Control as = 'textarea' rows = '10' />
+								</Form.Group>
 
-						<h3>Tags</h3>
-						<div
-							id = 'tag-space'
-							className = 'mt-2'
-							style = {{
-								backgroundColor: 'whitesmoke',
-								borderRadius: '10px',
-								height: '5em',
-							}}
-						>
-							<Button variant = 'primary'>
-								Biology <span className = 'mt-1 badge badge-light'>&#215;</span>
-							</Button>
-						</div>
+								<div className = 'my-2'>
+									<Button variant = 'success' className = 'mr-2'>{ btn1 }</Button>
+									<Button variant = 'danger'>{ btn2 }</Button>
+								</div>
 
-						<Button variant = 'success'>{ btn1 }</Button>
-						<Button variant = 'danger'>{ btn2 }</Button>
-					</Col>
-					<Col sm = { 4 }>
-						{ this.renderSubjectTags() }
-						{ this.renderTopicTags() }
-					</Col>
-				</Row>
+								<h3>Tag: </h3>
+
+							</Col>
+							<Col sm = { 4 }>
+								{ this.renderSubjectTags() }
+								{ this.renderTopicTags() }
+							</Col>
+						</Row>
+					</div>
+				</Container>
 			</div>
 		);
 	}
