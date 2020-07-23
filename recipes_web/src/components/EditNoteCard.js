@@ -150,7 +150,8 @@ class EditNoteCard extends Component {
 							<Col sm = { 8 }>
 								<h1 className = 'display-4'>{ title }</h1>
 								<Form.Group controlId = 'title'>
-									<Form.Control value = { currentNote.title } readOnly = { action === 'load' || !loggedIn } ref = { ref => this.title = ref } placeholder = 'Note title' />
+								{ action === 'load' && <Form.Control value = { currentNote.title } readOnly/> 
+								|| <Form.Control readOnly = { !loggedIn } ref = { ref => this.title = ref } placeholder = 'Note title' /> }
 								</Form.Group>
 								{ action !== 'load' && <Form.Group controlId = 'note-form-textarea'>
 									<Form.Control ref = { ref => this.content = ref } readOnly = { action === 'load' || !loggedIn } as = 'textarea' rows = '10' placeholder = 'Start writing here!' />

@@ -40,6 +40,6 @@ class Profile extends Component {
 	}
 }
 
-const mapStateToProps = ({ user: { loggedIn, firstName, email } }) => ({ loggedIn });
+const mapStateToProps = ({ user: { loggedIn, firstName, email } }) => ({ loggedIn, firstName, email });
 
 export default connect(mapStateToProps)(Profile);
