@@ -4,15 +4,12 @@ import { connect } from 'react-redux';
 import { getNotes, search } from '../config';
 import { Container, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import { FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import './styles.css';
 
 const NoteCard = ({ favorites, noteID, author, title, submissionDate, favoriteCount }) => {
-	const history = useHistory();
-
 	return (
-		<button onClick = { history.push(`/notes/${noteID}`)} className = 'text-left note-card m-4 bg-light'>
+		<button className = 'text-left note-card m-4 bg-light'>
 			<h5 className = 'text-dark'>
 				{ title }
 			</h5>
