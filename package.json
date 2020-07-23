@@ -4,8 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "pretest": "eslint --config .estlintrc.yml .",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest .\\api\\jest\\ --testTimeout=1000",
     "start": "node server.js",
     "dev": "concurrently \"nodemon server.js\" \"cd recipes_web && npm run start\"",
     "lint": "eslint --config .estlintrc.yml .",
@@ -20,12 +19,16 @@
     "dotenv": "^8.2.0",
     "eslint": "^6.6.0",
     "express": "^4.17.1",
+    "jest": "^26.1.0",
     "mongodb": "^3.5.9",
-    "nodemailer": "^6.4.10"
+    "nodemailer": "^6.4.10",
+    "supertest": "^4.0.2"
   },
   "devDependencies": {
+    "@shelf/jest-mongodb": "^1.2.1",
     "babel": "^6.23.0",
     "babel-eslint": "^10.1.0",
-    "eslint-plugin-react": "^7.20.0"
+    "eslint-plugin-react": "^7.20.0",
+    "eslint-plugin-react-native": "^3.8.1"
   }
 }

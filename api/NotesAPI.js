@@ -189,7 +189,6 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 
 	try {
 		const db = this.client.db();
-		// TODO: If no favorites exist, return
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
 		favorites = userData['favoriteNotes'];

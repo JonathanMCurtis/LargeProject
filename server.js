@@ -89,6 +89,8 @@ app.get('*', (req, res) => {
 });
 
 // Listen on the designated port, defined earlier
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
 	console.log(`Server listening on port ${PORT}.`);
 });
+
+module.exports = server;
