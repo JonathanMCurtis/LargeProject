@@ -78,7 +78,7 @@ UserAPI.prototype.ResendVerification = async function (req, res, smtp) {
 			throw 'No such user';
 		}
 		else {
-			SendVerification(req, res, smtp, user['_id'], user['email'], user['rand']);
+			SendVerification(req, res, smtp, user['email'], user['rand']);
 			result = GetErrorObject(200);
 		}
 	}
@@ -150,12 +150,11 @@ UserAPI.prototype.LoginUser = async function(req, res) {
 	res.end(JSON.stringify(js, null, 3));
 };
 
-function SendVerification(req, res, smtp, id, email, rand) {
-	const link = 'https://group21-dev-api.herokuapp.com/api/verify?id=' + id + '&val=' + rand;
+function SendVerification(req, res, smtp, email, rand) {
 	const mailOptions = {
 		to: email,
 		subject: 'Please confirm your Email account',
-		html: 'Hello,<br> Please click on the link to verify your email.<br><a href=' + link + '>Click here to verify</a>'
+		html: 'Hello,<br> Please use the following code to verify your email address: <b>' + rand + '</b>.<br>'
 	};
 
 	console.log(mailOptions);

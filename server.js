@@ -66,7 +66,7 @@ app.use(express.static(path.join(__dirname, 'recipes_web', 'build')));
 app.post('/api/CreateUser', async (req, res) => userAPI.CreateUser(req.body, res, smtpTransport));
 app.post('/api/LoginUser', async (req, res) => userAPI.LoginUser(req.body, res));
 app.post('/api/ResendVerification', async (req, res) => userAPI.ResendVerification(req.body, res, smtpTransport));
-app.get('/api/verify', async (req, res) => userAPI.VerifyUser(req.body, res));
+app.get('/api/VerifyUser', async (req, res) => userAPI.VerifyUser(req.body, res));
 app.post('/api/PasswordRequest', async (req, res) => userAPI.PasswordRequest(req.body, res, smtpTransport));
 app.post('/api/UpdatePassword', async (req, res) => userAPI.UpdatePassword(req.body, res));
 app.post('/api/ChangePassword', async (req, res) => userAPI.ChangePassword(req.body, res));
