@@ -47,8 +47,12 @@ NotesAPI.prototype.CreateNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetNote = async function(req, res) {
@@ -107,8 +111,12 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 		};
 	}
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetNotes = async function(req, res) {
@@ -142,8 +150,12 @@ NotesAPI.prototype.GetNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
@@ -172,8 +184,12 @@ NotesAPI.prototype.GetSubmittedNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
@@ -189,7 +205,6 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 
 	try {
 		const db = this.client.db();
-		// TODO: If no favorites exist, return
 		const userData = await db.collection('Users').findOne({ '_id': ObjectId(userID) });
 
 		favorites = userData['favoriteNotes'];
@@ -206,8 +221,12 @@ NotesAPI.prototype.GetFavoriteNotes = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.SearchByField = async function(req, res, _field) {
@@ -241,8 +260,12 @@ NotesAPI.prototype.SearchByField = async function(req, res, _field) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 NotesAPI.prototype.UpdateNote = async function(req, res) {
@@ -280,8 +303,14 @@ NotesAPI.prototype.UpdateNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	console.log('Result: ' + JSON.stringify(js));
+
+	return js;
 };
 
 NotesAPI.prototype.DeleteNote = async function(req, res) {
@@ -308,8 +337,12 @@ NotesAPI.prototype.DeleteNote = async function(req, res) {
 		result: result['errorObject']
 	};
 
-	res.setHeader('Content-Type', 'application/json');
-	res.end(JSON.stringify(js, null, 3));
+	if (res !== undefined) {
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(js, null, 3));
+	}
+
+	return js;
 };
 
 module.exports = NotesAPI;
