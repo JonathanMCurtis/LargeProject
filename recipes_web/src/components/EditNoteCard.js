@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import NavBar from '../components/NavBar';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import Subjects from '../data/Subjects.json';
 import { connect } from 'react-redux';
+import { RegistrationCard } from '../components';
 import { createNote, loadNote, editNote, deleteNote } from '../config';
 import './styles.css';
 
@@ -12,6 +13,14 @@ class EditNoteCard extends Component {
 		super(props);
 
 		this.state = { activeSubject: '', activeTopic: '', action: this.props.action };
+	}
+
+	componentDidMount() {
+		const { loadNote } = this.props;
+		const { action } = this.state;
+
+		if (action === 'load')
+			loadNote({ noteID: this.props.router.match.params.id });
 	}
 
 	renderSubjectTags () {
@@ -70,17 +79,47 @@ class EditNoteCard extends Component {
 		);
 	}
 
-	create() {
+	async create() {
+		const { activeSubject, activeTopic } = this.state;
+		const { createNote, userID, loadNote } = this.props;
+		
+		await createNote({
+			title: this.title.value,
+			subject: activeSubject,
+			topic: activeTopic,
+			content: this.content.value,
+			userID
+		});
 
+		const { currentNote } = this.props;
+
+		await loadNote({ noteID: currentNote.nodeID });
+
+		this.setState({ active: 'load' });
 	}
 
-	edit() {
+	async edit() {
+		const { activeSubject, activeTopic } = this.state;
+		const { userID, loadNote, editNote } = this.props;
 
+		await editNote({
+			title: this.title.value,
+			subject: activeSubject,
+			topic: activeTopic,
+			content: this.content.value,
+			userID
+		});
+
+		const { currentNote } = this.props;
+
+		await loadNote({ noteID: currentNote.nodeID });
+
+		this.setState({ active: 'load' });
 	}
 
 	render() {
 		const { action } = this.state;
-		const { currentNote, userID } = this.props;
+		const { currentNote, userID, loggedIn } = this.props;
 		let title;
 		let btn1;
 		let btn2;
@@ -108,11 +147,16 @@ class EditNoteCard extends Component {
 				<Container>
 					<div className = 'text-dark'>
 						<Row className = 'pt-4'>
+							{ (action === 'create' && loggedIn) && <>
 							<Col sm = { 8 }>
 								<h1 className = 'display-4'>{ title }</h1>
-								<Form.Group controlId = 'note-form-textarea'>
-									<Form.Control as = 'textarea' rows = '10' />
+								<Form.Group controlId = 'title'>
+									<Form.Control value = { currentNote.title } readOnly = { action === 'load' } ref = { ref => this.title = ref } placeholder = 'Note title' />
 								</Form.Group>
+								{ action !== 'load' && <Form.Group controlId = 'note-form-textarea'>
+									<Form.Control ref = { ref => this.content = ref } as = 'textarea' rows = '10' placeholder = 'Start writing here!' />
+									</Form.Group>
+								|| <div className = 'bg-light'><p>{ currentNote.content }</p></div> }
 								<div className = 'my-2'>
 									<Button disabled = { userID !== currentNote.userID } variant = 'success' className = 'mr-2' onClick = { () => btn1.onClick() }>{ btn1.title }</Button>
 									{ btn2 && <Button variant = 'danger' onClick = { () => btn2.onClick() }>{ btn2.title }</Button> }
@@ -121,7 +165,12 @@ class EditNoteCard extends Component {
 							<Col className = 'bg-light p-3 rounded' sm = { 4 }>
 								{ this.renderSubjectTags() }
 								{ this.renderTopicTags() }
-							</Col>
+							</Col> </> || <div className = 'splash-content'>
+						<RegistrationCard solo = 'w-50' className = 'w-25'>
+							<p className = 'lead'>You don't seem to be logged in.</p>
+							<Link to = '/'>Login in here!</Link>
+						</RegistrationCard>
+					</div> }
 						</Row>
 					</div>
 				</Container>
