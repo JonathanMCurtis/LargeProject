@@ -36,9 +36,15 @@ class NavBar extends Component {
 							<NavLink exact to = '/profile' className = 'nav-link'>Account</NavLink>
 						</Nav.Item>
 						<NavDropdown title = 'Notes'>
-							<NavDropdown.Item href = '/notes/new-note'>Create note</NavDropdown.Item>
-							<NavDropdown.Item href = '/notes/submitted'>My notes</NavDropdown.Item>
-							<NavDropdown.Item href = '/notes/saved'>Saved notes</NavDropdown.Item>
+							<NavDropdown.Item>
+								<Link to = '/notes/new-note'>Create note</Link>
+							</NavDropdown.Item>
+							<NavDropdown.Item>
+								<Link to = '/notes/submitted'>My notes</Link>
+							</NavDropdown.Item>
+							<NavDropdown.Item>
+								<Link to = '/notes/saved'>Saved notes</Link>
+							</NavDropdown.Item>
 						</NavDropdown>
 						<Nav.Item key = 'about'>
 							<NavLink exact to = '/about' className = 'nav-link'>About</NavLink>
