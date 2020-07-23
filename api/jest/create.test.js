@@ -1,22 +1,25 @@
-const supertest = require('supertest');
-const server = require('../../server');
-const request = supertest(server);
+const { MongoClient } = require('mongodb');
+const note = require('../NotesAPI');
+const client = new MongoClient(process.env.MONGODB_URI);
 
-describe('Endpoints test', () => {
-	it('Should create a new note', async () => {
-		const res = await request.post('/api/CreateNote').send({
-			title: 'RouteTest',
-			subject: 'Testing',
-			topic: 'API Testing',
-			content: 'API Test Content #0',
-			url: null,
-			userID: 'O5',
-			login: 'O5-1'
+client.connect(async (err, client) => {
+	const notesAPI = new note(client);
+
+	describe('Endpoints test', () => {
+		it('Should create a new note', async () => {
+			const res = await notesAPI.CreateNote({
+				title: 'RouteTest',
+				subject: 'Testing',
+				topic: 'API Testing',
+				content: 'API Test Content #0',
+				url: null,
+				userID: 'O5',
+				login: 'O5-1'
+			});
+
+			expect(res).toHaveProperty('noteID');
+			expect(res).toHaveProperty('error');
+			expect(res).toHaveProperty('result');
 		});
-
-		expect(res.statusCode).toEqual(200);
-		expect(res.body).toHaveProperty('noteID');
-		expect(res.body).toHaveProperty('error');
-		expect(res.body).toHaveProperty('result');
 	});
 });
