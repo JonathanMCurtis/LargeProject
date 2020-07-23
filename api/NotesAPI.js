@@ -85,14 +85,6 @@ NotesAPI.prototype.GetNote = async function(req, res) {
 			result: result['errorObject']
 		};
 	}
-	else if (userData == null) {
-		result = GetErrorObject('default', 'No such user');
-		js = {
-			note: {},
-			error: result['error'],
-			result: result['errorObject']
-		};
-	}
 	else {
 		js = {
 			'note': {
