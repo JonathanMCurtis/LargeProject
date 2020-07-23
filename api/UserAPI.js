@@ -11,7 +11,7 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 	 * outgoing: userInfo: {userID, firstName, lastName, email, favorites, verified}, error: boolean, result: errorObj
 	 */
 	const { firstName, lastName, login, password, email } = req;
-	const rand = GetRandomString();
+	const rand = GetRandomString(6);
 
 	const newUser = {
 		firstName: firstName,
@@ -55,7 +55,8 @@ UserAPI.prototype.CreateUser = async function(req, res, smtp) {
 		result: result['errorObject']
 	};
 
-	SendVerification(req, res, smtp, newUser['_id'], newUser['email'], rand);
+	if (!result['error'])
+		SendVerification(req, res, smtp, newUser['email'], rand);
 
 	res.setHeader('Content-Type', 'application/json');
 	res.end(JSON.stringify(js, null, 3));
@@ -221,8 +222,8 @@ UserAPI.prototype.PasswordRequest = async function(req, res, smtp) {
 
 		result = GetErrorObject(200);
 
-		const newPass = GetRandomString();
-		const newRand = GetRandomString();
+		const newPass = GetRandomString(12);
+		const newRand = GetRandomString(8);
 		const query = { $set: { 'password': newPass, 'rand': newRand, 'resetPassword': true } };
 
 		db.collection('Users').updateOne({ _id: ObjectId(_user['_id']) }, query);
