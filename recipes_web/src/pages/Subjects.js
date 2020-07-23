@@ -93,8 +93,6 @@ class Subject extends Component {
 		return (
 			<>
 				<NavBar />
-				<h1>loggedIn? { this.props.user.loggedIn && 'true' || 'false'}</h1>
-				<h2>userID: "{ this.props.user.userID }"</h2>
 				<Container>
 					<SearchForm />
 					<h4 className = 'text-left'>Or find specific notes with subjects!</h4>
