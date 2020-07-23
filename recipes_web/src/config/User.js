@@ -50,7 +50,7 @@ export default (state = initialState, action) => {
 			return { ...state, loggedIn: true, ...data.userInfo };
 		case ACTIONS.CREATE_USER_FAIL:
 		case ACTIONS.LOAD_USER_FAIL:
-			return { error };
+			return { ...state, error };
 		case ACTIONS.UPDATE_FAVORITE:
 			return { ...state, favorites: data.favorites };
 		case ACTIONS.RESET_PASSWORD:

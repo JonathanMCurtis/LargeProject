@@ -47,8 +47,6 @@ export default (state = initialState, action) => {
 			return { ...state, notes: data.notes, error };
 		case ACTIONS.UPDATE_NOTE_FAIL:
 			return { ...state, error };
-		case ACTIONS.LOG_OUT_NOTE:
-			return { ...initialState };
 		default:
 			return state;
 	}
@@ -134,7 +132,7 @@ export const search = query => {
 	};
 };
 
-export const updateNote = note => {
+export const editNote = note => {
 	return dispatch => {
 		return fetch(UpdateNote, fetchPOST(note))
 			.then(response => response.json())
