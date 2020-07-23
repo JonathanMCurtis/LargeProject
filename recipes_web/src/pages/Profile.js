@@ -20,10 +20,10 @@ class Profile extends Component {
 							<tbody>
 								<tr className = 'border-0'>
 									<td id = 'profile-left' className = 'border-0'>
-										<Link to = '/submitted' className = 'btn btn-primary btn-block'>My Notes</Link>
+										<Link to = '/notes/submitted' className = 'btn btn-primary btn-block'>My Notes</Link>
 									</td>
 									<td id = 'profile-right' className = 'align-middle text-right border-0'>
-										<Link to = '/saved' className = 'btn btn-secondary btn-block'>Saved Notes <FaBookmark /></Link>
+										<Link to = '/notes/saved' className = 'btn btn-secondary btn-block'>Saved Notes <FaBookmark /></Link>
 									</td>
 								</tr>
 							</tbody>
