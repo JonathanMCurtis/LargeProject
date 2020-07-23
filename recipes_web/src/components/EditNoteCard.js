@@ -91,7 +91,9 @@ class EditNoteCard extends Component {
 			userID
 		});
 
-		const { currentNote } = this.props;
+		const { currentNote, error } = this.props;
+
+		console.log(error);
 
 		await loadNote({ noteID: currentNote.nodeID });
 
@@ -175,6 +177,6 @@ class EditNoteCard extends Component {
 }
 
 const mapDispatchToProps = { createNote, loadNote, editNote, deleteNote };
-const mapStateToProps = ({ user: { loggedIn, userID }, note: { currentNote } }) => ({ loggedIn, userID, currentNote });
+const mapStateToProps = ({ user: { loggedIn, userID }, note: { currentNote, error } }) => ({ loggedIn, userID, currentNote, error });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditNoteCard);
