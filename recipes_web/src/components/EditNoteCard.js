@@ -79,15 +79,15 @@ class EditNoteCard extends Component {
 		);
 	}
 
-	async create() {
+	async create({ title, content }) {
 		const { activeSubject, activeTopic } = this.state;
 		const { createNote, userID, loadNote } = this.props;
 		
 		await createNote({
-			title: this.title.value,
+			title,
 			subject: activeSubject,
 			topic: activeTopic,
-			content: this.content.value,
+			content,
 			userID
 		});
 
@@ -98,15 +98,15 @@ class EditNoteCard extends Component {
 		this.setState({ active: 'load' });
 	}
 
-	async edit() {
+	async edit({ title, content }) {
 		const { activeSubject, activeTopic } = this.state;
 		const { userID, loadNote, editNote } = this.props;
 
 		await editNote({
-			title: this.title.value,
+			title,
 			subject: activeSubject,
 			topic: activeTopic,
-			content: this.content.value,
+			content,
 			userID
 		});
 
@@ -127,7 +127,7 @@ class EditNoteCard extends Component {
 		switch (action) {
 			case 'create':
 				title = 'Add a new note...';
-				btn1 = { title: 'Create Note', onClick: () => this.create() };
+				btn1 = { title: 'Create Note', onClick: values => this.create(values) };
 				btn2 = { title: 'Discard Draft', onClick: () => this.props.history.goBack() };
 				break;
 			case 'load':
@@ -136,7 +136,7 @@ class EditNoteCard extends Component {
 				break;
 			case 'edit':
 				title = currentNote.title;
-				btn1 = { title: 'Update Note', onClick: () => this.edit() };
+				btn1 = { title: 'Update Note', onClick: values => this.edit(values) };
 				btn2 = { title: 'Discard Changes', onClick: () => this.setState({ action: 'load' }) };
 				break;
 		}
@@ -157,8 +157,8 @@ class EditNoteCard extends Component {
 									</Form.Group>
 								|| <div className = 'bg-light'><p>{ currentNote.content }</p></div> }
 								<div className = 'my-2'>
-									<Button disabled = { !loggedIn || userID !== currentNote.userID } variant = 'success' className = 'mr-2' onClick = { () => btn1.onClick() }>{ btn1.title }</Button>
-									{ btn2 && <Button disabled = { !loggedIn || userID !== currentNote.userID } variant = 'danger' onClick = { () => btn2.onClick() }>{ btn2.title }</Button> }
+									<Button disabled = { !loggedIn || (action === 'load' && userID !== currentNote.userID) } variant = 'success' className = 'mr-2' onClick = { () => btn1.onClick({ title: this.title.value, content: this.content.value }) }>{ btn1.title }</Button>
+									{ btn2 && <Button disabled = { !loggedIn || (action === 'load' && userID !== currentNote.userID) } variant = 'danger' onClick = { () => btn2.onClick() }>{ btn2.title }</Button> }
 								</div>
 							</Col>
 							<Col className = 'bg-light p-3 rounded' sm = { 4 }>
