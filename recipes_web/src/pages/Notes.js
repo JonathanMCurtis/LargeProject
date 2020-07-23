@@ -67,18 +67,12 @@ class Notes extends Component {
 			<>
 				<NavBar />
 				<div className = 'page pattern-grid-xl bg-navy text-primary'>
-					{ !((action === 'favorites' || action === 'submitted') && !loggedIn) && <Container className = 'h-100 justify-content-md-center'>
+					<Container className = 'h-100 justify-content-md-center'>
 						<h1 className = 'display-3 text-secondary text-center'>{ title }</h1>
 						<div className = 'text-center'>
 							{ notes.map(note => NoteCard({ favorites, ...note })) }
 						</div>
 					</Container>
-					|| <div className = 'splash-content'>
-						<RegistrationCard solo = 'w-50' className = 'w-25'>
-							<p className = 'lead'>You don't seem to be logged in.</p>
-							<Link to = '/'>Login in here!</Link>
-						</RegistrationCard>
-					</div> }
 				</div>
 			</>
 		);

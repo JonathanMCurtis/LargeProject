@@ -48,7 +48,7 @@ class Banner extends Component {
 		</>;
 
 		return (
-			banner && (loggedIn || guest) && <BannerComponent onClose = { () => closeBanner() }>
+			banner && ((loggedIn && !verified) || guest) && <BannerComponent onClose = { () => closeBanner() }>
 				{ (guest && guestMessage) || (!verified && loggedIn && unverifiedMessage) }
 			</BannerComponent> || null
 		);

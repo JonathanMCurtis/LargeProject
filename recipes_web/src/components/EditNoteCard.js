@@ -147,30 +147,24 @@ class EditNoteCard extends Component {
 				<Container>
 					<div className = 'text-dark'>
 						<Row className = 'pt-4'>
-							{ ((action === 'create' && loggedIn) || action !== 'create') && <>
 							<Col sm = { 8 }>
 								<h1 className = 'display-4'>{ title }</h1>
 								<Form.Group controlId = 'title'>
-									<Form.Control value = { currentNote.title } readOnly = { action === 'load' } ref = { ref => this.title = ref } placeholder = 'Note title' />
+									<Form.Control value = { currentNote.title } readOnly = { action === 'load' || !loggedIn } ref = { ref => this.title = ref } placeholder = 'Note title' />
 								</Form.Group>
 								{ action !== 'load' && <Form.Group controlId = 'note-form-textarea'>
-									<Form.Control ref = { ref => this.content = ref } as = 'textarea' rows = '10' placeholder = 'Start writing here!' />
+									<Form.Control ref = { ref => this.content = ref } readOnly = { action === 'load' || !loggedIn } as = 'textarea' rows = '10' placeholder = 'Start writing here!' />
 									</Form.Group>
 								|| <div className = 'bg-light'><p>{ currentNote.content }</p></div> }
 								<div className = 'my-2'>
-									<Button disabled = { userID !== currentNote.userID } variant = 'success' className = 'mr-2' onClick = { () => btn1.onClick() }>{ btn1.title }</Button>
-									{ btn2 && <Button variant = 'danger' onClick = { () => btn2.onClick() }>{ btn2.title }</Button> }
+									<Button disabled = { !loggedIn || userID !== currentNote.userID } variant = 'success' className = 'mr-2' onClick = { () => btn1.onClick() }>{ btn1.title }</Button>
+									{ btn2 && <Button disabled = { !loggedIn || userID !== currentNote.userID } variant = 'danger' onClick = { () => btn2.onClick() }>{ btn2.title }</Button> }
 								</div>
 							</Col>
 							<Col className = 'bg-light p-3 rounded' sm = { 4 }>
 								{ this.renderSubjectTags() }
 								{ this.renderTopicTags() }
-							</Col> </> || <div className = 'splash-content'>
-						<RegistrationCard solo = 'w-50' className = 'w-25'>
-							<p className = 'lead'>You don't seem to be logged in.</p>
-							<Link to = '/'>Login in here!</Link>
-						</RegistrationCard>
-					</div> }
+							</Col>
 						</Row>
 					</div>
 				</Container>
